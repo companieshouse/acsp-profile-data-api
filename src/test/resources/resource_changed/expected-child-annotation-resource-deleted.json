@@ -1,0 +1,28 @@
+{
+  "resource_kind": "filing-history",
+  "resource_uri": "/company/<company_number>/filing-history/<transaction_id>",
+  "context_id": "<context_id>",
+  "deleted_data": {
+    "transaction_id" : "<transaction_id>",
+    "annotations" : [
+      {
+        "annotation" : "Clarification This document was second filed with the CH04 registered on 26/11/2011",
+        "category" : "annotation",
+        "date" : "2011-11-26",
+        "description" : "annotation",
+        "description_values" : {
+          "description" : "Clarification This document was second filed with the CH04 registered on 26/11/2011"
+        },
+        "type" : "ANNOTATION"
+      }
+    ],
+    "links" : {
+      "self" : "/company/<company_number>/filing-history/<transaction_id>"
+    },
+    "paper_filed" : true
+  },
+  "event": {
+    "published_at": "<published_at>",
+    "type": "deleted"
+  }
+}
