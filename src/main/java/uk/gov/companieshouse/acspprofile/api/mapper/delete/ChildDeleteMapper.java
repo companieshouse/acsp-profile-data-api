@@ -8,10 +8,10 @@ import java.util.function.Supplier;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryChild;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileChild;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 @Component
 public class ChildDeleteMapper {
@@ -22,9 +22,9 @@ public class ChildDeleteMapper {
         this.instantSupplier = instantSupplier;
     }
 
-    public <T extends FilingHistoryChild> Optional<FilingHistoryDocument> removeTransaction(String entityId, int index,
-            FilingHistoryDocument documentCopy, Supplier<List<T>> childListGetter,
-            Function<List<T>, FilingHistoryData> childListSetter) {
+    public <T extends ACSPProfileChild> Optional<ACSPProfileDocument> removeTransaction(String entityId, int index,
+                                                                                        ACSPProfileDocument documentCopy, Supplier<List<T>> childListGetter,
+                                                                                        Function<List<T>, ACSPProfileData> childListSetter) {
 
         if (entityId.equals(documentCopy.getEntityId())) {
             return Optional.empty();
@@ -42,7 +42,7 @@ public class ChildDeleteMapper {
             childList.remove(index);
         }
 
-        documentCopy.updated(new FilingHistoryDeltaTimestamp()
+        documentCopy.updated(new ACSPProfileDeltaTimestamp()
                 .at(instantSupplier.get())
                 .by(DataMapHolder.getRequestId()));
         return Optional.of(documentCopy);

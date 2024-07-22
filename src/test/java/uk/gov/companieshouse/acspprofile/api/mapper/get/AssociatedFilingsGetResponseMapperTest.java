@@ -16,8 +16,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.filinghistory.AssociatedFiling;
 import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
 
 @ExtendWith(MockitoExtension.class)
 class AssociatedFilingsGetResponseMapperTest {
@@ -57,7 +57,7 @@ class AssociatedFilingsGetResponseMapperTest {
 
         // then
         assertEquals(expected, actual);
-        verify(descriptionValuesGetResponseMapper).map(new FilingHistoryDescriptionValues());
+        verify(descriptionValuesGetResponseMapper).map(new ACSPProfileDescriptionValues());
     }
 
     @Test
@@ -72,7 +72,7 @@ class AssociatedFilingsGetResponseMapperTest {
 
         // when
         final List<AssociatedFiling> actual = associatedFilingsGetResponseMapper.map(List.of(
-                new FilingHistoryAssociatedFiling()
+                new ACSPProfileAssociatedFiling()
                         .category(CATEGORY)
                         .subcategory(SUBCATEGORY)
                         .type(TYPE)
@@ -95,15 +95,15 @@ class AssociatedFilingsGetResponseMapperTest {
         verifyNoInteractions(descriptionValuesGetResponseMapper);
     }
 
-    private static List<FilingHistoryAssociatedFiling> buildDocumentAssociatedFilingsList() {
+    private static List<ACSPProfileAssociatedFiling> buildDocumentAssociatedFilingsList() {
         return List.of(
-                new FilingHistoryAssociatedFiling()
+                new ACSPProfileAssociatedFiling()
                         .actionDate(Instant.parse("2015-10-05T00:00:00Z"))
                         .category(CATEGORY)
                         .subcategory(SUBCATEGORY)
                         .type(TYPE)
                         .originalDescription(ORIGINAL_DESCRIPTION)
                         .description(DESCRIPTION)
-                        .descriptionValues(new FilingHistoryDescriptionValues()));
+                        .descriptionValues(new ACSPProfileDescriptionValues()));
     }
 }

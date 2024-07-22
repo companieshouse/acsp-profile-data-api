@@ -17,8 +17,8 @@ import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
 import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
 
 @ExtendWith(MockitoExtension.class)
 class AnnotationChildMapperTest {
@@ -35,7 +35,7 @@ class AnnotationChildMapperTest {
     @Mock
     private DescriptionValues requestDescriptionValues;
     @Mock
-    private FilingHistoryDescriptionValues descriptionValues;
+    private ACSPProfileDescriptionValues descriptionValues;
 
     @Test
     void shouldAddNewAnnotationWhenNewObjectPassedInArgs() {
@@ -55,7 +55,7 @@ class AnnotationChildMapperTest {
                                         .date("2011-11-26T11:27:55.000Z")
                         )));
 
-        FilingHistoryAnnotation expected = new FilingHistoryAnnotation()
+        ACSPProfileAnnotation expected = new ACSPProfileAnnotation()
                 .annotation("Clarification This document was second filed with the CH04 registered on 26/11/2011")
                 .entityId(ENTITY_ID)
                 .deltaAt(NEWEST_REQUEST_DELTA_AT)
@@ -68,7 +68,7 @@ class AnnotationChildMapperTest {
         when(descriptionValuesMapper.map(any())).thenReturn(descriptionValues);
 
         // when
-        FilingHistoryAnnotation actual = annotationChildMapper.mapChild(request);
+        ACSPProfileAnnotation actual = annotationChildMapper.mapChild(request);
 
         // then
         assertEquals(expected, actual);
@@ -94,7 +94,7 @@ class AnnotationChildMapperTest {
                         )));
 
 
-        FilingHistoryAnnotation expectedAnnotation = new FilingHistoryAnnotation()
+        ACSPProfileAnnotation expectedAnnotation = new ACSPProfileAnnotation()
                 .annotation("Clarification This document was second filed with the CH04 registered on 26/11/2011")
                 .entityId(ENTITY_ID)
                 .deltaAt(NEWEST_REQUEST_DELTA_AT)
@@ -104,7 +104,7 @@ class AnnotationChildMapperTest {
                 .descriptionValues(descriptionValues)
                 .type("ANNOTATION");
 
-        FilingHistoryAnnotation existingAnnotation = new FilingHistoryAnnotation();
+        ACSPProfileAnnotation existingAnnotation = new ACSPProfileAnnotation();
 
         when(descriptionValuesMapper.map(any())).thenReturn(descriptionValues);
 

@@ -19,11 +19,11 @@ import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @ExtendWith(MockitoExtension.class)
 class ResolutionTransactionMapperTest {
@@ -46,10 +46,10 @@ class ResolutionTransactionMapperTest {
     @Mock
     private DataMapper dataMapper;
     @Mock
-    private ChildListMapper<FilingHistoryResolution> childListMapper;
+    private ChildListMapper<ACSPProfileResolution> childListMapper;
 
     @Mock
-    private List<FilingHistoryResolution> resolutionList;
+    private List<ACSPProfileResolution> resolutionList;
 
     @Test
     void shouldMapResolutionToNewDocumentWhenTopLevelOrComposite() {
@@ -70,16 +70,16 @@ class ResolutionTransactionMapperTest {
                         .originalDescription("original description"))
                 .externalData(externalData);
 
-        FilingHistoryLinks expectedLinks = new FilingHistoryLinks()
+        ACSPProfileLinks expectedLinks = new ACSPProfileLinks()
                 .self("self link");
-        FilingHistoryData expectedData = new FilingHistoryData()
+        ACSPProfileData expectedData = new ACSPProfileData()
                 .links(expectedLinks)
                 .paperFiled(true)
                 .date(Instant.parse(DATE));
-        FilingHistoryDeltaTimestamp expectedTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp expectedTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(UPDATED_AT)
                 .by(UPDATED_BY);
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .transactionId(TRANSACTION_ID)
                 .data(expectedData)
                 .companyNumber(COMPANY_NUMBER)
@@ -93,13 +93,13 @@ class ResolutionTransactionMapperTest {
         when(dataMapper.map(any(), any())).thenReturn(expectedData);
 
         // when
-        FilingHistoryDocument actual = resolutionTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
+        ACSPProfileDocument actual = resolutionTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
                 UPDATED_AT);
 
         // then
         assertEquals(expected, actual);
         verify(linksMapper).map(requestLinks);
-        verify(dataMapper).map(externalData, new FilingHistoryData());
+        verify(dataMapper).map(externalData, new ACSPProfileData());
         verify(childListMapper).mapChildList(eq(request), isNull(), any());
     }
 
@@ -117,14 +117,14 @@ class ResolutionTransactionMapperTest {
                         .links(requestLinks)
                         .paperFiled(true));
 
-        FilingHistoryLinks expectedLinks = new FilingHistoryLinks()
+        ACSPProfileLinks expectedLinks = new ACSPProfileLinks()
                 .self("self link");
-        FilingHistoryDeltaTimestamp expectedTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp expectedTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(UPDATED_AT)
                 .by(UPDATED_BY);
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .transactionId(TRANSACTION_ID)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .links(expectedLinks)
                         .paperFiled(true))
                 .entityId(PARENT_ENTITY_ID)
@@ -135,7 +135,7 @@ class ResolutionTransactionMapperTest {
         when(linksMapper.map(any())).thenReturn(expectedLinks);
 
         // when
-        FilingHistoryDocument actual = resolutionTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
+        ACSPProfileDocument actual = resolutionTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
                 UPDATED_AT);
 
         // then
@@ -161,29 +161,29 @@ class ResolutionTransactionMapperTest {
                         .originalDescription("original description"))
                 .externalData(externalData);
 
-        FilingHistoryDeltaTimestamp existingTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp existingTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(CREATED_AT)
                 .by(CREATED_BY);
-        FilingHistoryLinks existingLinks = new FilingHistoryLinks()
+        ACSPProfileLinks existingLinks = new ACSPProfileLinks()
                 .self("self link")
                 .documentMetadata("metadata");
-        FilingHistoryData existingData = new FilingHistoryData()
+        ACSPProfileData existingData = new ACSPProfileData()
                 .links(existingLinks)
                 .resolutions(resolutionList);
-        FilingHistoryDocument existingDocument = new FilingHistoryDocument()
+        ACSPProfileDocument existingDocument = new ACSPProfileDocument()
                 .data(existingData)
                 .created(existingTimestamp)
                 .updated(existingTimestamp);
 
-        FilingHistoryData expectedData = new FilingHistoryData()
+        ACSPProfileData expectedData = new ACSPProfileData()
                 .paperFiled(true)
                 .date(Instant.parse(DATE))
                 .resolutions(resolutionList);
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .data(expectedData)
                 .companyNumber(COMPANY_NUMBER)
                 .deltaAt(DELTA_AT)
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(UPDATED_AT)
                         .by(UPDATED_BY))
                 .created(existingTimestamp)
@@ -193,7 +193,7 @@ class ResolutionTransactionMapperTest {
         when(dataMapper.map(any(), any())).thenReturn(expectedData);
 
         // when
-        FilingHistoryDocument actual = resolutionTransactionMapper.mapExistingFilingHistory(request, existingDocument,
+        ACSPProfileDocument actual = resolutionTransactionMapper.mapExistingFilingHistory(request, existingDocument,
                 UPDATED_AT);
 
         // then
@@ -214,34 +214,34 @@ class ResolutionTransactionMapperTest {
                 .externalData(new ExternalData()
                         .paperFiled(true));
 
-        FilingHistoryDeltaTimestamp existingTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp existingTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(CREATED_AT)
                 .by(CREATED_BY);
-        FilingHistoryLinks existingLinks = new FilingHistoryLinks()
+        ACSPProfileLinks existingLinks = new ACSPProfileLinks()
                 .self("self link")
                 .documentMetadata("metadata");
-        FilingHistoryData existingData = new FilingHistoryData()
+        ACSPProfileData existingData = new ACSPProfileData()
                 .links(existingLinks)
                 .resolutions(resolutionList);
-        FilingHistoryDocument existingDocument = new FilingHistoryDocument()
+        ACSPProfileDocument existingDocument = new ACSPProfileDocument()
                 .data(existingData)
                 .created(existingTimestamp)
                 .updated(existingTimestamp);
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
                         .links(existingLinks)
                         .paperFiled(true)
                         .resolutions(resolutionList))
                 .entityId(PARENT_ENTITY_ID)
                 .companyNumber(COMPANY_NUMBER)
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(UPDATED_AT)
                         .by(UPDATED_BY))
                 .created(existingTimestamp);
 
         // when
-        FilingHistoryDocument actual = resolutionTransactionMapper.mapExistingFilingHistory(request, existingDocument,
+        ACSPProfileDocument actual = resolutionTransactionMapper.mapExistingFilingHistory(request, existingDocument,
                 UPDATED_AT);
 
         // then

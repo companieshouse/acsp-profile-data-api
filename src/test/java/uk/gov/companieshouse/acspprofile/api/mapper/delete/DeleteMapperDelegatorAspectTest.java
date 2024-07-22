@@ -12,9 +12,9 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.exception.BadRequestException;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteMapperDelegatorAspectTest {
@@ -29,13 +29,13 @@ class DeleteMapperDelegatorAspectTest {
     @Test
     void shouldReturnEmptyWhenTopLevelMatch() {
         // given
-        when(joinPoint.getArgs()).thenReturn(new Object[]{ENTITY_ID, new FilingHistoryDeleteAggregate()
-                .document(new FilingHistoryDocument()
+        when(joinPoint.getArgs()).thenReturn(new Object[]{ENTITY_ID, new ACSPProfileDeleteAggregate()
+                .document(new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
-                .data(new FilingHistoryData()))});
+                .data(new ACSPProfileData()))});
 
         // when
-        Optional<FilingHistoryDocument> actual = aspect.deleteChildTransactionsDisabled(joinPoint);
+        Optional<ACSPProfileDocument> actual = aspect.deleteChildTransactionsDisabled(joinPoint);
 
         // then
         assertTrue(actual.isEmpty());
@@ -45,8 +45,8 @@ class DeleteMapperDelegatorAspectTest {
     void shouldThrowBadRequestExceptionWhenAnyChildMatch() {
         // given
         when(joinPoint.getArgs()).thenReturn(
-                new Object[]{CHILD_ENTITY_ID, new FilingHistoryDeleteAggregate()
-                        .document(new FilingHistoryDocument()
+                new Object[]{CHILD_ENTITY_ID, new ACSPProfileDeleteAggregate()
+                        .document(new ACSPProfileDocument()
                                 .entityId(ENTITY_ID))});
 
         // when
@@ -60,10 +60,10 @@ class DeleteMapperDelegatorAspectTest {
     void shouldThrowBadRequestExceptionWhenCompositeResolutionMatch() {
         // given
         when(joinPoint.getArgs()).thenReturn(
-                new Object[]{ENTITY_ID, new FilingHistoryDeleteAggregate()
-                        .document(new FilingHistoryDocument()
+                new Object[]{ENTITY_ID, new ACSPProfileDeleteAggregate()
+                        .document(new ACSPProfileDocument()
                                 .entityId(ENTITY_ID)
-                        .data(new FilingHistoryData()
+                        .data(new ACSPProfileData()
                                 .type("RESOLUTIONS")))});
 
         // when

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
 
 class LinksMapperTest {
 
@@ -18,10 +18,10 @@ class LinksMapperTest {
         Links requestLinks = new Links()
                 .self(SELF_LINK);
 
-        FilingHistoryLinks expected = new FilingHistoryLinks()
+        ACSPProfileLinks expected = new ACSPProfileLinks()
                 .self(SELF_LINK);
         // when
-        FilingHistoryLinks actual = mapper.map(requestLinks);
+        ACSPProfileLinks actual = mapper.map(requestLinks);
 
         // then
         assertEquals(expected, actual);
@@ -32,7 +32,7 @@ class LinksMapperTest {
         // given
 
         // when
-        FilingHistoryLinks actual = mapper.map(null);
+        ACSPProfileLinks actual = mapper.map(null);
 
         // then
         assertNull(actual);

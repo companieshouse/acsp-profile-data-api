@@ -24,15 +24,15 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryListAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryOriginalValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileListAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileOriginalValues;
 
 @Testcontainers
 @SpringBootTest
@@ -83,10 +83,10 @@ class RepositoryIT {
                 .replaceAll("<category>", OFFICERS_CATEGORY);
         mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
-        final FilingHistoryDocument expectedDocument = getFilingHistoryDocument(TRANSACTION_ID);
+        final ACSPProfileDocument expectedDocument = getFilingHistoryDocument(TRANSACTION_ID);
 
         // when
-        final Optional<FilingHistoryDocument> actualDocument = repository.findByIdAndCompanyNumber(TRANSACTION_ID,
+        final Optional<ACSPProfileDocument> actualDocument = repository.findByIdAndCompanyNumber(TRANSACTION_ID,
                 COMPANY_NUMBER);
 
         // then
@@ -112,10 +112,10 @@ class RepositoryIT {
         mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
         mongoTemplate.insert(Document.parse(jsonToInsertTwo), ACSP_PROFILE_COLLECTION);
 
-        final FilingHistoryListAggregate expected = getFilingHistoryListAggregate();
+        final ACSPProfileListAggregate expected = getFilingHistoryListAggregate();
 
         // when
-        final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
+        final ACSPProfileListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
                 START_INDEX, DEFAULT_ITEMS_PER_PAGE, List.of());
 
         // then
@@ -140,11 +140,11 @@ class RepositoryIT {
         mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
         mongoTemplate.insert(Document.parse(jsonToInsertTwo), ACSP_PROFILE_COLLECTION);
 
-        final FilingHistoryListAggregate expected = getFilingHistoryListAggregateOneDocument();
+        final ACSPProfileListAggregate expected = getFilingHistoryListAggregateOneDocument();
         expected.getDocumentList().getFirst().getData().category("incorporation");
 
         // when
-        final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
+        final ACSPProfileListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
                 START_INDEX, DEFAULT_ITEMS_PER_PAGE, List.of("incorporation"));
 
         // then
@@ -154,14 +154,14 @@ class RepositoryIT {
     @Test
     void testAggregationQueryToFindDocumentsWithLargeStartIndex() {
         for (int i = 0; i < TOTAL_RESULTS_NUMBER; i++) {
-            FilingHistoryDocument filingHistoryDocument = new FilingHistoryDocument();
-            filingHistoryDocument.transactionId(TRANSACTION_ID + i);
-            filingHistoryDocument.companyNumber(COMPANY_NUMBER);
-            mongoTemplate.insert(filingHistoryDocument);
+            ACSPProfileDocument ACSPProfileDocument = new ACSPProfileDocument();
+            ACSPProfileDocument.transactionId(TRANSACTION_ID + i);
+            ACSPProfileDocument.companyNumber(COMPANY_NUMBER);
+            mongoTemplate.insert(ACSPProfileDocument);
         }
 
         // when
-        final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
+        final ACSPProfileListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
                 20, DEFAULT_ITEMS_PER_PAGE, List.of());
 
         // then
@@ -173,14 +173,14 @@ class RepositoryIT {
     @Test
     void testAggregationQueryToFindDocumentsWithStartIndexHigherThanItemsPerPage() {
         for (int i = 0; i < TOTAL_RESULTS_NUMBER; i++) {
-            FilingHistoryDocument filingHistoryDocument = new FilingHistoryDocument();
-            filingHistoryDocument.transactionId(TRANSACTION_ID + i);
-            filingHistoryDocument.companyNumber(COMPANY_NUMBER);
-            mongoTemplate.insert(filingHistoryDocument);
+            ACSPProfileDocument ACSPProfileDocument = new ACSPProfileDocument();
+            ACSPProfileDocument.transactionId(TRANSACTION_ID + i);
+            ACSPProfileDocument.companyNumber(COMPANY_NUMBER);
+            mongoTemplate.insert(ACSPProfileDocument);
         }
 
         // when
-        final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
+        final ACSPProfileListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
                 60, DEFAULT_ITEMS_PER_PAGE, List.of());
 
         // then
@@ -193,7 +193,7 @@ class RepositoryIT {
         // given
 
         // when
-        final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
+        final ACSPProfileListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
                 START_INDEX, DEFAULT_ITEMS_PER_PAGE, List.of());
 
         // then
@@ -204,15 +204,15 @@ class RepositoryIT {
     @Test
     void testAggregationQueryToFindDocumentsWithSortingOnDate() {
         for (int i = 0; i < TOTAL_RESULTS_NUMBER; i++) {
-            FilingHistoryDocument filingHistoryDocument = new FilingHistoryDocument();
-            filingHistoryDocument.transactionId(TRANSACTION_ID + i);
-            filingHistoryDocument.companyNumber(COMPANY_NUMBER);
-            filingHistoryDocument.data(new FilingHistoryData().date(Instant.now()));
-            mongoTemplate.insert(filingHistoryDocument);
+            ACSPProfileDocument ACSPProfileDocument = new ACSPProfileDocument();
+            ACSPProfileDocument.transactionId(TRANSACTION_ID + i);
+            ACSPProfileDocument.companyNumber(COMPANY_NUMBER);
+            ACSPProfileDocument.data(new ACSPProfileData().date(Instant.now()));
+            mongoTemplate.insert(ACSPProfileDocument);
         }
 
         // when
-        final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
+        final ACSPProfileListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
                 START_INDEX, DEFAULT_ITEMS_PER_PAGE, List.of());
 
         // then
@@ -222,18 +222,18 @@ class RepositoryIT {
 
     @Test
     void testAggregationQueryToFindDocumentsWithSortingAndPaginationOnVeryLargeDataSet() {
-        List<FilingHistoryDocument> documentList = new ArrayList<>();
+        List<ACSPProfileDocument> documentList = new ArrayList<>();
         for (int i = 0; i < 500_000; i++) {
-            FilingHistoryDocument filingHistoryDocument = new FilingHistoryDocument();
-            filingHistoryDocument.transactionId(TRANSACTION_ID + i);
-            filingHistoryDocument.companyNumber(COMPANY_NUMBER);
-            filingHistoryDocument.data(new FilingHistoryData().date(Instant.now().plusMillis(i)));
-            documentList.add(filingHistoryDocument);
+            ACSPProfileDocument ACSPProfileDocument = new ACSPProfileDocument();
+            ACSPProfileDocument.transactionId(TRANSACTION_ID + i);
+            ACSPProfileDocument.companyNumber(COMPANY_NUMBER);
+            ACSPProfileDocument.data(new ACSPProfileData().date(Instant.now().plusMillis(i)));
+            documentList.add(ACSPProfileDocument);
         }
         mongoTemplate.insert(documentList, ACSP_PROFILE_COLLECTION);
 
         // when
-        final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
+        final ACSPProfileListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
                 499_974, DEFAULT_ITEMS_PER_PAGE, List.of());
 
         // then
@@ -252,7 +252,7 @@ class RepositoryIT {
         mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
-        final Optional<FilingHistoryDocument> actualDocument = repository.findByIdAndCompanyNumber(TRANSACTION_ID,
+        final Optional<ACSPProfileDocument> actualDocument = repository.findByIdAndCompanyNumber(TRANSACTION_ID,
                 "87654321");
 
         // then
@@ -262,13 +262,13 @@ class RepositoryIT {
     @Test
     void shouldSuccessfullyInsertDocumentById() {
         // given
-        final FilingHistoryDocument document = getFilingHistoryDocument(TRANSACTION_ID);
+        final ACSPProfileDocument document = getFilingHistoryDocument(TRANSACTION_ID);
 
         // when
         repository.save(document);
 
         // then
-        FilingHistoryDocument actual = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actual = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(document, actual);
     }
 
@@ -286,7 +286,7 @@ class RepositoryIT {
         repository.deleteById(TRANSACTION_ID);
 
         // then
-        FilingHistoryDocument actual = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actual = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertNull(actual);
     }
 
@@ -302,7 +302,7 @@ class RepositoryIT {
         mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
-        final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(TOP_LEVEL_ENTITY_ID);
+        final Optional<ACSPProfileDeleteAggregate> actual = repository.findByEntityId(TOP_LEVEL_ENTITY_ID);
 
         // then
         assertTrue(actual.isPresent());
@@ -323,7 +323,7 @@ class RepositoryIT {
         mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
-        final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
+        final Optional<ACSPProfileDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
 
         // then
         assertTrue(actual.isPresent());
@@ -353,7 +353,7 @@ class RepositoryIT {
         mongoTemplate.insert(Document.parse(existingDocumentJson), ACSP_PROFILE_COLLECTION);
 
         // when
-        final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
+        final Optional<ACSPProfileDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
 
         // then
         assertTrue(actual.isPresent());
@@ -378,7 +378,7 @@ class RepositoryIT {
         mongoTemplate.insert(Document.parse(existingDocumentJson), ACSP_PROFILE_COLLECTION);
 
         // when
-        final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
+        final Optional<ACSPProfileDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
 
         // then
         assertTrue(actual.isPresent());
@@ -394,22 +394,22 @@ class RepositoryIT {
         // given
 
         // when
-        final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(TOP_LEVEL_ENTITY_ID);
+        final Optional<ACSPProfileDeleteAggregate> actual = repository.findByEntityId(TOP_LEVEL_ENTITY_ID);
 
         // then
         assertTrue(actual.isEmpty());
     }
 
-    private static FilingHistoryListAggregate getFilingHistoryListAggregateOneDocument() {
-        return new FilingHistoryListAggregate()
+    private static ACSPProfileListAggregate getFilingHistoryListAggregateOneDocument() {
+        return new ACSPProfileListAggregate()
                 .totalCount(1)
                 .documentList(
                         List.of(
                                 getFilingHistoryDocument(TRANSACTION_ID_TWO)));
     }
 
-    private static FilingHistoryListAggregate getFilingHistoryListAggregate() {
-        return new FilingHistoryListAggregate()
+    private static ACSPProfileListAggregate getFilingHistoryListAggregate() {
+        return new ACSPProfileListAggregate()
                 .totalCount(2)
                 .documentList(
                         List.of(
@@ -417,44 +417,44 @@ class RepositoryIT {
                                 getFilingHistoryDocument(TRANSACTION_ID_TWO)));
     }
 
-    private static FilingHistoryDocument getFilingHistoryDocument(final String transactionId) {
-        return new FilingHistoryDocument()
+    private static ACSPProfileDocument getFilingHistoryDocument(final String transactionId) {
+        return new ACSPProfileDocument()
                 .transactionId(transactionId)
                 .companyNumber(COMPANY_NUMBER)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .actionDate(Instant.parse("2014-08-29T00:00:00.000Z"))
                         .category(OFFICERS_CATEGORY)
                         .type("TM01")
                         .description("termination-director-company-with-name-termination-date")
                         .subcategory("termination")
                         .date(Instant.parse("2014-09-15T23:21:18.000Z"))
-                        .descriptionValues(new FilingHistoryDescriptionValues()
+                        .descriptionValues(new ACSPProfileDescriptionValues()
                                 .terminationDate(Instant.parse("2014-08-29T00:00:00.000Z"))
                                 .officerName("John Tester"))
-                        .annotations(List.of(new FilingHistoryAnnotation()
+                        .annotations(List.of(new ACSPProfileAnnotation()
                                 .annotation("Clarification This document was second filed with the CH04 registered on 26/11/2011")
                                 .category("annotation")
                                 .date(Instant.parse("2011-11-26T11:27:55.000Z"))
                                 .description("annotation")
-                                .descriptionValues(new FilingHistoryDescriptionValues()
+                                .descriptionValues(new ACSPProfileDescriptionValues()
                                         .description("Clarification This document was second filed with the CH04 registered on 26/11/2011"))
                                 .type("ANNOTATION")
                                 .entityId("2234567890")
                                 .deltaAt("20140815230459600643")))
-                        .links(new FilingHistoryLinks()
+                        .links(new ACSPProfileLinks()
                                 .documentMetadata("/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA")
                                 .self("/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, transactionId)))
                         .pages(1))
                 .barcode("X4BI89B6")
                 .deltaAt("20140815230459600643")
                 .entityId("1234567890")
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(Instant.parse("2014-09-17T18:52:08.001Z"))
                         .by("5419d856b6a59f32b7684d0e"))
-                .created(new FilingHistoryDeltaTimestamp()
+                .created(new ACSPProfileDeltaTimestamp()
                         .at(Instant.parse("2014-09-14T18:52:08.001Z"))
                         .by("5419d856b6a59f32b7684dE4"))
-                .originalValues(new FilingHistoryOriginalValues()
+                .originalValues(new ACSPProfileOriginalValues()
                         .officerName("John Tester")
                         .resignationDate("29/08/2014"))
                 .originalDescription("Appointment Terminated, Director john tester")

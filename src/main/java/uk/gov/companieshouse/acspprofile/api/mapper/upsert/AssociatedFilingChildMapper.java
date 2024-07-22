@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.AssociatedFiling;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
 
 @Component
-public class AssociatedFilingChildMapper implements ChildMapper<FilingHistoryAssociatedFiling> {
+public class AssociatedFilingChildMapper implements ChildMapper<ACSPProfileAssociatedFiling> {
 
     private final DescriptionValuesMapper descriptionValuesMapper;
 
@@ -18,8 +18,8 @@ public class AssociatedFilingChildMapper implements ChildMapper<FilingHistoryAss
     }
 
     @Override
-    public FilingHistoryAssociatedFiling mapChild(InternalFilingHistoryApi request,
-            FilingHistoryAssociatedFiling existingAssociatedFiling) {
+    public ACSPProfileAssociatedFiling mapChild(InternalFilingHistoryApi request,
+                                                ACSPProfileAssociatedFiling existingAssociatedFiling) {
         InternalData internalData = request.getInternalData();
         AssociatedFiling requestAssociatedFiling =
                 request.getExternalData().getAssociatedFilings().getFirst();
@@ -37,7 +37,7 @@ public class AssociatedFilingChildMapper implements ChildMapper<FilingHistoryAss
     }
 
     @Override
-    public FilingHistoryAssociatedFiling newInstance() {
-        return new FilingHistoryAssociatedFiling();
+    public ACSPProfileAssociatedFiling newInstance() {
+        return new ACSPProfileAssociatedFiling();
     }
 }

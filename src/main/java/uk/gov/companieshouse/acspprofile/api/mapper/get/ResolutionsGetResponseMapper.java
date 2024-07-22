@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.Resolution;
 import uk.gov.companieshouse.api.filinghistory.Resolution.CategoryEnum;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @Component
 public class ResolutionsGetResponseMapper {
@@ -18,7 +18,7 @@ public class ResolutionsGetResponseMapper {
         this.mapper = mapper;
     }
 
-    public List<Resolution> map(List<FilingHistoryResolution> documentResolutions) {
+    public List<Resolution> map(List<ACSPProfileResolution> documentResolutions) {
         return Optional.ofNullable(documentResolutions)
                 .map(inputResolutions -> inputResolutions
                         .stream()

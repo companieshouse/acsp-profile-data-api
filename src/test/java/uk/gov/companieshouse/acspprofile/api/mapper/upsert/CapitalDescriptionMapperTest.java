@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.api.filinghistory.AltCapitalDescriptionValue;
 import uk.gov.companieshouse.api.filinghistory.CapitalDescriptionValue;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAltCapital;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryCapital;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAltCapital;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileCapital;
 
 class CapitalDescriptionMapperTest {
 
@@ -27,12 +27,12 @@ class CapitalDescriptionMapperTest {
                 .currency(CURRENCY)
                 .figure(FIGURE)
                 .date(DATE_STRING);
-        FilingHistoryCapital expected = new FilingHistoryCapital()
+        ACSPProfileCapital expected = new ACSPProfileCapital()
                 .currency(CURRENCY)
                 .figure(FIGURE)
                 .date(DATE_INSTANT);
 
-        List<FilingHistoryCapital> actual = mapper.mapCapitalDescriptionValueList(List.of(capitalDescriptionValue));
+        List<ACSPProfileCapital> actual = mapper.mapCapitalDescriptionValueList(List.of(capitalDescriptionValue));
         assertEquals(1, actual.size());
         assertEquals(expected, actual.getFirst());
     }
@@ -46,13 +46,13 @@ class CapitalDescriptionMapperTest {
                 .date(DATE_STRING)
                 .description(ALT_DESCRIPTION);
 
-        FilingHistoryAltCapital expected = new FilingHistoryAltCapital()
+        ACSPProfileAltCapital expected = new ACSPProfileAltCapital()
                 .currency(CURRENCY)
                 .figure(FIGURE)
                 .date(DATE_INSTANT)
                 .description(ALT_DESCRIPTION);
 
-        List<FilingHistoryAltCapital> actual = mapper.mapAltCapitalDescriptionValueList(
+        List<ACSPProfileAltCapital> actual = mapper.mapAltCapitalDescriptionValueList(
                 List.of(altCapitalDescriptionValue));
         assertEquals(1, actual.size());
         assertEquals(expected, actual.getFirst());
@@ -64,7 +64,7 @@ class CapitalDescriptionMapperTest {
         // given
 
         // when
-        List<FilingHistoryCapital> actual = mapper.mapCapitalDescriptionValueList(null);
+        List<ACSPProfileCapital> actual = mapper.mapCapitalDescriptionValueList(null);
 
         // then
         assertNull(actual);
@@ -75,7 +75,7 @@ class CapitalDescriptionMapperTest {
         // given
 
         // when
-        List<FilingHistoryAltCapital> actual = mapper.mapAltCapitalDescriptionValueList(null);
+        List<ACSPProfileAltCapital> actual = mapper.mapAltCapitalDescriptionValueList(null);
 
         // then
         assertNull(actual);

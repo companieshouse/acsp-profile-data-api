@@ -19,8 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
 import uk.gov.companieshouse.api.filinghistory.Resolution;
 import uk.gov.companieshouse.api.filinghistory.Resolution.CategoryEnum;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @ExtendWith(MockitoExtension.class)
 class ResolutionsGetResponseMapperTest {
@@ -63,7 +63,7 @@ class ResolutionsGetResponseMapperTest {
 
         // then
         assertEquals(expected, actual);
-        verify(descriptionValuesGetResponseMapper).map(new FilingHistoryDescriptionValues());
+        verify(descriptionValuesGetResponseMapper).map(new ACSPProfileDescriptionValues());
     }
 
     @Test
@@ -78,7 +78,7 @@ class ResolutionsGetResponseMapperTest {
         // when
         final List<Resolution> actual = resolutionsGetResponseMapper.map(
                 List.of(
-                        new FilingHistoryResolution()
+                        new ACSPProfileResolution()
                                 .category(CATEGORY)
                                 .type(TYPE)
                                 .description(DESCRIPTION))
@@ -101,9 +101,9 @@ class ResolutionsGetResponseMapperTest {
         verifyNoInteractions(descriptionValuesGetResponseMapper);
     }
 
-    private static List<FilingHistoryResolution> buildDocumentResolutionsList() {
+    private static List<ACSPProfileResolution> buildDocumentResolutionsList() {
         return List.of(
-                new FilingHistoryResolution()
+                new ACSPProfileResolution()
                         .barcode(BARCODE)
                         .category(CATEGORY)
                         .description(DESCRIPTION)
@@ -111,6 +111,6 @@ class ResolutionsGetResponseMapperTest {
                         .subcategory(SUBCATEGORY)
                         .date(INSTANT_NOW)
                         .originalDescription(ORIGINAL_DESCRIPTION)
-                        .descriptionValues(new FilingHistoryDescriptionValues()));
+                        .descriptionValues(new ACSPProfileDescriptionValues()));
     }
 }

@@ -3,18 +3,18 @@ package uk.gov.companieshouse.acspprofile.api.mapper.get;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.FilingHistoryList;
 import uk.gov.companieshouse.api.filinghistory.FilingHistoryList.FilingHistoryStatusEnum;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryListAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileListAggregate;
 
 @Component
 public class ListGetResponseMapper {
 
     private final ItemGetResponseMapper itemGetResponseMapper;
-    private final FilingHistoryItemCleanser filingHistoryItemCleanser;
+    private final ACSPProfileItemCleanser ACSPProfileItemCleanser;
 
     public ListGetResponseMapper(ItemGetResponseMapper itemGetResponseMapper,
-            FilingHistoryItemCleanser filingHistoryItemCleanser) {
+            ACSPProfileItemCleanser ACSPProfileItemCleanser) {
         this.itemGetResponseMapper = itemGetResponseMapper;
-        this.filingHistoryItemCleanser = filingHistoryItemCleanser;
+        this.ACSPProfileItemCleanser = ACSPProfileItemCleanser;
     }
 
     public FilingHistoryList mapBaseFilingHistoryList(int startIndex, int itemsPerPage, String status) {
@@ -26,7 +26,7 @@ public class ListGetResponseMapper {
     }
 
     public FilingHistoryList mapFilingHistoryList(int startIndex, int itemsPerPage, String status,
-            FilingHistoryListAggregate listAggregate) {
+            ACSPProfileListAggregate listAggregate) {
         return new FilingHistoryList()
                 .startIndex(startIndex)
                 .itemsPerPage(itemsPerPage)
@@ -34,7 +34,7 @@ public class ListGetResponseMapper {
                 .totalCount(listAggregate.getTotalCount())
                 .items(listAggregate.getDocumentList().stream()
                         .map(itemGetResponseMapper::mapFilingHistoryItem)
-                        .map(filingHistoryItemCleanser::cleanseFilingHistoryItem)
+                        .map(ACSPProfileItemCleanser::cleanseFilingHistoryItem)
                         .toList());
     }
 }

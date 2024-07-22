@@ -15,8 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.filinghistory.Annotation;
 import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
 
 @ExtendWith(MockitoExtension.class)
 class AnnotationsGetResponseMapperTest {
@@ -51,7 +51,7 @@ class AnnotationsGetResponseMapperTest {
 
         // then
         assertEquals(expected, actual);
-        verify(descriptionValuesGetResponseMapper).map(new FilingHistoryDescriptionValues());
+        verify(descriptionValuesGetResponseMapper).map(new ACSPProfileDescriptionValues());
     }
 
     @Test
@@ -66,7 +66,7 @@ class AnnotationsGetResponseMapperTest {
 
         // when
         final List<Annotation> actual = annotationsGetResponseMapper.map(List.of(
-                new FilingHistoryAnnotation()
+                new ACSPProfileAnnotation()
                         .annotation("annotations_1")
                         .category(CATEGORY)
                         .type(TYPE)
@@ -89,13 +89,13 @@ class AnnotationsGetResponseMapperTest {
         verifyNoInteractions(descriptionValuesGetResponseMapper);
     }
 
-    private static List<FilingHistoryAnnotation> buildDocumentAnnotationsList() {
+    private static List<ACSPProfileAnnotation> buildDocumentAnnotationsList() {
         return List.of(
-                new FilingHistoryAnnotation()
+                new ACSPProfileAnnotation()
                         .annotation("annotations_1")
                         .category(CATEGORY)
                         .type(TYPE)
                         .description(DESCRIPTION)
-                        .descriptionValues(new FilingHistoryDescriptionValues()));
+                        .descriptionValues(new ACSPProfileDescriptionValues()));
     }
 }

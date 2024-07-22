@@ -17,8 +17,8 @@ import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
 import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
 
 @ExtendWith(MockitoExtension.class)
 class AssociatedFilingChildMapperTest {
@@ -37,7 +37,7 @@ class AssociatedFilingChildMapperTest {
     @Mock
     private DescriptionValues requestDescriptionValues;
     @Mock
-    private FilingHistoryDescriptionValues descriptionValues;
+    private ACSPProfileDescriptionValues descriptionValues;
 
     @Test
     void shouldAddNewAssociatedFilingWhenNewObjectPassedInArgs() {
@@ -59,7 +59,7 @@ class AssociatedFilingChildMapperTest {
                                         .date("2005-05-10T12:00:00.000Z")
                         )));
 
-        FilingHistoryAssociatedFiling expected = new FilingHistoryAssociatedFiling()
+        ACSPProfileAssociatedFiling expected = new ACSPProfileAssociatedFiling()
                 .actionDate(INSTANT_ACTION_DATE)
                 .entityId(ENTITY_ID)
                 .deltaAt(NEWEST_REQUEST_DELTA_AT)
@@ -73,7 +73,7 @@ class AssociatedFilingChildMapperTest {
         when(descriptionValuesMapper.map(any())).thenReturn(descriptionValues);
 
         // when
-        FilingHistoryAssociatedFiling actual = associatedFilingChildMapper.mapChild(request);
+        ACSPProfileAssociatedFiling actual = associatedFilingChildMapper.mapChild(request);
 
         // then
         assertEquals(expected, actual);
@@ -98,7 +98,7 @@ class AssociatedFilingChildMapperTest {
                                         .date("2005-05-10T12:00:00.000Z")
                         )));
 
-        FilingHistoryAssociatedFiling expectedAssociatedFiling = new FilingHistoryAssociatedFiling()
+        ACSPProfileAssociatedFiling expectedAssociatedFiling = new ACSPProfileAssociatedFiling()
                 .entityId(ENTITY_ID)
                 .deltaAt(NEWEST_REQUEST_DELTA_AT)
                 .category("annual-return")
@@ -108,7 +108,7 @@ class AssociatedFilingChildMapperTest {
                 .descriptionValues(descriptionValues)
                 .type("363(288)");
 
-        FilingHistoryAssociatedFiling existingAssociatedFiling = new FilingHistoryAssociatedFiling();
+        ACSPProfileAssociatedFiling existingAssociatedFiling = new ACSPProfileAssociatedFiling();
 
         when(descriptionValuesMapper.map(any())).thenReturn(descriptionValues);
 

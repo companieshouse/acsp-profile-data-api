@@ -21,7 +21,7 @@ import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalDataOriginalValues;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.service.FilingHistoryUpsertProcessor;
+import uk.gov.companieshouse.acspprofile.api.service.ACSPProfileUpsertProcessor;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -52,7 +52,7 @@ class RequestLoggingFilterIT {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private FilingHistoryUpsertProcessor upsertProcessor;
+    private ACSPProfileUpsertProcessor upsertProcessor;
 
     @Test
     void shouldThrowServletExceptionWhenRuntimeExceptionCaught() {

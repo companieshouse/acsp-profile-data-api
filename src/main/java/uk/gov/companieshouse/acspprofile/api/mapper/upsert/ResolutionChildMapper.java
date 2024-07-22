@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.api.filinghistory.Resolution;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @Component
-public class ResolutionChildMapper implements ChildMapper<FilingHistoryResolution> {
+public class ResolutionChildMapper implements ChildMapper<ACSPProfileResolution> {
 
     private final DescriptionValuesMapper descriptionValuesMapper;
 
@@ -18,8 +18,8 @@ public class ResolutionChildMapper implements ChildMapper<FilingHistoryResolutio
     }
 
     @Override
-    public FilingHistoryResolution mapChild(InternalFilingHistoryApi request,
-            FilingHistoryResolution existingResolution) {
+    public ACSPProfileResolution mapChild(InternalFilingHistoryApi request,
+                                          ACSPProfileResolution existingResolution) {
         InternalData internalData = request.getInternalData();
         Resolution requestResolution = request.getExternalData().getResolutions().getFirst();
 
@@ -37,7 +37,7 @@ public class ResolutionChildMapper implements ChildMapper<FilingHistoryResolutio
     }
 
     @Override
-    public FilingHistoryResolution newInstance() {
-        return new FilingHistoryResolution();
+    public ACSPProfileResolution newInstance() {
+        return new ACSPProfileResolution();
     }
 }

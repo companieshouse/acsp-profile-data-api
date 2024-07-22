@@ -14,8 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.api.filinghistory.FilingHistoryList;
 import uk.gov.companieshouse.api.filinghistory.FilingHistoryList.FilingHistoryStatusEnum;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryListAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileListAggregate;
 
 @ExtendWith(MockitoExtension.class)
 class ListGetResponseMapperTest {
@@ -28,13 +28,13 @@ class ListGetResponseMapperTest {
     @Mock
     private ItemGetResponseMapper itemGetResponseMapper;
     @Mock
-    private FilingHistoryItemCleanser filingHistoryItemCleanser;
+    private ACSPProfileItemCleanser ACSPProfileItemCleanser;
     @Mock
     private ExternalData dirtyExternalData;
     @Mock
     private ExternalData cleansedExternalData;
     @Mock
-    private FilingHistoryDocument filingHistoryDocument;
+    private ACSPProfileDocument ACSPProfileDocument;
 
     @Test
     void shouldMapBaseFilingHistoryList() {
@@ -57,10 +57,10 @@ class ListGetResponseMapperTest {
     void shouldMapFullFilingHistoryList() {
         // given
         when(itemGetResponseMapper.mapFilingHistoryItem(any())).thenReturn(dirtyExternalData);
-        when(filingHistoryItemCleanser.cleanseFilingHistoryItem(any())).thenReturn(cleansedExternalData);
+        when(ACSPProfileItemCleanser.cleanseFilingHistoryItem(any())).thenReturn(cleansedExternalData);
 
-        FilingHistoryListAggregate listAggregate = new FilingHistoryListAggregate()
-                .documentList(List.of(filingHistoryDocument))
+        ACSPProfileListAggregate listAggregate = new ACSPProfileListAggregate()
+                .documentList(List.of(ACSPProfileDocument))
                 .totalCount(1);
 
         FilingHistoryList expected = new FilingHistoryList()
@@ -76,7 +76,7 @@ class ListGetResponseMapperTest {
 
         // then
         assertEquals(expected, actual);
-        verify(itemGetResponseMapper).mapFilingHistoryItem(filingHistoryDocument);
-        verify(filingHistoryItemCleanser).cleanseFilingHistoryItem(dirtyExternalData);
+        verify(itemGetResponseMapper).mapFilingHistoryItem(ACSPProfileDocument);
+        verify(ACSPProfileItemCleanser).cleanseFilingHistoryItem(dirtyExternalData);
     }
 }

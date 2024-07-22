@@ -18,12 +18,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @ExtendWith(MockitoExtension.class)
 class ChildDeleteMapperTest {
@@ -45,15 +45,15 @@ class ChildDeleteMapperTest {
     @Test
     void shouldReturnEmptyWhenEdgeCaseTopLevelTransaction() {
         // given
-        FilingHistoryData data = new FilingHistoryData()
-                .resolutions(new ArrayList<>(List.of(new FilingHistoryResolution()
+        ACSPProfileData data = new ACSPProfileData()
+                .resolutions(new ArrayList<>(List.of(new ACSPProfileResolution()
                         .entityId(ENTITY_ID))));
 
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
                 .data(data);
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
                 data::getResolutions, data::resolutions);
 
         // then
@@ -64,14 +64,14 @@ class ChildDeleteMapperTest {
     @Test
     void shouldReturnEmptyWhenChildTransactionWithNoParentType() {
         // given
-        FilingHistoryData data = new FilingHistoryData()
-                .resolutions(new ArrayList<>(List.of(new FilingHistoryResolution()
+        ACSPProfileData data = new ACSPProfileData()
+                .resolutions(new ArrayList<>(List.of(new ACSPProfileResolution()
                         .entityId(ENTITY_ID))));
 
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .data(data);
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
                 data::getResolutions, data::resolutions);
 
         // then
@@ -82,25 +82,25 @@ class ChildDeleteMapperTest {
     @Test
     void shouldReturnUpdatedDocumentWithResolutionsArrayNullWhenLastChild() {
         // given
-        FilingHistoryData data = new FilingHistoryData()
+        ACSPProfileData data = new ACSPProfileData()
                 .type(PARENT_TYPE)
-                .resolutions(new ArrayList<>(List.of(new FilingHistoryResolution()
+                .resolutions(new ArrayList<>(List.of(new ACSPProfileResolution()
                         .entityId(ENTITY_ID))));
 
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .data(data);
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
                         .type(PARENT_TYPE))
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(INSTANT)
                         .by("uninitialised"));
 
         when(instantSupplier.get()).thenReturn(INSTANT);
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
                 data::getResolutions, data::resolutions);
 
         // then
@@ -112,25 +112,25 @@ class ChildDeleteMapperTest {
     @Test
     void shouldReturnUpdatedDocumentWithAnnotationsArrayNullWhenLastChild() {
         // given
-        FilingHistoryData data = new FilingHistoryData()
+        ACSPProfileData data = new ACSPProfileData()
                 .type(PARENT_TYPE)
-                .annotations(new ArrayList<>(List.of(new FilingHistoryAnnotation()
+                .annotations(new ArrayList<>(List.of(new ACSPProfileAnnotation()
                         .entityId(ENTITY_ID))));
 
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .data(data);
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
                         .type(PARENT_TYPE))
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(INSTANT)
                         .by("uninitialised"));
 
         when(instantSupplier.get()).thenReturn(INSTANT);
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
                 data::getAnnotations, data::annotations);
 
         // then
@@ -142,25 +142,25 @@ class ChildDeleteMapperTest {
     @Test
     void shouldReturnUpdatedDocumentWithAssociatedFilingsArrayNullWhenLastChild() {
         // given
-        FilingHistoryData data = new FilingHistoryData()
+        ACSPProfileData data = new ACSPProfileData()
                 .type(PARENT_TYPE)
-                .associatedFilings(new ArrayList<>(List.of(new FilingHistoryAssociatedFiling()
+                .associatedFilings(new ArrayList<>(List.of(new ACSPProfileAssociatedFiling()
                         .entityId(ENTITY_ID))));
 
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .data(data);
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
                         .type(PARENT_TYPE))
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(INSTANT)
                         .by("uninitialised"));
 
         when(instantSupplier.get()).thenReturn(INSTANT);
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
                 data::getAssociatedFilings, data::associatedFilings);
 
         // then
@@ -172,27 +172,27 @@ class ChildDeleteMapperTest {
     @Test
     void shouldRemoveOneResolutionAtIndexAndReturnUpdatedDocument() {
         // given
-        FilingHistoryData data = new FilingHistoryData()
+        ACSPProfileData data = new ACSPProfileData()
                 .resolutions(new ArrayList<>(
                         List.of(
-                                new FilingHistoryResolution()
+                                new ACSPProfileResolution()
                                         .entityId(ENTITY_ID),
-                                new FilingHistoryResolution())));
+                                new ACSPProfileResolution())));
 
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .data(data);
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
-                        .resolutions(List.of(new FilingHistoryResolution())))
-                .updated(new FilingHistoryDeltaTimestamp()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
+                        .resolutions(List.of(new ACSPProfileResolution())))
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(INSTANT)
                         .by("uninitialised"));
 
         when(instantSupplier.get()).thenReturn(INSTANT);
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(ENTITY_ID, 0, documentCopy,
                 data::getResolutions, data::resolutions);
 
         // then

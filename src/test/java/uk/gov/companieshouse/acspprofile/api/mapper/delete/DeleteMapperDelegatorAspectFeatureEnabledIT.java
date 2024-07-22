@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @SpringBootTest
 class DeleteMapperDelegatorAspectFeatureEnabledIT {
@@ -30,23 +30,23 @@ class DeleteMapperDelegatorAspectFeatureEnabledIT {
 
     @Test
     void shouldDeleteChildTransactionsWhenFeatureEnabled() {
-        FilingHistoryDeleteAggregate aggregate = new FilingHistoryDeleteAggregate()
+        ACSPProfileDeleteAggregate aggregate = new ACSPProfileDeleteAggregate()
                 .resolutionIndex(1)
-                .document(new FilingHistoryDocument()
+                .document(new ACSPProfileDocument()
                         .entityId(ENTITY_ID)
-                        .data(new FilingHistoryData()
+                        .data(new ACSPProfileData()
                                 .type(COMPOSITE_RES_TYPE)
                                 .resolutions(List.of(
-                                        new FilingHistoryResolution()
+                                        new ACSPProfileResolution()
                                                 .entityId("first ID"),
-                                        new FilingHistoryResolution()
+                                        new ACSPProfileResolution()
                                                 .entityId(ENTITY_ID)))));
 
         when(compositeResolutionDeleteMapper.removeTransaction(anyInt(), any())).thenReturn(
-                Optional.of(new FilingHistoryDocument()));
+                Optional.of(new ACSPProfileDocument()));
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID, aggregate);
+        Optional<ACSPProfileDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID, aggregate);
 
         // then
         assertTrue(actual.isPresent());

@@ -3,14 +3,14 @@ package uk.gov.companieshouse.acspprofile.api.mapper.upsert;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.InternalDataOriginalValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryOriginalValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileOriginalValues;
 
 @Component
 public class OriginalValuesMapper {
 
-    FilingHistoryOriginalValues map(final InternalDataOriginalValues originalValues) {
+    ACSPProfileOriginalValues map(final InternalDataOriginalValues originalValues) {
         return Optional.ofNullable(originalValues)
-                .map(values -> new FilingHistoryOriginalValues()
+                .map(values -> new ACSPProfileOriginalValues()
                         .officerName(values.getOfficerName())
                         .resignationDate(values.getResignationDate())
                         .chargeCreationDate(values.getChargeCreationDate())

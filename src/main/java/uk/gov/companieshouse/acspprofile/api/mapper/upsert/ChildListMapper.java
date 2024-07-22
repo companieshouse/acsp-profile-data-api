@@ -10,11 +10,11 @@ import org.apache.commons.lang.StringUtils;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.acspprofile.api.exception.ConflictException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryChild;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileChild;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
-public class ChildListMapper<T extends FilingHistoryChild> {
+public class ChildListMapper<T extends ACSPProfileChild> {
 
     private static final String MISSING_ENTITY_ID_ERROR_MSG =
             "Child found in MongoDB with no _entity_id; Possible duplicate being persisted with _entity_id: [%s]";

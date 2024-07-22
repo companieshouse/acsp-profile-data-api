@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.Annotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
 
 @Component
 public class AnnotationsGetResponseMapper {
@@ -17,7 +17,7 @@ public class AnnotationsGetResponseMapper {
         this.mapper = mapper;
     }
 
-    public List<Annotation> map(List<FilingHistoryAnnotation> documentAnnotations) {
+    public List<Annotation> map(List<ACSPProfileAnnotation> documentAnnotations) {
         return Optional.ofNullable(documentAnnotations)
                 .map(inputAnnotations -> inputAnnotations
                         .stream()

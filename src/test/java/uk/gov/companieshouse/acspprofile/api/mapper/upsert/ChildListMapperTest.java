@@ -20,8 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.acspprofile.api.exception.ConflictException;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
 
 @ExtendWith(MockitoExtension.class)
 class ChildListMapperTest {
@@ -32,18 +32,18 @@ class ChildListMapperTest {
     private static final String STALE_DELTA_AT = "20230315120619000000";
 
     @InjectMocks
-    private ChildListMapper<FilingHistoryAnnotation> childListMapper;
+    private ChildListMapper<ACSPProfileAnnotation> childListMapper;
     @Mock
-    private ChildMapper<FilingHistoryAnnotation> childMapper;
+    private ChildMapper<ACSPProfileAnnotation> childMapper;
     @Mock
-    private FilingHistoryAnnotation existingAnnotation;
+    private ACSPProfileAnnotation existingAnnotation;
     @Mock
-    private FilingHistoryAnnotation updatedAnnotation;
+    private ACSPProfileAnnotation updatedAnnotation;
 
     @Test
     void shouldUpdateExistingChildOnExistingListWhenSameEntityId() {
         // given
-        FilingHistoryData existingData = new FilingHistoryData()
+        ACSPProfileData existingData = new ACSPProfileData()
                 .annotations(new ArrayList<>(List.of(existingAnnotation)));
 
         InternalFilingHistoryApi request = new InternalFilingHistoryApi()
@@ -65,7 +65,7 @@ class ChildListMapperTest {
     @Test
     void shouldThrowConflictExceptionWhenStaleDeltaAt() {
         // given
-        FilingHistoryData existingData = new FilingHistoryData()
+        ACSPProfileData existingData = new ACSPProfileData()
                 .annotations(new ArrayList<>(List.of(existingAnnotation)));
 
         InternalFilingHistoryApi request = new InternalFilingHistoryApi()
@@ -89,7 +89,7 @@ class ChildListMapperTest {
     @Test
     void shouldAddNewChildToExistingListWhenDifferentEntityId() {
         // given
-        FilingHistoryData actual = new FilingHistoryData()
+        ACSPProfileData actual = new ACSPProfileData()
                 .annotations(new ArrayList<>(List.of(existingAnnotation)));
 
         InternalFilingHistoryApi request = new InternalFilingHistoryApi()
@@ -97,7 +97,7 @@ class ChildListMapperTest {
                         .entityId("different entity ID")
                         .deltaAt(NEW_DELTA_AT));
 
-        FilingHistoryData expected = new FilingHistoryData()
+        ACSPProfileData expected = new ACSPProfileData()
                 .annotations(new ArrayList<>(List.of(existingAnnotation, updatedAnnotation)));
 
         when(existingAnnotation.getEntityId()).thenReturn(ENTITY_ID);
@@ -116,7 +116,7 @@ class ChildListMapperTest {
     @Test
     void shouldAddNewChildToExistingListWhenExistingChildMissingEntityId() {
         // given
-        FilingHistoryData existingData = new FilingHistoryData()
+        ACSPProfileData existingData = new ACSPProfileData()
                 .annotations(new ArrayList<>(List.of(existingAnnotation)));
 
         InternalFilingHistoryApi request = new InternalFilingHistoryApi()
@@ -136,14 +136,14 @@ class ChildListMapperTest {
     @Test
     void shouldAddNewChildToNewListWhenNoChildExists() {
         // given
-        FilingHistoryData actual = new FilingHistoryData();
+        ACSPProfileData actual = new ACSPProfileData();
 
         InternalFilingHistoryApi request = new InternalFilingHistoryApi()
                 .internalData(new InternalData()
                         .entityId("different entity ID")
                         .deltaAt(NEW_DELTA_AT));
 
-        FilingHistoryData expected = new FilingHistoryData()
+        ACSPProfileData expected = new ACSPProfileData()
                 .annotations(List.of(updatedAnnotation));
 
         when(childMapper.mapChild(any())).thenReturn(updatedAnnotation);

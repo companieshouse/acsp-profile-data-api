@@ -2,22 +2,22 @@ package uk.gov.companieshouse.acspprofile.api.service;
 
 import java.util.List;
 import java.util.Optional;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryListAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileListAggregate;
 
 public interface Service {
 
-    Optional<FilingHistoryListAggregate> findCompanyFilingHistoryList(String companyNumber, int startIndex,
-            int itemsPerPage, List<String> categories);
+    Optional<ACSPProfileListAggregate> findCompanyFilingHistoryList(String companyNumber, int startIndex,
+                                                                    int itemsPerPage, List<String> categories);
 
-    Optional<FilingHistoryDocument> findExistingFilingHistory(final String transactionId, final String companyNumber);
+    Optional<ACSPProfileDocument> findExistingFilingHistory(final String transactionId, final String companyNumber);
 
-    Optional<FilingHistoryDeleteAggregate> findFilingHistoryByEntityId(String entityId);
+    Optional<ACSPProfileDeleteAggregate> findFilingHistoryByEntityId(String entityId);
 
-    void insertFilingHistory(final FilingHistoryDocument documentToSave);
+    void insertFilingHistory(final ACSPProfileDocument documentToSave);
 
-    void updateFilingHistory(final FilingHistoryDocument documentToSave, FilingHistoryDocument originalDocumentCopy);
+    void updateFilingHistory(final ACSPProfileDocument documentToSave, ACSPProfileDocument originalDocumentCopy);
 
-    void deleteExistingFilingHistory(FilingHistoryDocument existingDocument);
+    void deleteExistingFilingHistory(ACSPProfileDocument existingDocument);
 }

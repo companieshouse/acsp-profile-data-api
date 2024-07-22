@@ -23,9 +23,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.exception.ServiceUnavailableException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryListAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileListAggregate;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -40,8 +40,8 @@ public class Repository {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public FilingHistoryListAggregate findCompanyFilingHistory(String companyNumber,
-            int startIndex, int itemsPerPage, List<String> categories) {
+    public ACSPProfileListAggregate findCompanyFilingHistory(String companyNumber,
+                                                             int startIndex, int itemsPerPage, List<String> categories) {
         try {
             Criteria criteria = Criteria.where("company_number").is(companyNumber);
             if (!categories.isEmpty()) {
@@ -58,7 +58,7 @@ public class Repository {
                             .and(ifNull("$total_count.count").then(0)).as("total_count")
                             .andExpression("$document_list").slice(itemsPerPage, startIndex).as("document_list"));
 
-            return mongoTemplate.aggregate(aggregation, FilingHistoryDocument.class, FilingHistoryListAggregate.class)
+            return mongoTemplate.aggregate(aggregation, ACSPProfileDocument.class, ACSPProfileListAggregate.class)
                     .getUniqueMappedResult();
         } catch (DataAccessException ex) {
             LOGGER.error("MongoDB unavailable when finding filing history list: %s".formatted(
@@ -67,14 +67,14 @@ public class Repository {
         }
     }
 
-    public Optional<FilingHistoryDocument> findByIdAndCompanyNumber(final String id, final String companyNumber) {
+    public Optional<ACSPProfileDocument> findByIdAndCompanyNumber(final String id, final String companyNumber) {
         try {
             Criteria criteria = Criteria.where("_id").is(id)
                     .and("company_number").is(companyNumber);
 
             Query query = new Query(criteria);
 
-            return Optional.ofNullable(mongoTemplate.findOne(query, FilingHistoryDocument.class));
+            return Optional.ofNullable(mongoTemplate.findOne(query, ACSPProfileDocument.class));
         } catch (DataAccessException ex) {
             LOGGER.error("MongoDB unavailable when finding the document: %s".formatted(ex.getMessage()),
                     DataMapHolder.getLogMap());
@@ -82,7 +82,7 @@ public class Repository {
         }
     }
 
-    public Optional<FilingHistoryDeleteAggregate> findByEntityId(final String entityId) {
+    public Optional<ACSPProfileDeleteAggregate> findByEntityId(final String entityId) {
         try {
             Aggregation aggregation = newAggregation(
                     match(new Criteria()
@@ -112,8 +112,8 @@ public class Repository {
                             .andExpression("$$ROOT").as("document"));
 
             return Optional.ofNullable(
-                    mongoTemplate.aggregate(aggregation, FilingHistoryDocument.class,
-                            FilingHistoryDeleteAggregate.class).getUniqueMappedResult());
+                    mongoTemplate.aggregate(aggregation, ACSPProfileDocument.class,
+                            ACSPProfileDeleteAggregate.class).getUniqueMappedResult());
         } catch (DataAccessException ex) {
             LOGGER.error("MongoDB unavailable when trying to retrieve filing history delete document: %s".formatted(
                     ex.getMessage()), DataMapHolder.getLogMap());
@@ -122,7 +122,7 @@ public class Repository {
         }
     }
 
-    public void save(final FilingHistoryDocument document) {
+    public void save(final ACSPProfileDocument document) {
         try {
             mongoTemplate.save(document);
         } catch (DataAccessException ex) {
@@ -134,7 +134,7 @@ public class Repository {
 
     public void deleteById(final String id) {
         try {
-            mongoTemplate.remove(Query.query(Criteria.where("_id").is(id)), FilingHistoryDocument.class);
+            mongoTemplate.remove(Query.query(Criteria.where("_id").is(id)), ACSPProfileDocument.class);
         } catch (DataAccessException ex) {
             LOGGER.error("MongoDB unavailable when deleting document: %s".formatted(ex.getMessage()),
                     DataMapHolder.getLogMap());

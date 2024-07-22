@@ -17,9 +17,9 @@ import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.http.ApiKeyHttpClient;
 import uk.gov.companieshouse.acspprofile.api.mapper.upsert.ChildListMapper;
 import uk.gov.companieshouse.acspprofile.api.mapper.upsert.ChildMapper;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 import uk.gov.companieshouse.acspprofile.api.serdes.EmptyFieldDeserializer;
 
 @Configuration
@@ -56,20 +56,20 @@ public class AppConfig {
     }
 
     @Bean
-    public ChildListMapper<FilingHistoryAnnotation> annotationChildListMapper(
-            ChildMapper<FilingHistoryAnnotation> childMapper) {
+    public ChildListMapper<ACSPProfileAnnotation> annotationChildListMapper(
+            ChildMapper<ACSPProfileAnnotation> childMapper) {
         return new ChildListMapper<>(childMapper);
     }
 
     @Bean
-    public ChildListMapper<FilingHistoryAssociatedFiling> associatedFilingChildListMapper(
-            ChildMapper<FilingHistoryAssociatedFiling> childMapper) {
+    public ChildListMapper<ACSPProfileAssociatedFiling> associatedFilingChildListMapper(
+            ChildMapper<ACSPProfileAssociatedFiling> childMapper) {
         return new ChildListMapper<>(childMapper);
     }
 
     @Bean
-    public ChildListMapper<FilingHistoryResolution> resolutionChildListMapper(
-            ChildMapper<FilingHistoryResolution> childMapper) {
+    public ChildListMapper<ACSPProfileResolution> resolutionChildListMapper(
+            ChildMapper<ACSPProfileResolution> childMapper) {
         return new ChildListMapper<>(childMapper);
     }
 }

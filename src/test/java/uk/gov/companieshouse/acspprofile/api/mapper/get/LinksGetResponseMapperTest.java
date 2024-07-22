@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
 
 class LinksGetResponseMapperTest {
 
@@ -54,14 +54,14 @@ class LinksGetResponseMapperTest {
         assertNull(actual);
     }
 
-    private static FilingHistoryLinks buildDocumentFilingHistoryLinks() {
-        return new FilingHistoryLinks()
+    private static ACSPProfileLinks buildDocumentFilingHistoryLinks() {
+        return new ACSPProfileLinks()
                 .self(SELF_LINK)
                 .documentMetadata(DOCUMENT_METADATA);
     }
 
-    private static FilingHistoryLinks buildDocumentFilingHistoryLinksWithNullMetadata() {
-        return new FilingHistoryLinks()
+    private static ACSPProfileLinks buildDocumentFilingHistoryLinksWithNullMetadata() {
+        return new ACSPProfileLinks()
                 .self(SELF_LINK);
     }
 }

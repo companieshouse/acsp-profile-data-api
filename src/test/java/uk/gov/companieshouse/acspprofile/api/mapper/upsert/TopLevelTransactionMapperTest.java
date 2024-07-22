@@ -24,12 +24,12 @@ import uk.gov.companieshouse.api.filinghistory.InternalDataOriginalValues;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.api.filinghistory.Links;
 import uk.gov.companieshouse.acspprofile.api.exception.ConflictException;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryOriginalValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileOriginalValues;
 
 @ExtendWith(MockitoExtension.class)
 class TopLevelTransactionMapperTest {
@@ -56,18 +56,18 @@ class TopLevelTransactionMapperTest {
     @Mock
     private LinksMapper linksMapper;
     @Mock
-    private ChildListMapper<FilingHistoryAssociatedFiling> childListMapper;
+    private ChildListMapper<ACSPProfileAssociatedFiling> childListMapper;
 
     @Mock
-    private FilingHistoryData expectedFilingHistoryData;
+    private ACSPProfileData expectedACSPProfileData;
     @Mock
-    private FilingHistoryData existingFilingHistoryData;
+    private ACSPProfileData existingACSPProfileData;
     @Mock
-    private FilingHistoryOriginalValues expectedFilingHistoryOriginalValues;
+    private ACSPProfileOriginalValues expectedACSPProfileOriginalValues;
     @Mock
-    private FilingHistoryOriginalValues existingFilingHistoryOriginalValues;
+    private ACSPProfileOriginalValues existingACSPProfileOriginalValues;
     @Mock
-    private FilingHistoryLinks expectedFilingHistoryLinks;
+    private ACSPProfileLinks expectedACSPProfileLinks;
 
     @Mock
     private InternalDataOriginalValues requestOriginalValues;
@@ -80,30 +80,30 @@ class TopLevelTransactionMapperTest {
     @Test
     void mapNewFilingHistoryShouldReturnNewFilingHistoryDocument() {
         // given
-        when(dataMapper.map((any()), any())).thenReturn(expectedFilingHistoryData);
+        when(dataMapper.map((any()), any())).thenReturn(expectedACSPProfileData);
         when(requestExternalData.getLinks()).thenReturn(requestLinks);
-        when(linksMapper.map(any())).thenReturn(expectedFilingHistoryLinks);
-        when(expectedFilingHistoryData.links(any())).thenReturn(expectedFilingHistoryData);
+        when(linksMapper.map(any())).thenReturn(expectedACSPProfileLinks);
+        when(expectedACSPProfileData.links(any())).thenReturn(expectedACSPProfileData);
         when(requestExternalData.getPaperFiled()).thenReturn(true);
-        when(expectedFilingHistoryData.paperFiled(any())).thenReturn(expectedFilingHistoryData);
-        when(originalValuesMapper.map(any())).thenReturn(expectedFilingHistoryOriginalValues);
+        when(expectedACSPProfileData.paperFiled(any())).thenReturn(expectedACSPProfileData);
+        when(originalValuesMapper.map(any())).thenReturn(expectedACSPProfileOriginalValues);
         when(requestExternalData.getBarcode()).thenReturn(BARCODE);
 
         final InternalFilingHistoryApi request = buildPutRequestBody();
-        final FilingHistoryDocument expectedDocument = getFilingHistoryDocument(
-                expectedFilingHistoryData,
-                expectedFilingHistoryOriginalValues,
+        final ACSPProfileDocument expectedDocument = getFilingHistoryDocument(
+                expectedACSPProfileData,
+                expectedACSPProfileOriginalValues,
                 EXPECTED_DELTA_AT);
 
         // when
-        final FilingHistoryDocument actualDocument = topLevelMapper.mapNewFilingHistory(TRANSACTION_ID, request,
+        final ACSPProfileDocument actualDocument = topLevelMapper.mapNewFilingHistory(TRANSACTION_ID, request,
                 INSTANT);
 
         // then
         assertEquals(expectedDocument, actualDocument);
         verifyNoInteractions(childListMapper);
-        verify(expectedFilingHistoryData).paperFiled(true);
-        verify(dataMapper).map(requestExternalData, new FilingHistoryData());
+        verify(expectedACSPProfileData).paperFiled(true);
+        verify(dataMapper).map(requestExternalData, new ACSPProfileData());
         verify(originalValuesMapper).map(requestOriginalValues);
         verify(linksMapper).map(requestLinks);
     }
@@ -111,33 +111,33 @@ class TopLevelTransactionMapperTest {
     @Test
     void mapExistingFilingHistoryShouldReturnUpdatedFilingHistoryDocument() {
         // given
-        when(dataMapper.map(any(), any())).thenReturn(expectedFilingHistoryData);
+        when(dataMapper.map(any(), any())).thenReturn(expectedACSPProfileData);
         when(requestExternalData.getPaperFiled()).thenReturn(true);
-        when(expectedFilingHistoryData.paperFiled(any())).thenReturn(expectedFilingHistoryData);
-        when(originalValuesMapper.map(any())).thenReturn(expectedFilingHistoryOriginalValues);
+        when(expectedACSPProfileData.paperFiled(any())).thenReturn(expectedACSPProfileData);
+        when(originalValuesMapper.map(any())).thenReturn(expectedACSPProfileOriginalValues);
         when(requestExternalData.getBarcode()).thenReturn(BARCODE);
         when(requestExternalData.getAssociatedFilings()).thenReturn(null);
 
         final InternalFilingHistoryApi request = buildPutRequestBody();
-        final FilingHistoryDocument expectedDocument = getFilingHistoryDocument(
-                expectedFilingHistoryData,
-                expectedFilingHistoryOriginalValues,
+        final ACSPProfileDocument expectedDocument = getFilingHistoryDocument(
+                expectedACSPProfileData,
+                expectedACSPProfileOriginalValues,
                 EXPECTED_DELTA_AT);
 
-        final FilingHistoryDocument existingDocument = getFilingHistoryDocument(
-                existingFilingHistoryData,
-                existingFilingHistoryOriginalValues,
+        final ACSPProfileDocument existingDocument = getFilingHistoryDocument(
+                existingACSPProfileData,
+                existingACSPProfileOriginalValues,
                 EXISTING_DOCUMENT_DELTA_AT);
 
         // when
-        FilingHistoryDocument actualDocument = topLevelMapper.mapExistingFilingHistory(request, existingDocument,
+        ACSPProfileDocument actualDocument = topLevelMapper.mapExistingFilingHistory(request, existingDocument,
                 INSTANT);
 
         // then
         assertEquals(expectedDocument, actualDocument);
         verifyNoInteractions(childListMapper);
-        verify(expectedFilingHistoryData).paperFiled(true);
-        verify(dataMapper).map(requestExternalData, existingFilingHistoryData);
+        verify(expectedACSPProfileData).paperFiled(true);
+        verify(dataMapper).map(requestExternalData, existingACSPProfileData);
         verifyNoInteractions(childListMapper);
         verify(originalValuesMapper).map(requestOriginalValues);
     }
@@ -146,33 +146,33 @@ class TopLevelTransactionMapperTest {
     void shouldUpdateExistingDocumentWhenExistingDocumentHasAssociatedFilings() {
         // given
         List<AssociatedFiling> requestAssociatedFilingList = List.of(new AssociatedFiling());
-        FilingHistoryData expectedFilingHistoryData = new FilingHistoryData()
-                .associatedFilings(List.of(new FilingHistoryAssociatedFiling()));
+        ACSPProfileData expectedACSPProfileData = new ACSPProfileData()
+                .associatedFilings(List.of(new ACSPProfileAssociatedFiling()));
 
         final InternalFilingHistoryApi request = buildPutRequestBody();
-        final FilingHistoryDocument expectedDocument = getFilingHistoryDocument(
-                expectedFilingHistoryData,
-                expectedFilingHistoryOriginalValues,
+        final ACSPProfileDocument expectedDocument = getFilingHistoryDocument(
+                expectedACSPProfileData,
+                expectedACSPProfileOriginalValues,
                 EXPECTED_DELTA_AT);
 
-        final FilingHistoryDocument existingDocument = getFilingHistoryDocument(
-                existingFilingHistoryData,
-                existingFilingHistoryOriginalValues,
+        final ACSPProfileDocument existingDocument = getFilingHistoryDocument(
+                existingACSPProfileData,
+                existingACSPProfileOriginalValues,
                 EXISTING_DOCUMENT_DELTA_AT);
 
-        when(dataMapper.map(any(), any())).thenReturn(expectedFilingHistoryData);
-        when(originalValuesMapper.map(any())).thenReturn(expectedFilingHistoryOriginalValues);
+        when(dataMapper.map(any(), any())).thenReturn(expectedACSPProfileData);
+        when(originalValuesMapper.map(any())).thenReturn(expectedACSPProfileOriginalValues);
         when(requestExternalData.getBarcode()).thenReturn(BARCODE);
         when(requestExternalData.getAssociatedFilings()).thenReturn(requestAssociatedFilingList);
 
         // when
-        FilingHistoryDocument actualDocument = topLevelMapper.mapExistingFilingHistory(request, existingDocument,
+        ACSPProfileDocument actualDocument = topLevelMapper.mapExistingFilingHistory(request, existingDocument,
                 INSTANT);
 
         // then
         assertEquals(expectedDocument, actualDocument);
-        verify(dataMapper).map(requestExternalData, existingFilingHistoryData);
-        verify(childListMapper).mapChildList(eq(request), eq(expectedFilingHistoryData.getAssociatedFilings()), any());
+        verify(dataMapper).map(requestExternalData, existingACSPProfileData);
+        verify(childListMapper).mapChildList(eq(request), eq(expectedACSPProfileData.getAssociatedFilings()), any());
         verify(originalValuesMapper).map(requestOriginalValues);
     }
 
@@ -180,32 +180,32 @@ class TopLevelTransactionMapperTest {
     void shouldUpdateExistingDocumentWhenExistingDocumentHasEmptyAssociatedFilings() {
         // given
         List<AssociatedFiling> requestAssociatedFilingList = Collections.emptyList();
-        FilingHistoryData expectedFilingHistoryData = new FilingHistoryData()
-                .associatedFilings(List.of(new FilingHistoryAssociatedFiling()));
+        ACSPProfileData expectedACSPProfileData = new ACSPProfileData()
+                .associatedFilings(List.of(new ACSPProfileAssociatedFiling()));
 
         final InternalFilingHistoryApi request = buildPutRequestBody();
-        final FilingHistoryDocument expectedDocument = getFilingHistoryDocument(
-                expectedFilingHistoryData,
-                expectedFilingHistoryOriginalValues,
+        final ACSPProfileDocument expectedDocument = getFilingHistoryDocument(
+                expectedACSPProfileData,
+                expectedACSPProfileOriginalValues,
                 EXPECTED_DELTA_AT);
 
-        final FilingHistoryDocument existingDocument = getFilingHistoryDocument(
-                existingFilingHistoryData,
-                existingFilingHistoryOriginalValues,
+        final ACSPProfileDocument existingDocument = getFilingHistoryDocument(
+                existingACSPProfileData,
+                existingACSPProfileOriginalValues,
                 EXISTING_DOCUMENT_DELTA_AT);
 
-        when(dataMapper.map(any(), any())).thenReturn(expectedFilingHistoryData);
-        when(originalValuesMapper.map(any())).thenReturn(expectedFilingHistoryOriginalValues);
+        when(dataMapper.map(any(), any())).thenReturn(expectedACSPProfileData);
+        when(originalValuesMapper.map(any())).thenReturn(expectedACSPProfileOriginalValues);
         when(requestExternalData.getBarcode()).thenReturn(BARCODE);
         when(requestExternalData.getAssociatedFilings()).thenReturn(requestAssociatedFilingList);
 
         // when
-        FilingHistoryDocument actualDocument = topLevelMapper.mapExistingFilingHistory(request, existingDocument,
+        ACSPProfileDocument actualDocument = topLevelMapper.mapExistingFilingHistory(request, existingDocument,
                 INSTANT);
 
         // then
         assertEquals(expectedDocument, actualDocument);
-        verify(dataMapper).map(requestExternalData, existingFilingHistoryData);
+        verify(dataMapper).map(requestExternalData, existingACSPProfileData);
         verifyNoInteractions(childListMapper);
         verify(originalValuesMapper).map(requestOriginalValues);
     }
@@ -216,9 +216,9 @@ class TopLevelTransactionMapperTest {
         final InternalFilingHistoryApi request = buildPutRequestBody();
         request.getInternalData().deltaAt(STALE_REQUEST_DELTA_AT);
 
-        final FilingHistoryDocument existingDocument = getFilingHistoryDocument(
-                existingFilingHistoryData,
-                existingFilingHistoryOriginalValues,
+        final ACSPProfileDocument existingDocument = getFilingHistoryDocument(
+                existingACSPProfileData,
+                existingACSPProfileOriginalValues,
                 EXISTING_DOCUMENT_DELTA_AT);
 
         // when
@@ -249,12 +249,12 @@ class TopLevelTransactionMapperTest {
                 .updatedBy(UPDATED_BY);
     }
 
-    private FilingHistoryDocument getFilingHistoryDocument(FilingHistoryData data,
-                                                           FilingHistoryOriginalValues originalValues, String deltaAt) {
-        FilingHistoryDeltaTimestamp timestamp = new FilingHistoryDeltaTimestamp()
+    private ACSPProfileDocument getFilingHistoryDocument(ACSPProfileData data,
+                                                         ACSPProfileOriginalValues originalValues, String deltaAt) {
+        ACSPProfileDeltaTimestamp timestamp = new ACSPProfileDeltaTimestamp()
                 .at(INSTANT)
                 .by(UPDATED_BY);
-        return new FilingHistoryDocument()
+        return new ACSPProfileDocument()
                 .transactionId(TRANSACTION_ID)
                 .entityId(ENTITY_ID)
                 .companyNumber(COMPANY_NUMBER)

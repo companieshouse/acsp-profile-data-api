@@ -19,8 +19,8 @@ import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.api.filinghistory.Resolution;
 import uk.gov.companieshouse.api.filinghistory.Resolution.CategoryEnum;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @ExtendWith(MockitoExtension.class)
 class ResolutionChildMapperTest {
@@ -37,7 +37,7 @@ class ResolutionChildMapperTest {
     @Mock
     private DescriptionValues requestDescriptionValues;
     @Mock
-    private FilingHistoryDescriptionValues descriptionValues;
+    private ACSPProfileDescriptionValues descriptionValues;
 
     @Test
     void shouldAddNewResolutionWhenNewObjectPassedInArguements() {
@@ -59,7 +59,7 @@ class ResolutionChildMapperTest {
                                         .barcode("barcode")
                         )));
 
-        FilingHistoryResolution expected = new FilingHistoryResolution()
+        ACSPProfileResolution expected = new ACSPProfileResolution()
                 .entityId(ENTITY_ID)
                 .deltaAt(NEWEST_REQUEST_DELTA_AT)
                 .category(CategoryEnum.RESOLUTION.getValue())
@@ -74,7 +74,7 @@ class ResolutionChildMapperTest {
         when(descriptionValuesMapper.map(any())).thenReturn(descriptionValues);
 
         // when
-        FilingHistoryResolution actual = resolutionChildMapper.mapChild(request);
+        ACSPProfileResolution actual = resolutionChildMapper.mapChild(request);
 
         // then
         assertEquals(expected, actual);
@@ -101,7 +101,7 @@ class ResolutionChildMapperTest {
                                         .barcode("barcode")
                         )));
 
-        FilingHistoryResolution expected = new FilingHistoryResolution()
+        ACSPProfileResolution expected = new ACSPProfileResolution()
                 .entityId(ENTITY_ID)
                 .deltaAt(NEWEST_REQUEST_DELTA_AT)
                 .category(CategoryEnum.RESOLUTION.getValue())
@@ -113,7 +113,7 @@ class ResolutionChildMapperTest {
                 .originalDescription("resolution original description")
                 .barcode("barcode");
 
-        FilingHistoryResolution existingResolution = new FilingHistoryResolution();
+        ACSPProfileResolution existingResolution = new ACSPProfileResolution();
 
         when(descriptionValuesMapper.map(any())).thenReturn(descriptionValues);
 

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.api.filinghistory.InternalDataOriginalValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryOriginalValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileOriginalValues;
 
 class OriginalValuesMapperTest {
 
@@ -58,7 +58,7 @@ class OriginalValuesMapperTest {
                 .capitalType(CAPITAL_TYPE)
                 .mortgageSatisfactionDate(MORTGAGE_SATISFACTION_DATE);
 
-        FilingHistoryOriginalValues expected = new FilingHistoryOriginalValues()
+        ACSPProfileOriginalValues expected = new ACSPProfileOriginalValues()
                 .resignationDate(RESIGNATION_DATE)
                 .chargeCreationDate(CHARGE_CREATION_DATE)
                 .propertyAcquiredDate(PROPERTY_ACQUIRED_DATE)
@@ -82,7 +82,7 @@ class OriginalValuesMapperTest {
                 .mortgageSatisfactionDate(MORTGAGE_SATISFACTION_DATE);
 
         // when
-        FilingHistoryOriginalValues actual = mapper.map(originalValues);
+        ACSPProfileOriginalValues actual = mapper.map(originalValues);
 
         // then
         assertEquals(expected, actual);
@@ -93,7 +93,7 @@ class OriginalValuesMapperTest {
         // given
 
         // when
-        FilingHistoryOriginalValues actual = mapper.map(null);
+        ACSPProfileOriginalValues actual = mapper.map(null);
 
         // then
         assertNull(actual);

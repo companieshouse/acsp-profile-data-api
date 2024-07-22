@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.AssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
 
 @Component
 public class AssociatedFilingsGetResponseMapper {
@@ -17,7 +17,7 @@ public class AssociatedFilingsGetResponseMapper {
         this.mapper = mapper;
     }
 
-    public List<AssociatedFiling> map(List<FilingHistoryAssociatedFiling> documentAssociatedFilings) {
+    public List<AssociatedFiling> map(List<ACSPProfileAssociatedFiling> documentAssociatedFilings) {
         return Optional.ofNullable(documentAssociatedFilings)
                 .map(inputAssociatedFilings -> inputAssociatedFilings
                         .stream()

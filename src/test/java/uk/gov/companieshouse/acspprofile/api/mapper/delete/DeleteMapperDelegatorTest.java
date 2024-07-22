@@ -18,13 +18,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.exception.BadRequestException;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
-import uk.gov.companieshouse.acspprofile.api.serdes.FilingHistoryDocumentCopier;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
+import uk.gov.companieshouse.acspprofile.api.serdes.ACSPProfileDocumentCopier;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteMapperDelegatorTest {
@@ -37,37 +37,37 @@ class DeleteMapperDelegatorTest {
     @InjectMocks
     private DeleteMapperDelegator deleteMapperDelegator;
     @Mock
-    private FilingHistoryDocumentCopier documentCopier;
+    private ACSPProfileDocumentCopier documentCopier;
     @Mock
     private CompositeResolutionDeleteMapper compositeResolutionDeleteMapper;
     @Mock
     private ChildDeleteMapper childDeleteMapper;
 
     @Mock
-    private FilingHistoryDocument document;
+    private ACSPProfileDocument document;
 
     @Test
     void shouldCallCompositeResolutionMapperWhenCompositeResTypeAndResEntityIdMatches() {
         // given
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .type(COMPOSITE_RES_TYPE)
                         .resolutions(List.of(
-                                new FilingHistoryResolution()
+                                new ACSPProfileResolution()
                                         .entityId("first ID"),
-                                new FilingHistoryResolution()
+                                new ACSPProfileResolution()
                                         .entityId(ENTITY_ID))));
-        FilingHistoryDeleteAggregate aggregate = new FilingHistoryDeleteAggregate()
+        ACSPProfileDeleteAggregate aggregate = new ACSPProfileDeleteAggregate()
                 .resolutionIndex(1)
                 .document(document);
 
         when(documentCopier.deepCopy(any())).thenReturn(documentCopy);
         when(compositeResolutionDeleteMapper.removeTransaction(anyInt(), any())).thenReturn(
-                Optional.of(new FilingHistoryDocument()));
+                Optional.of(new ACSPProfileDocument()));
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID, aggregate);
+        Optional<ACSPProfileDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID, aggregate);
 
         // then
         assertTrue(actual.isPresent());
@@ -78,24 +78,24 @@ class DeleteMapperDelegatorTest {
     @Test
     void shouldCallChildDeleteMapperWhenChildResolutionAndResEntityIdMatches() {
         // given
-        List<FilingHistoryResolution> resolutions = List.of(
-                new FilingHistoryResolution()
+        List<ACSPProfileResolution> resolutions = List.of(
+                new ACSPProfileResolution()
                         .entityId(CHILD_ENTITY_ID));
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .type(PARENT_TYPE)
                         .resolutions(resolutions));
-        FilingHistoryDeleteAggregate aggregate = new FilingHistoryDeleteAggregate()
+        ACSPProfileDeleteAggregate aggregate = new ACSPProfileDeleteAggregate()
                 .resolutionIndex(0)
                 .document(document);
 
         when(documentCopier.deepCopy(any())).thenReturn(documentCopy);
         when(childDeleteMapper.removeTransaction(any(), anyInt(), any(), any(), any())).thenReturn(
-                Optional.of(new FilingHistoryDocument()));
+                Optional.of(new ACSPProfileDocument()));
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID, aggregate);
+        Optional<ACSPProfileDocument> actual = deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID, aggregate);
 
         // then
         assertTrue(actual.isPresent());
@@ -107,23 +107,23 @@ class DeleteMapperDelegatorTest {
     @Test
     void shouldCallChildDeleteMapperWhenChildAnnotationAndAnnotationEntityIdMatches() {
         // given
-        List<FilingHistoryAnnotation> annotations = List.of(
-                new FilingHistoryAnnotation()
+        List<ACSPProfileAnnotation> annotations = List.of(
+                new ACSPProfileAnnotation()
                         .entityId(CHILD_ENTITY_ID));
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .annotations(annotations));
-        FilingHistoryDeleteAggregate aggregate = new FilingHistoryDeleteAggregate()
+        ACSPProfileDeleteAggregate aggregate = new ACSPProfileDeleteAggregate()
                 .annotationIndex(0)
                 .document(document);
 
         when(documentCopier.deepCopy(any())).thenReturn(documentCopy);
         when(childDeleteMapper.removeTransaction(any(), anyInt(), any(), any(), any())).thenReturn(
-                Optional.of(new FilingHistoryDocument()));
+                Optional.of(new ACSPProfileDocument()));
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID, aggregate);
+        Optional<ACSPProfileDocument> actual = deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID, aggregate);
 
         // then
         assertTrue(actual.isPresent());
@@ -135,23 +135,23 @@ class DeleteMapperDelegatorTest {
     @Test
     void shouldCallChildDeleteMapperWhenChildAssociatedFilingAndAssociatedFilingEntityIdMatches() {
         // given
-        List<FilingHistoryAssociatedFiling> associatedFilings = List.of(new FilingHistoryAssociatedFiling()
+        List<ACSPProfileAssociatedFiling> associatedFilings = List.of(new ACSPProfileAssociatedFiling()
                 .entityId(CHILD_ENTITY_ID));
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .associatedFilings(associatedFilings));
 
-        FilingHistoryDeleteAggregate aggregate = new FilingHistoryDeleteAggregate()
+        ACSPProfileDeleteAggregate aggregate = new ACSPProfileDeleteAggregate()
                 .associatedFilingIndex(0)
                 .document(document);
 
         when(documentCopier.deepCopy(any())).thenReturn(documentCopy);
         when(childDeleteMapper.removeTransaction(any(), anyInt(), any(), any(), any())).thenReturn(
-                Optional.of(new FilingHistoryDocument()));
+                Optional.of(new ACSPProfileDocument()));
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID, aggregate);
+        Optional<ACSPProfileDocument> actual = deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID, aggregate);
 
         // then
         assertTrue(actual.isPresent());
@@ -163,16 +163,16 @@ class DeleteMapperDelegatorTest {
     @Test
     void shouldReturnTopLevelMapperWhenTopLevelEntityIdMatches() {
         // given
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
-                .data(new FilingHistoryData());
-        FilingHistoryDeleteAggregate aggregate = new FilingHistoryDeleteAggregate()
+                .data(new ACSPProfileData());
+        ACSPProfileDeleteAggregate aggregate = new ACSPProfileDeleteAggregate()
                 .document(document);
 
         when(documentCopier.deepCopy(any())).thenReturn(documentCopy);
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID, aggregate);
+        Optional<ACSPProfileDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID, aggregate);
 
         // then
         assertTrue(actual.isEmpty());
@@ -182,9 +182,9 @@ class DeleteMapperDelegatorTest {
     @Test
     void shouldThrowBadRequestExceptionWhenNoEntityIdMatchesAndNoChildIndexes() {
         // given
-        FilingHistoryDocument documentCopy = new FilingHistoryDocument()
+        ACSPProfileDocument documentCopy = new ACSPProfileDocument()
                 .entityId(ENTITY_ID);
-        FilingHistoryDeleteAggregate aggregate = new FilingHistoryDeleteAggregate()
+        ACSPProfileDeleteAggregate aggregate = new ACSPProfileDeleteAggregate()
                 .document(document);
 
         when(documentCopier.deepCopy(any())).thenReturn(documentCopy);

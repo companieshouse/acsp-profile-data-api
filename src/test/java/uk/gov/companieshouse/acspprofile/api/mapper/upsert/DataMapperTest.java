@@ -19,9 +19,9 @@ import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
 import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.api.filinghistory.Links;
 import uk.gov.companieshouse.acspprofile.api.exception.BadRequestException;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
 
 @ExtendWith(MockitoExtension.class)
 class DataMapperTest {
@@ -44,7 +44,7 @@ class DataMapperTest {
     @Mock
     private DescriptionValues requestDescriptionValues;
     @Mock
-    private FilingHistoryDescriptionValues expectedDescriptionValues;
+    private ACSPProfileDescriptionValues expectedDescriptionValues;
 
     @Mock
     private Links requestLinks;
@@ -54,7 +54,7 @@ class DataMapperTest {
         // given
         when(descriptionValuesMapper.map(any())).thenReturn(expectedDescriptionValues);
 
-        final FilingHistoryData expectedData = new FilingHistoryData()
+        final ACSPProfileData expectedData = new ACSPProfileData()
                 .type(TM01_TYPE)
                 .date(DATE_AS_INSTANT)
                 .category("officers")
@@ -64,7 +64,7 @@ class DataMapperTest {
                 .actionDate(ACTION_AND_TERMINATION_DATE_AS_INSTANT);
 
         // when
-        final FilingHistoryData actualData = dataMapper.map(buildRequestExternalData(), new FilingHistoryData());
+        final ACSPProfileData actualData = dataMapper.map(buildRequestExternalData(), new ACSPProfileData());
 
         // then
         assertEquals(expectedData, actualData);
@@ -78,7 +78,7 @@ class DataMapperTest {
 
         ExternalData externalData = buildRequestExternalData().subcategory(SUBCATEGORY);
 
-        final FilingHistoryData expectedData = new FilingHistoryData()
+        final ACSPProfileData expectedData = new ACSPProfileData()
                 .type(TM01_TYPE)
                 .date(DATE_AS_INSTANT)
                 .category("officers")
@@ -88,7 +88,7 @@ class DataMapperTest {
                 .actionDate(ACTION_AND_TERMINATION_DATE_AS_INSTANT);
 
         // when
-        final FilingHistoryData actualData = dataMapper.map(externalData, new FilingHistoryData());
+        final ACSPProfileData actualData = dataMapper.map(externalData, new ACSPProfileData());
 
         // then
         assertEquals(expectedData, actualData);
@@ -102,7 +102,7 @@ class DataMapperTest {
 
         ExternalData externalData = buildRequestExternalData().subcategory(List.of("voluntary", "certificate"));
 
-        final FilingHistoryData expectedData = new FilingHistoryData()
+        final ACSPProfileData expectedData = new ACSPProfileData()
                 .type(TM01_TYPE)
                 .date(DATE_AS_INSTANT)
                 .category("officers")
@@ -112,7 +112,7 @@ class DataMapperTest {
                 .actionDate(ACTION_AND_TERMINATION_DATE_AS_INSTANT);
 
         // when
-        final FilingHistoryData actualData = dataMapper.map(externalData, new FilingHistoryData());
+        final ACSPProfileData actualData = dataMapper.map(externalData, new ACSPProfileData());
 
         // then
         assertEquals(expectedData, actualData);
@@ -125,7 +125,7 @@ class DataMapperTest {
         ExternalData externalData = buildRequestExternalData().subcategory(1);
 
         // when
-        Executable executable = () -> dataMapper.map(externalData, new FilingHistoryData());
+        Executable executable = () -> dataMapper.map(externalData, new ACSPProfileData());
 
         // then
         BadRequestException exception = assertThrows(BadRequestException.class, executable);
@@ -140,21 +140,21 @@ class DataMapperTest {
 
         ExternalData externalData = buildRequestExternalData().subcategory(SUBCATEGORY);
 
-        final FilingHistoryData expectedData = new FilingHistoryData()
+        final ACSPProfileData expectedData = new ACSPProfileData()
                 .type(TM01_TYPE)
                 .date(DATE_AS_INSTANT)
                 .category("officers")
                 .subcategory(SUBCATEGORY)
                 .description("description")
                 .descriptionValues(expectedDescriptionValues)
-                .annotations(List.of(new FilingHistoryAnnotation().annotation("annotation")))
+                .annotations(List.of(new ACSPProfileAnnotation().annotation("annotation")))
                 .actionDate(ACTION_AND_TERMINATION_DATE_AS_INSTANT);
 
-        final FilingHistoryData existingData = new FilingHistoryData()
-                .annotations(List.of(new FilingHistoryAnnotation().annotation("annotation")));
+        final ACSPProfileData existingData = new ACSPProfileData()
+                .annotations(List.of(new ACSPProfileAnnotation().annotation("annotation")));
 
         // when
-        final FilingHistoryData actualData = dataMapper.map(externalData, existingData);
+        final ACSPProfileData actualData = dataMapper.map(externalData, existingData);
 
         // then
         assertEquals(expectedData, actualData);

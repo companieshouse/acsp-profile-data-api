@@ -13,7 +13,7 @@ import uk.gov.companieshouse.acspprofile.api.exception.InternalServerErrorExcept
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
 import uk.gov.companieshouse.acspprofile.api.mapper.get.ItemGetResponseMapper;
 import uk.gov.companieshouse.acspprofile.api.model.ResourceChangedRequest;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class ResourceChangedRequestMapper {
     }
 
     public ChangedResource mapChangedResource(ResourceChangedRequest request) {
-        FilingHistoryDocument document = request.filingHistoryDocument();
+        ACSPProfileDocument document = request.ACSPProfileDocument();
         ChangedResourceEvent event = new ChangedResourceEvent().publishedAt(instantSupplier.get().toString());
         ChangedResource changedResource = new ChangedResource()
                 .resourceUri("/company/%s/acsp-profile/%s".formatted(document.getCompanyNumber(),

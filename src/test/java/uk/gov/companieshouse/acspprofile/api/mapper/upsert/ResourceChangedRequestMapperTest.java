@@ -29,7 +29,7 @@ import uk.gov.companieshouse.acspprofile.api.exception.InternalServerErrorExcept
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
 import uk.gov.companieshouse.acspprofile.api.mapper.get.ItemGetResponseMapper;
 import uk.gov.companieshouse.acspprofile.api.model.ResourceChangedRequest;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 @ExtendWith(MockitoExtension.class)
 class ResourceChangedRequestMapperTest {
@@ -38,7 +38,7 @@ class ResourceChangedRequestMapperTest {
     private static final String ACSP_PROFILE = "acsp-profile";
     private static final String EXPECTED_CONTEXT_ID = "35234234";
     private static final ExternalData deletedData = new ExternalData();
-    private static final FilingHistoryDocument filingHistoryDocument = new FilingHistoryDocument()
+    private static final ACSPProfileDocument ACSP_PROFILE_DOCUMENT = new ACSPProfileDocument()
             .companyNumber("12345678")
             .transactionId("ABCDE54321");
     private static final String RESOURCE_URI = "/company/12345678/acsp-profile/ABCDE54321";
@@ -65,7 +65,7 @@ class ResourceChangedRequestMapperTest {
         // given
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
 
-        ResourceChangedRequest upsertResourceChangedRequest = new ResourceChangedRequest(filingHistoryDocument, false);
+        ResourceChangedRequest upsertResourceChangedRequest = new ResourceChangedRequest(ACSP_PROFILE_DOCUMENT, false);
         ChangedResource expectedChangedResource = new ChangedResource()
                 .contextId(EXPECTED_CONTEXT_ID)
                 .resourceUri(RESOURCE_URI)
@@ -97,7 +97,7 @@ class ResourceChangedRequestMapperTest {
         when(nullCleaningObjectMapper.writeValueAsString(any())).thenReturn(deletedDataAsString);
         when(nullCleaningObjectMapper.readValue(anyString(), eq(Object.class))).thenReturn(deletedDataAsObject);
 
-        ResourceChangedRequest deleteResourceChangedRequest = new ResourceChangedRequest(filingHistoryDocument, true);
+        ResourceChangedRequest deleteResourceChangedRequest = new ResourceChangedRequest(ACSP_PROFILE_DOCUMENT, true);
         ChangedResource expectedChangedResource = new ChangedResource()
                 .contextId(EXPECTED_CONTEXT_ID)
                 .resourceUri(RESOURCE_URI)
@@ -112,7 +112,7 @@ class ResourceChangedRequestMapperTest {
 
         // then
         assertEquals(expectedChangedResource, actual);
-        verify(itemGetResponseMapper).mapFilingHistoryItem(filingHistoryDocument);
+        verify(itemGetResponseMapper).mapFilingHistoryItem(ACSP_PROFILE_DOCUMENT);
         verify(nullCleaningObjectMapper).writeValueAsString(deletedData);
         verify(nullCleaningObjectMapper).readValue(deletedDataAsString, Object.class);
     }
@@ -124,14 +124,14 @@ class ResourceChangedRequestMapperTest {
         when(itemGetResponseMapper.mapFilingHistoryItem(any())).thenReturn(deletedData);
         when(nullCleaningObjectMapper.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
 
-        ResourceChangedRequest deleteResourceChangedRequest = new ResourceChangedRequest(filingHistoryDocument, true);
+        ResourceChangedRequest deleteResourceChangedRequest = new ResourceChangedRequest(ACSP_PROFILE_DOCUMENT, true);
 
         // when
         Executable executable = () -> mapper.mapChangedResource(deleteResourceChangedRequest);
 
         // then
         assertThrows(InternalServerErrorException.class, executable);
-        verify(itemGetResponseMapper).mapFilingHistoryItem(filingHistoryDocument);
+        verify(itemGetResponseMapper).mapFilingHistoryItem(ACSP_PROFILE_DOCUMENT);
         verify(nullCleaningObjectMapper).writeValueAsString(deletedData);
         verifyNoMoreInteractions(nullCleaningObjectMapper);
     }
@@ -144,14 +144,14 @@ class ResourceChangedRequestMapperTest {
         when(nullCleaningObjectMapper.writeValueAsString(any())).thenReturn("deletedDataAsString");
         when(nullCleaningObjectMapper.readValue(anyString(), eq(Object.class))).thenThrow(JsonProcessingException.class);
 
-        ResourceChangedRequest deleteResourceChangedRequest = new ResourceChangedRequest(filingHistoryDocument, true);
+        ResourceChangedRequest deleteResourceChangedRequest = new ResourceChangedRequest(ACSP_PROFILE_DOCUMENT, true);
 
         // when
         Executable executable = () -> mapper.mapChangedResource(deleteResourceChangedRequest);
 
         // then
         assertThrows(InternalServerErrorException.class, executable);
-        verify(itemGetResponseMapper).mapFilingHistoryItem(filingHistoryDocument);
+        verify(itemGetResponseMapper).mapFilingHistoryItem(ACSP_PROFILE_DOCUMENT);
         verify(nullCleaningObjectMapper).writeValueAsString(deletedData);
         verify(nullCleaningObjectMapper).readValue("deletedDataAsString", Object.class);
     }

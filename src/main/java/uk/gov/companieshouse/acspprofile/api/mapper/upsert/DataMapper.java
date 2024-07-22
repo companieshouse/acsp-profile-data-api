@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.acspprofile.api.exception.BadRequestException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class DataMapper {
     }
 
     @SuppressWarnings("unchecked")
-    FilingHistoryData map(final ExternalData data, final FilingHistoryData documentData) {
+    ACSPProfileData map(final ExternalData data, final ACSPProfileData documentData) {
         switch (data.getSubcategory()) {
             case null -> documentData.subcategory((String) null);
             case String subcategory -> documentData.subcategory(subcategory);

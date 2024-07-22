@@ -13,9 +13,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import uk.gov.companieshouse.acspprofile.api.exception.BadRequestException;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 @SpringBootTest
 class DeleteMapperDelegatorAspectFeatureDisabledIT {
@@ -37,11 +37,11 @@ class DeleteMapperDelegatorAspectFeatureDisabledIT {
     void shouldDeleteTopLevelTransactionsWhenFeatureDisabled() {
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID,
-                new FilingHistoryDeleteAggregate()
-                        .document(new FilingHistoryDocument()
+        Optional<ACSPProfileDocument> actual = deleteMapperDelegator.delegateDelete(ENTITY_ID,
+                new ACSPProfileDeleteAggregate()
+                        .document(new ACSPProfileDocument()
                                 .entityId(ENTITY_ID)
-                                .data(new FilingHistoryData())));
+                                .data(new ACSPProfileData())));
 
         // then
         assertTrue(actual.isEmpty());
@@ -54,8 +54,8 @@ class DeleteMapperDelegatorAspectFeatureDisabledIT {
 
         // when
         Executable actual = () -> deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID,
-                new FilingHistoryDeleteAggregate()
-                        .document(new FilingHistoryDocument()
+                new ACSPProfileDeleteAggregate()
+                        .document(new ACSPProfileDocument()
                                 .entityId(ENTITY_ID))
                         .resolutionIndex(0));
 
@@ -70,8 +70,8 @@ class DeleteMapperDelegatorAspectFeatureDisabledIT {
 
         // when
         Executable actual = () -> deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID,
-                new FilingHistoryDeleteAggregate()
-                        .document(new FilingHistoryDocument()
+                new ACSPProfileDeleteAggregate()
+                        .document(new ACSPProfileDocument()
                                 .entityId(ENTITY_ID))
                         .annotationIndex(0));
 
@@ -86,8 +86,8 @@ class DeleteMapperDelegatorAspectFeatureDisabledIT {
 
         // when
         Executable actual = () -> deleteMapperDelegator.delegateDelete(CHILD_ENTITY_ID,
-                new FilingHistoryDeleteAggregate()
-                        .document(new FilingHistoryDocument()
+                new ACSPProfileDeleteAggregate()
+                        .document(new ACSPProfileDocument()
                                 .entityId(ENTITY_ID))
                         .associatedFilingIndex(0));
 
@@ -102,10 +102,10 @@ class DeleteMapperDelegatorAspectFeatureDisabledIT {
 
         // when
         Executable actual = () -> deleteMapperDelegator.delegateDelete(ENTITY_ID,
-                new FilingHistoryDeleteAggregate()
-                        .document(new FilingHistoryDocument()
+                new ACSPProfileDeleteAggregate()
+                        .document(new ACSPProfileDocument()
                                 .entityId(ENTITY_ID)
-                                .data(new FilingHistoryData()
+                                .data(new ACSPProfileData()
                                         .type("RESOLUTIONS"))));
 
         // then

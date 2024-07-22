@@ -5,26 +5,26 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 @Component
 public class AnnotationTransactionMapper extends AbstractTransactionMapper {
 
     private final DataMapper dataMapper;
-    private final ChildListMapper<FilingHistoryAnnotation> childListMapper;
+    private final ChildListMapper<ACSPProfileAnnotation> childListMapper;
 
     public AnnotationTransactionMapper(LinksMapper linksMapper,
-            DataMapper dataMapper, ChildListMapper<FilingHistoryAnnotation> childListMapper) {
+            DataMapper dataMapper, ChildListMapper<ACSPProfileAnnotation> childListMapper) {
         super(linksMapper);
         this.dataMapper = dataMapper;
         this.childListMapper = childListMapper;
     }
 
     @Override
-    protected FilingHistoryData mapFilingHistoryData(InternalFilingHistoryApi request, FilingHistoryData data) {
+    protected ACSPProfileData mapFilingHistoryData(InternalFilingHistoryApi request, ACSPProfileData data) {
         if (StringUtils.isBlank(request.getInternalData().getParentEntityId())) {
             data = dataMapper.map(request.getExternalData(), data);
         }
@@ -33,8 +33,8 @@ public class AnnotationTransactionMapper extends AbstractTransactionMapper {
     }
 
     @Override
-    protected FilingHistoryDocument mapTopLevelFields(InternalFilingHistoryApi request, FilingHistoryDocument document,
-            Instant instant) {
+    protected ACSPProfileDocument mapTopLevelFields(InternalFilingHistoryApi request, ACSPProfileDocument document,
+                                                    Instant instant) {
 
         final InternalData internalData = request.getInternalData();
         if (StringUtils.isBlank(internalData.getParentEntityId())) {
@@ -50,7 +50,7 @@ public class AnnotationTransactionMapper extends AbstractTransactionMapper {
         }
         return document
                 .companyNumber(internalData.getCompanyNumber())
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(instant)
                         .by(internalData.getUpdatedBy()));
     }

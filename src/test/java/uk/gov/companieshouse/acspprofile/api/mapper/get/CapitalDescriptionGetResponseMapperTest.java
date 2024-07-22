@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.api.filinghistory.AltCapitalDescriptionValue;
 import uk.gov.companieshouse.api.filinghistory.CapitalDescriptionValue;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAltCapital;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryCapital;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAltCapital;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileCapital;
 
 class CapitalDescriptionGetResponseMapperTest {
 
@@ -19,7 +19,7 @@ class CapitalDescriptionGetResponseMapperTest {
 
     @Test
     void shouldMapCapitalDescriptionList() {
-        FilingHistoryCapital filingHistoryCapital = new FilingHistoryCapital()
+        ACSPProfileCapital ACSPProfileCapital = new ACSPProfileCapital()
                 .currency("GBP")
                 .figure("100.00")
                 .date(DATE_INSTANT);
@@ -28,14 +28,14 @@ class CapitalDescriptionGetResponseMapperTest {
                 .figure("100.00")
                 .date(DATE_STRING);
 
-        List<CapitalDescriptionValue> actual = mapper.mapFilingHistoryCapital(List.of(filingHistoryCapital));
+        List<CapitalDescriptionValue> actual = mapper.mapFilingHistoryCapital(List.of(ACSPProfileCapital));
         assertEquals(1, actual.size());
         assertEquals(expected, actual.getFirst());
     }
 
     @Test
     void shouldMapAltCapitalDescriptionList() {
-        FilingHistoryAltCapital filingHistoryCapital = new FilingHistoryAltCapital()
+        ACSPProfileAltCapital filingHistoryCapital = new ACSPProfileAltCapital()
                 .currency("GBP")
                 .figure("100.00")
                 .date(DATE_INSTANT)

@@ -1,7 +1,7 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
-public record ResourceChangedRequest(FilingHistoryDocument filingHistoryDocument, boolean isDelete) {
+public record ResourceChangedRequest(ACSPProfileDocument ACSPProfileDocument, boolean isDelete) {
 
 }

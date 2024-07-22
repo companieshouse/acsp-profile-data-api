@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.Annotation;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
 
 @Component
-public class AnnotationChildMapper implements ChildMapper<FilingHistoryAnnotation> {
+public class AnnotationChildMapper implements ChildMapper<ACSPProfileAnnotation> {
 
     private final DescriptionValuesMapper descriptionValuesMapper;
 
@@ -18,8 +18,8 @@ public class AnnotationChildMapper implements ChildMapper<FilingHistoryAnnotatio
     }
 
     @Override
-    public FilingHistoryAnnotation mapChild(InternalFilingHistoryApi request,
-            FilingHistoryAnnotation existingAnnotation) {
+    public ACSPProfileAnnotation mapChild(InternalFilingHistoryApi request,
+                                          ACSPProfileAnnotation existingAnnotation) {
         InternalData internalData = request.getInternalData();
         Annotation requestAnnotation = request.getExternalData().getAnnotations().getFirst();
 
@@ -35,7 +35,7 @@ public class AnnotationChildMapper implements ChildMapper<FilingHistoryAnnotatio
     }
 
     @Override
-    public FilingHistoryAnnotation newInstance() {
-        return new FilingHistoryAnnotation();
+    public ACSPProfileAnnotation newInstance() {
+        return new ACSPProfileAnnotation();
     }
 }

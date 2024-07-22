@@ -5,7 +5,7 @@ import static uk.gov.companieshouse.acspprofile.api.mapper.DateUtils.stringToIns
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
 
 @Component
 public class DescriptionValuesMapper {
@@ -16,9 +16,9 @@ public class DescriptionValuesMapper {
         this.capitalDescriptionMapper = capitalDescriptionMapper;
     }
 
-    FilingHistoryDescriptionValues map(final DescriptionValues descriptionValues) {
+    ACSPProfileDescriptionValues map(final DescriptionValues descriptionValues) {
         return Optional.ofNullable(descriptionValues)
-                .map(values -> new FilingHistoryDescriptionValues()
+                .map(values -> new ACSPProfileDescriptionValues()
                         .capital(capitalDescriptionMapper.mapCapitalDescriptionValueList(values.getCapital()))
                         .altCapital(capitalDescriptionMapper.mapAltCapitalDescriptionValueList(values.getAltCapital()))
                         .terminationDate(stringToInstant(values.getTerminationDate()))

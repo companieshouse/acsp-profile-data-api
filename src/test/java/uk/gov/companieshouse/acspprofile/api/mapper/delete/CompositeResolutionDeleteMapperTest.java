@@ -18,10 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @ExtendWith(MockitoExtension.class)
 class CompositeResolutionDeleteMapperTest {
@@ -41,25 +41,25 @@ class CompositeResolutionDeleteMapperTest {
     @Test
     void shouldRemoveResolutionAtIndexAndReturnUpdatedDocument() {
         // given
-        FilingHistoryDocument document = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
+        ACSPProfileDocument document = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
                         .resolutions(new ArrayList<>(
                                 List.of(
-                                        new FilingHistoryResolution()
+                                        new ACSPProfileResolution()
                                                 .entityId("entity ID"),
-                                        new FilingHistoryResolution()))));
+                                        new ACSPProfileResolution()))));
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
-                        .resolutions(List.of(new FilingHistoryResolution())))
-                .updated(new FilingHistoryDeltaTimestamp()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
+                        .resolutions(List.of(new ACSPProfileResolution())))
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(INSTANT)
                         .by("uninitialised"));
 
         when(instantSupplier.get()).thenReturn(INSTANT);
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(0, document);
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(0, document);
 
         // then
         assertTrue(actual.isPresent());
@@ -70,12 +70,12 @@ class CompositeResolutionDeleteMapperTest {
     @Test
     void shouldReturnEmptyWhenLastCompositeResolution() {
         // given
-        FilingHistoryDocument document = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
-                        .resolutions(new ArrayList<>(List.of(new FilingHistoryResolution()))));
+        ACSPProfileDocument document = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
+                        .resolutions(new ArrayList<>(List.of(new ACSPProfileResolution()))));
 
         // when
-        Optional<FilingHistoryDocument> actual = deleteMapper.removeTransaction(0, document);
+        Optional<ACSPProfileDocument> actual = deleteMapper.removeTransaction(0, document);
 
         // then
         assertTrue(actual.isEmpty());

@@ -16,9 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.filinghistory.AltCapitalDescriptionValue;
 import uk.gov.companieshouse.api.filinghistory.CapitalDescriptionValue;
 import uk.gov.companieshouse.api.filinghistory.DescriptionValues;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAltCapital;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryCapital;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDescriptionValues;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAltCapital;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileCapital;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDescriptionValues;
 
 @ExtendWith(MockitoExtension.class)
 class DescriptionValuesGetResponseMapperTest {
@@ -60,11 +60,11 @@ class DescriptionValuesGetResponseMapperTest {
     @Mock
     private CapitalDescriptionGetResponseMapper capitalDescriptionGetResponseMapper;
     @Mock
-    private FilingHistoryCapital filingHistoryCapital;
+    private ACSPProfileCapital ACSPProfileCapital;
     @Mock
     private CapitalDescriptionValue capitalDescriptionValue;
     @Mock
-    private FilingHistoryAltCapital filingHistoryAltCapital;
+    private ACSPProfileAltCapital ACSPProfileAltCapital;
     @Mock
     private AltCapitalDescriptionValue altCapitalDescriptionValue;
 
@@ -83,8 +83,8 @@ class DescriptionValuesGetResponseMapperTest {
 
         // then
         assertEquals(expected, actual);
-        verify(capitalDescriptionGetResponseMapper).mapFilingHistoryCapital(List.of(filingHistoryCapital));
-        verify(capitalDescriptionGetResponseMapper).mapFilingHistoryAltCapital(List.of(filingHistoryAltCapital));
+        verify(capitalDescriptionGetResponseMapper).mapFilingHistoryCapital(List.of(ACSPProfileCapital));
+        verify(capitalDescriptionGetResponseMapper).mapFilingHistoryAltCapital(List.of(ACSPProfileAltCapital));
     }
 
     @Test
@@ -98,13 +98,13 @@ class DescriptionValuesGetResponseMapperTest {
         assertNull(actual);
     }
 
-    private FilingHistoryDescriptionValues buildDocumentDescriptionValues() {
-        return new FilingHistoryDescriptionValues()
-                .altCapital(List.of(filingHistoryAltCapital))
+    private ACSPProfileDescriptionValues buildDocumentDescriptionValues() {
+        return new ACSPProfileDescriptionValues()
+                .altCapital(List.of(ACSPProfileAltCapital))
                 .appointmentDate(APPOINTMENT_DATE_INSTANT)
                 .branchNumber("50")
                 .broughtDownDate(BROUGHT_DOWN_DATE_INSTANT)
-                .capital(List.of(filingHistoryCapital))
+                .capital(List.of(ACSPProfileCapital))
                 .caseEndDate(CASE_END_DATE_INSTANT)
                 .caseNumber("123")
                 .cessationDate(CESSATION_DATE_INSTANT)

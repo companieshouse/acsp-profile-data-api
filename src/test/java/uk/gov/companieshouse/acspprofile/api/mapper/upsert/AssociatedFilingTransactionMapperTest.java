@@ -19,11 +19,11 @@ import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
 
 @ExtendWith(MockitoExtension.class)
 class AssociatedFilingTransactionMapperTest {
@@ -42,10 +42,10 @@ class AssociatedFilingTransactionMapperTest {
     @Mock
     private LinksMapper linksMapper;
     @Mock
-    private ChildListMapper<FilingHistoryAssociatedFiling> childListMapper;
+    private ChildListMapper<ACSPProfileAssociatedFiling> childListMapper;
 
     @Mock
-    private List<FilingHistoryAssociatedFiling> associatedFilingList;
+    private List<ACSPProfileAssociatedFiling> associatedFilingList;
 
     @Test
     void shouldMapAssociatedFilingToNewDocument() {
@@ -61,14 +61,14 @@ class AssociatedFilingTransactionMapperTest {
                         .links(requestLinks)
                         .paperFiled(true));
 
-        FilingHistoryLinks expectedLinks = new FilingHistoryLinks()
+        ACSPProfileLinks expectedLinks = new ACSPProfileLinks()
                 .self("self link");
-        FilingHistoryDeltaTimestamp expectedTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp expectedTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(UPDATED_AT)
                 .by(UPDATED_BY);
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .transactionId(TRANSACTION_ID)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .links(expectedLinks)
                         .paperFiled(true))
                 .entityId(PARENT_ENTITY_ID)
@@ -79,7 +79,7 @@ class AssociatedFilingTransactionMapperTest {
         when(linksMapper.map(any())).thenReturn(expectedLinks);
 
         // when
-        FilingHistoryDocument actual = associatedFilingTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
+        ACSPProfileDocument actual = associatedFilingTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
                 UPDATED_AT);
 
         // then
@@ -99,33 +99,33 @@ class AssociatedFilingTransactionMapperTest {
                 .externalData(new ExternalData()
                         .paperFiled(true));
 
-        FilingHistoryDeltaTimestamp existingTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp existingTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(CREATED_AT)
                 .by(CREATED_BY);
-        FilingHistoryLinks existingLinks = new FilingHistoryLinks()
+        ACSPProfileLinks existingLinks = new ACSPProfileLinks()
                 .self("self link")
                 .documentMetadata("metadata");
-        FilingHistoryDocument existingDocument = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
+        ACSPProfileDocument existingDocument = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
                         .links(existingLinks)
                         .associatedFilings(associatedFilingList))
                 .created(existingTimestamp)
                 .updated(existingTimestamp);
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
-                .data(new FilingHistoryData()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
+                .data(new ACSPProfileData()
                         .links(existingLinks)
                         .paperFiled(true)
                         .associatedFilings(associatedFilingList))
                 .entityId(PARENT_ENTITY_ID)
                 .companyNumber(COMPANY_NUMBER)
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(UPDATED_AT)
                         .by(UPDATED_BY))
                 .created(existingTimestamp);
 
         // when
-        FilingHistoryDocument actual =
+        ACSPProfileDocument actual =
                 associatedFilingTransactionMapper.mapExistingFilingHistory(request, existingDocument, UPDATED_AT);
 
         // then

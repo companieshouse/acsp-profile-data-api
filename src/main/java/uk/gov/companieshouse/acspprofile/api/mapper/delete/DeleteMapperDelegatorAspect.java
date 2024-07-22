@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.ACSPProfileApplication;
 import uk.gov.companieshouse.acspprofile.api.exception.BadRequestException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -22,11 +22,11 @@ public class DeleteMapperDelegatorAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(ACSPProfileApplication.NAMESPACE);
 
     @Around("@annotation(DeleteChildTransactions)")
-    public Optional<FilingHistoryDocument> deleteChildTransactionsDisabled(JoinPoint joinPoint) {
+    public Optional<ACSPProfileDocument> deleteChildTransactionsDisabled(JoinPoint joinPoint) {
         LOGGER.debug("Deletion of child transactions disabled", DataMapHolder.getLogMap());
         Object[] args = joinPoint.getArgs();
         String entityId = (String) args[0];
-        FilingHistoryDeleteAggregate aggregate = (FilingHistoryDeleteAggregate) args[1];
+        ACSPProfileDeleteAggregate aggregate = (ACSPProfileDeleteAggregate) args[1];
 
         if (!entityId.equals(aggregate.getDocument().getEntityId())
                 || "RESOLUTIONS".equals(aggregate.getDocument().getData().getType())) {

@@ -3,7 +3,7 @@ package uk.gov.companieshouse.acspprofile.api.mapper.get;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
 
 @Component
 public class LinksGetResponseMapper {
@@ -14,7 +14,7 @@ public class LinksGetResponseMapper {
         this.documentApiUrl = documentApiUrl;
     }
 
-    public Links map(FilingHistoryLinks links) {
+    public Links map(ACSPProfileLinks links) {
         if (links == null) {
             return null;
         }

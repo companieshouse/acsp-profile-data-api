@@ -5,8 +5,8 @@ import static uk.gov.companieshouse.acspprofile.api.mapper.DateUtils.instantToSt
 
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.filinghistory.ExternalData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 @Component
 public class ItemGetResponseMapper {
@@ -31,8 +31,8 @@ public class ItemGetResponseMapper {
         this.linksGetResponseMapper = linksGetResponseMapper;
     }
 
-    public ExternalData mapFilingHistoryItem(FilingHistoryDocument document) {
-        final FilingHistoryData data = document.getData();
+    public ExternalData mapFilingHistoryItem(ACSPProfileDocument document) {
+        final ACSPProfileData data = document.getData();
         return new ExternalData()
                 .transactionId(document.getTransactionId())
                 .barcode(document.getBarcode())

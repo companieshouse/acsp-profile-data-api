@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.ACSPProfileApplication;
 import uk.gov.companieshouse.acspprofile.api.exception.BadRequestException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeleteAggregate;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.serdes.FilingHistoryDocumentCopier;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeleteAggregate;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.serdes.ACSPProfileDocumentCopier;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -17,21 +17,21 @@ public class DeleteMapperDelegator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ACSPProfileApplication.NAMESPACE);
     private static final String COMPOSITE_RES_TYPE = "RESOLUTIONS";
-    private final FilingHistoryDocumentCopier documentCopier;
+    private final ACSPProfileDocumentCopier documentCopier;
     private final CompositeResolutionDeleteMapper compositeResolutionDeleteMapper;
     private final ChildDeleteMapper childDeleteMapper;
 
-    public DeleteMapperDelegator(FilingHistoryDocumentCopier documentCopier,
-            CompositeResolutionDeleteMapper compositeResolutionDeleteMapper, ChildDeleteMapper childDeleteMapper) {
+    public DeleteMapperDelegator(ACSPProfileDocumentCopier documentCopier,
+                                 CompositeResolutionDeleteMapper compositeResolutionDeleteMapper, ChildDeleteMapper childDeleteMapper) {
         this.documentCopier = documentCopier;
         this.compositeResolutionDeleteMapper = compositeResolutionDeleteMapper;
         this.childDeleteMapper = childDeleteMapper;
     }
 
     @DeleteChildTransactions
-    public Optional<FilingHistoryDocument> delegateDelete(String entityId, FilingHistoryDeleteAggregate aggregate) {
-        FilingHistoryDocument document = documentCopier.deepCopy(aggregate.getDocument());
-        FilingHistoryData data = document.getData();
+    public Optional<ACSPProfileDocument> delegateDelete(String entityId, ACSPProfileDeleteAggregate aggregate) {
+        ACSPProfileDocument document = documentCopier.deepCopy(aggregate.getDocument());
+        ACSPProfileData data = document.getData();
 
         final int resIndex = aggregate.getResolutionIndex();
         if (resIndex >= 0) {

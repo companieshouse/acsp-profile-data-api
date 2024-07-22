@@ -19,11 +19,11 @@ import uk.gov.companieshouse.api.filinghistory.ExternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileLinks;
 
 @ExtendWith(MockitoExtension.class)
 class AnnotationTransactionMapperTest {
@@ -50,10 +50,10 @@ class AnnotationTransactionMapperTest {
     @Mock
     private DataMapper dataMapper;
     @Mock
-    private ChildListMapper<FilingHistoryAnnotation> childListMapper;
+    private ChildListMapper<ACSPProfileAnnotation> childListMapper;
 
     @Mock
-    private List<FilingHistoryAnnotation> annotationList;
+    private List<ACSPProfileAnnotation> annotationList;
 
     @Test
     void shouldMapAnnotationToNewDocumentWhenTopLevelAnnotation() {
@@ -76,16 +76,16 @@ class AnnotationTransactionMapperTest {
                         .updatedBy(UPDATED_BY))
                 .externalData(externalData);
 
-        FilingHistoryLinks expectedLinks = new FilingHistoryLinks()
+        ACSPProfileLinks expectedLinks = new ACSPProfileLinks()
                 .self("self link");
-        FilingHistoryData expectedData = new FilingHistoryData()
+        ACSPProfileData expectedData = new ACSPProfileData()
                 .links(expectedLinks)
                 .paperFiled(true)
                 .date(Instant.parse(DATE));
-        FilingHistoryDeltaTimestamp expectedTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp expectedTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(UPDATED_AT)
                 .by(UPDATED_BY);
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .transactionId(TRANSACTION_ID)
                 .data(expectedData)
                 .entityId(ENTITY_ID)
@@ -102,13 +102,13 @@ class AnnotationTransactionMapperTest {
         when(dataMapper.map(any(), any())).thenReturn(expectedData);
 
         // when
-        FilingHistoryDocument actual = annotationTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
+        ACSPProfileDocument actual = annotationTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
                 UPDATED_AT);
 
         // then
         assertEquals(expected, actual);
         verify(linksMapper).map(requestLinks);
-        verify(dataMapper).map(externalData, new FilingHistoryData());
+        verify(dataMapper).map(externalData, new ACSPProfileData());
         verify(childListMapper).mapChildList(eq(request), isNull(), any());
     }
 
@@ -131,14 +131,14 @@ class AnnotationTransactionMapperTest {
                         .links(requestLinks)
                         .paperFiled(true));
 
-        FilingHistoryLinks expectedLinks = new FilingHistoryLinks()
+        ACSPProfileLinks expectedLinks = new ACSPProfileLinks()
                 .self("self link");
-        FilingHistoryDeltaTimestamp expectedTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp expectedTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(UPDATED_AT)
                 .by(UPDATED_BY);
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .transactionId(TRANSACTION_ID)
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .links(expectedLinks)
                         .paperFiled(true))
                 .entityId(PARENT_ENTITY_ID)
@@ -149,7 +149,7 @@ class AnnotationTransactionMapperTest {
         when(linksMapper.map(any())).thenReturn(expectedLinks);
 
         // when
-        FilingHistoryDocument actual = annotationTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
+        ACSPProfileDocument actual = annotationTransactionMapper.mapNewFilingHistory(TRANSACTION_ID, request,
                 UPDATED_AT);
 
         // then
@@ -175,38 +175,38 @@ class AnnotationTransactionMapperTest {
                         .updatedBy(UPDATED_BY))
                 .externalData(externalData);
 
-        FilingHistoryDeltaTimestamp existingTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp existingTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(CREATED_AT)
                 .by(CREATED_BY);
-        FilingHistoryLinks existingLinks = new FilingHistoryLinks()
+        ACSPProfileLinks existingLinks = new ACSPProfileLinks()
                 .self("self link")
                 .documentMetadata("metadata");
-        FilingHistoryData existingData = new FilingHistoryData()
+        ACSPProfileData existingData = new ACSPProfileData()
                 .links(existingLinks)
                 .paperFiled(true)
                 .annotations(annotationList);
-        FilingHistoryDocument existingDocument = new FilingHistoryDocument()
+        ACSPProfileDocument existingDocument = new ACSPProfileDocument()
                 .data(existingData)
                 .created(existingTimestamp)
                 .updated(existingTimestamp);
 
-        FilingHistoryData mappedData = new FilingHistoryData()
+        ACSPProfileData mappedData = new ACSPProfileData()
                 .category("annotation")
                 .paperFiled(true)
                 .annotations(annotationList);
 
-        FilingHistoryData expectedData = new FilingHistoryData()
+        ACSPProfileData expectedData = new ACSPProfileData()
                 .category("annotation")
                 .paperFiled(true)
                 .annotations(annotationList);
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .entityId(ENTITY_ID)
                 .documentId(DOCUMENT_ID)
                 .deltaAt(DELTA_AT)
                 .matchedDefault(MATCHED_DEFAULT)
                 .originalDescription(ORIGINAL_DESCRIPTION)
                 .companyNumber(COMPANY_NUMBER)
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .by(UPDATED_BY)
                         .at(UPDATED_AT))
                 .created(existingTimestamp)
@@ -216,7 +216,7 @@ class AnnotationTransactionMapperTest {
         when(dataMapper.map(any(), any())).thenReturn(mappedData);
 
         // when
-        FilingHistoryDocument actual = annotationTransactionMapper.mapExistingFilingHistory(
+        ACSPProfileDocument actual = annotationTransactionMapper.mapExistingFilingHistory(
                 request, existingDocument, UPDATED_AT);
 
         // then
@@ -243,37 +243,37 @@ class AnnotationTransactionMapperTest {
                         .paperFiled(true)
                         .barcode(BARCODE));
 
-        FilingHistoryDeltaTimestamp existingTimestamp = new FilingHistoryDeltaTimestamp()
+        ACSPProfileDeltaTimestamp existingTimestamp = new ACSPProfileDeltaTimestamp()
                 .at(CREATED_AT)
                 .by(CREATED_BY);
-        FilingHistoryLinks existingLinks = new FilingHistoryLinks()
+        ACSPProfileLinks existingLinks = new ACSPProfileLinks()
                 .self("self link")
                 .documentMetadata("metadata");
-        FilingHistoryData existingData = new FilingHistoryData()
+        ACSPProfileData existingData = new ACSPProfileData()
                 .links(existingLinks)
                 .annotations(annotationList);
-        FilingHistoryDocument existingDocument = new FilingHistoryDocument()
+        ACSPProfileDocument existingDocument = new ACSPProfileDocument()
                 .data(existingData)
                 .created(existingTimestamp)
                 .updated(existingTimestamp);
 
-        FilingHistoryDocument expected = new FilingHistoryDocument()
+        ACSPProfileDocument expected = new ACSPProfileDocument()
                 .entityId(PARENT_ENTITY_ID)
                 .companyNumber(COMPANY_NUMBER)
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .by(UPDATED_BY)
                         .at(UPDATED_AT))
-                .data(new FilingHistoryData()
+                .data(new ACSPProfileData()
                         .links(existingLinks)
                         .paperFiled(true)
                         .annotations(annotationList))
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(UPDATED_AT)
                         .by(UPDATED_BY))
                 .created(existingTimestamp);
 
         // when
-        FilingHistoryDocument actual = annotationTransactionMapper.mapExistingFilingHistory(
+        ACSPProfileDocument actual = annotationTransactionMapper.mapExistingFilingHistory(
                 request, existingDocument, UPDATED_AT);
 
         // then

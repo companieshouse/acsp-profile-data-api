@@ -51,8 +51,8 @@ import uk.gov.companieshouse.api.filinghistory.ExternalData.CategoryEnum;
 import uk.gov.companieshouse.api.filinghistory.FilingHistoryList;
 import uk.gov.companieshouse.api.filinghistory.FilingHistoryList.FilingHistoryStatusEnum;
 import uk.gov.companieshouse.api.filinghistory.Links;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAnnotation;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAnnotation;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 @Testcontainers
 @AutoConfigureMockMvc
@@ -117,8 +117,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_entity_id>", ENTITY_ID)
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -134,8 +134,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<context_id>", CONTEXT_ID)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_annotation.json", StandardCharsets.UTF_8);
@@ -165,7 +165,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -188,8 +188,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -207,8 +207,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<context_id>", CONTEXT_ID)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_annotation.json", StandardCharsets.UTF_8);
@@ -239,7 +239,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -262,8 +262,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<context_id>", CONTEXT_ID)
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_annotation.json", StandardCharsets.UTF_8);
@@ -294,7 +294,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -316,8 +316,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", NEWEST_REQUEST_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -333,8 +333,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<barcode>", BARCODE)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/tm01s/put_request_TM01_electronic.json", StandardCharsets.UTF_8);
@@ -366,7 +366,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -389,8 +389,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -405,8 +405,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_annotation.json", StandardCharsets.UTF_8);
@@ -436,7 +436,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -459,8 +459,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -476,8 +476,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<context_id>", CONTEXT_ID)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/tm01s/put_request_TM01.json", StandardCharsets.UTF_8);
@@ -509,7 +509,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -533,8 +533,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String requestBody = IOUtils.resourceToString(
@@ -559,7 +559,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isConflict());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
 
         // Assert existing doc is unchanged
         assertEquals(existingDocument, actualDocument);
@@ -581,8 +581,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
 
         existingDocument.getData().getAnnotations().getFirst().deltaAt(null);
 
@@ -600,8 +600,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_annotation.json", StandardCharsets.UTF_8);
@@ -631,7 +631,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -654,8 +654,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
 
         existingDocument.getData().getAnnotations().getFirst().entityId(null);
 
@@ -675,8 +675,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         expectedDocument.getData().getAnnotations().getFirst().entityId(null);
 
@@ -708,7 +708,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -731,10 +731,10 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
 
-        FilingHistoryAnnotation firstAnnotation = existingDocument.getData().getAnnotations().getFirst();
+        ACSPProfileAnnotation firstAnnotation = existingDocument.getData().getAnnotations().getFirst();
         firstAnnotation.deltaAt(null);
         firstAnnotation.entityId(null);
 
@@ -795,10 +795,10 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
 
-        FilingHistoryAnnotation firstAnnotation = existingDocument.getData().getAnnotations().getFirst();
+        ACSPProfileAnnotation firstAnnotation = existingDocument.getData().getAnnotations().getFirst();
         firstAnnotation.deltaAt(null);
         firstAnnotation.entityId(null);
 
@@ -864,8 +864,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<created_at>", UPDATED_AT.toString())
                 .replaceAll("<parent_date>", NEW_DATE)
                 .replaceAll("<child_date>", NEW_DATE);
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_top_level_annotation.json", StandardCharsets.UTF_8);
@@ -894,7 +894,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -915,8 +915,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE)
                 .replaceAll("<date>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -931,8 +931,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE)
                 .replaceAll("<parent_date>", NEW_DATE)
                 .replaceAll("<child_date>", NEW_DATE);
-        FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_top_level_annotation.json", StandardCharsets.UTF_8);
@@ -961,7 +961,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -982,8 +982,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE)
                 .replaceAll("<date>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -1001,8 +1001,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE)
                 .replaceAll("<parent_date>", EXISTING_DATE)
                 .replaceAll("<child_date>", NEW_DATE);
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/annotation/put_request_body_annotation.json", StandardCharsets.UTF_8);
@@ -1032,7 +1032,7 @@ class AnnotationTransactionIT {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.header().string(LOCATION, SELF_LINK));
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -1054,8 +1054,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString())
                 .replaceAll("<date>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String requestBody = IOUtils.resourceToString(
@@ -1079,7 +1079,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isConflict());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
 
         // Assert existing doc is unchanged
         assertEquals(existingDocument, actualDocument);
@@ -1100,8 +1100,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString())
                 .replaceAll("<date>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         ExternalData expectedResponse = new ExternalData()
@@ -1142,8 +1142,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString())
                 .replaceAll("<date>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryList expectedObject = new FilingHistoryList()
@@ -1193,8 +1193,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<barcode>", BARCODE)
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -1211,8 +1211,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE)
                 .replaceAll("<context_id>", CONTEXT_ID);
 
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1230,7 +1230,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -1253,8 +1253,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
@@ -1268,8 +1268,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<context_id>", CONTEXT_ID)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument expectedDocument =
-                objectMapper.readValue(expectedDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument expectedDocument =
+                objectMapper.readValue(expectedDocumentJson, ACSPProfileDocument.class);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1287,7 +1287,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -1309,8 +1309,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", NEWEST_REQUEST_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
@@ -1329,7 +1329,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertNull(actualDocument);
 
         verify(instantSupplier).get();
@@ -1351,8 +1351,8 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE)
                 .replaceAll("<date>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
@@ -1371,7 +1371,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertNull(actualDocument);
 
         verify(instantSupplier).get();
@@ -1395,11 +1395,11 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", EXISTING_DELTA_AT)
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
-        FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1417,7 +1417,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isServiceUnavailable());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier, times(2)).get();
@@ -1439,11 +1439,11 @@ class AnnotationTransactionIT {
                 .replaceAll("<parent_delta_at>", NEWEST_REQUEST_DELTA_AT)
                 .replaceAll("<updated_at>", UPDATED_AT.toString())
                 .replaceAll("<created_at>", UPDATED_AT.toString());
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
-        FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1461,7 +1461,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isServiceUnavailable());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier).get();
@@ -1483,11 +1483,11 @@ class AnnotationTransactionIT {
                 .replaceAll("<updated_at>", EXISTING_DATE)
                 .replaceAll("<created_at>", EXISTING_DATE)
                 .replaceAll("<date>", EXISTING_DATE);
-        final FilingHistoryDocument existingDocument =
-                objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
+        final ACSPProfileDocument existingDocument =
+                objectMapper.readValue(existingDocumentJson, ACSPProfileDocument.class);
         mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
-        FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1505,7 +1505,7 @@ class AnnotationTransactionIT {
         // then
         result.andExpect(MockMvcResultMatchers.status().isServiceUnavailable());
 
-        FilingHistoryDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
+        ACSPProfileDocument actualDocument = mongoTemplate.findById(TRANSACTION_ID, ACSPProfileDocument.class);
         assertEquals(expectedDocument, actualDocument);
 
         verify(instantSupplier).get();

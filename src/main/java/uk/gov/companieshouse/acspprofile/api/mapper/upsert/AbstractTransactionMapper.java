@@ -4,9 +4,9 @@ import static java.lang.Boolean.TRUE;
 
 import java.time.Instant;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 
 public abstract class AbstractTransactionMapper {
 
@@ -16,22 +16,22 @@ public abstract class AbstractTransactionMapper {
         this.linksMapper = linksMapper;
     }
 
-    public FilingHistoryDocument mapNewFilingHistory(String id, InternalFilingHistoryApi request, Instant instant) {
-        FilingHistoryDocument newDocument = new FilingHistoryDocument()
+    public ACSPProfileDocument mapNewFilingHistory(String id, InternalFilingHistoryApi request, Instant instant) {
+        ACSPProfileDocument newDocument = new ACSPProfileDocument()
                 .transactionId(id)
-                .created(new FilingHistoryDeltaTimestamp()
+                .created(new ACSPProfileDeltaTimestamp()
                         .at(instant)
                         .by(request.getInternalData().getUpdatedBy()));
 
         return mapTopLevelFields(request, newDocument, instant)
-                .data(mapFilingHistoryData(request, new FilingHistoryData())
+                .data(mapFilingHistoryData(request, new ACSPProfileData())
                         .links(linksMapper.map(request.getExternalData().getLinks()))
                         .paperFiled(request.getExternalData().getPaperFiled()));
     }
 
-    public FilingHistoryDocument mapExistingFilingHistory(InternalFilingHistoryApi request,
-            FilingHistoryDocument existingDocument, Instant instant) {
-        FilingHistoryData existingData = existingDocument.getData();
+    public ACSPProfileDocument mapExistingFilingHistory(InternalFilingHistoryApi request,
+                                                        ACSPProfileDocument existingDocument, Instant instant) {
+        ACSPProfileData existingData = existingDocument.getData();
 
         Boolean paperFiled = existingData.getPaperFiled();
         if (!TRUE.equals(paperFiled)) {
@@ -42,8 +42,8 @@ public abstract class AbstractTransactionMapper {
                         .paperFiled(paperFiled));
     }
 
-    protected abstract FilingHistoryData mapFilingHistoryData(InternalFilingHistoryApi request, FilingHistoryData data);
+    protected abstract ACSPProfileData mapFilingHistoryData(InternalFilingHistoryApi request, ACSPProfileData data);
 
-    protected abstract FilingHistoryDocument mapTopLevelFields(InternalFilingHistoryApi request,
-            FilingHistoryDocument document, Instant instant);
+    protected abstract ACSPProfileDocument mapTopLevelFields(InternalFilingHistoryApi request,
+                                                             ACSPProfileDocument document, Instant instant);
 }

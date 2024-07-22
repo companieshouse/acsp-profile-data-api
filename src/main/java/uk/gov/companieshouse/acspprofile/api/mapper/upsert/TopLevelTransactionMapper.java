@@ -10,10 +10,10 @@ import uk.gov.companieshouse.api.filinghistory.InternalData;
 import uk.gov.companieshouse.api.filinghistory.InternalFilingHistoryApi;
 import uk.gov.companieshouse.acspprofile.api.exception.ConflictException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryAssociatedFiling;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryData;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileAssociatedFiling;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileData;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -22,12 +22,12 @@ public class TopLevelTransactionMapper extends AbstractTransactionMapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
     private final DataMapper dataMapper;
-    private final ChildListMapper<FilingHistoryAssociatedFiling> childListMapper;
+    private final ChildListMapper<ACSPProfileAssociatedFiling> childListMapper;
     private final OriginalValuesMapper originalValuesMapper;
 
     public TopLevelTransactionMapper(DataMapper dataMapper,
             OriginalValuesMapper originalValuesMapper, LinksMapper linksMapper,
-            ChildListMapper<FilingHistoryAssociatedFiling> childListMapper) {
+            ChildListMapper<ACSPProfileAssociatedFiling> childListMapper) {
         super(linksMapper);
         this.dataMapper = dataMapper;
         this.originalValuesMapper = originalValuesMapper;
@@ -35,9 +35,9 @@ public class TopLevelTransactionMapper extends AbstractTransactionMapper {
     }
 
     @Override
-    protected FilingHistoryData mapFilingHistoryData(InternalFilingHistoryApi request, FilingHistoryData data) {
+    protected ACSPProfileData mapFilingHistoryData(InternalFilingHistoryApi request, ACSPProfileData data) {
         ExternalData externalData = request.getExternalData();
-        final FilingHistoryData mappedData = dataMapper.map(externalData, data);
+        final ACSPProfileData mappedData = dataMapper.map(externalData, data);
 
         if (externalData.getAssociatedFilings() != null && !externalData.getAssociatedFilings().isEmpty()) {
             childListMapper.mapChildList(request, mappedData.getAssociatedFilings(), mappedData::associatedFilings);
@@ -53,8 +53,8 @@ public class TopLevelTransactionMapper extends AbstractTransactionMapper {
     }
 
     @Override
-    protected FilingHistoryDocument mapTopLevelFields(InternalFilingHistoryApi request, FilingHistoryDocument document,
-            Instant instant) {
+    protected ACSPProfileDocument mapTopLevelFields(InternalFilingHistoryApi request, ACSPProfileDocument document,
+                                                    Instant instant) {
         if (isDeltaStale(request.getInternalData().getDeltaAt(), document.getDeltaAt())) {
             LOGGER.error("Stale delta received; request delta_at: [%s] is not after existing delta_at: [%s]".formatted(
                     request.getInternalData().getDeltaAt(), document.getDeltaAt()), DataMapHolder.getLogMap());
@@ -71,7 +71,7 @@ public class TopLevelTransactionMapper extends AbstractTransactionMapper {
                 .originalDescription(internalData.getOriginalDescription())
                 .originalValues(originalValuesMapper.map(internalData.getOriginalValues()))
                 .deltaAt(internalData.getDeltaAt())
-                .updated(new FilingHistoryDeltaTimestamp()
+                .updated(new ACSPProfileDeltaTimestamp()
                         .at(instant)
                         .by(internalData.getUpdatedBy()));
     }

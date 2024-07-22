@@ -6,9 +6,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDeltaTimestamp;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
-import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDeltaTimestamp;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.model.mongo.ACSPProfileResolution;
 
 @Component
 public class CompositeResolutionDeleteMapper {
@@ -19,14 +19,14 @@ public class CompositeResolutionDeleteMapper {
         this.instantSupplier = instantSupplier;
     }
 
-    public Optional<FilingHistoryDocument> removeTransaction(int index, FilingHistoryDocument documentCopy) {
-        List<FilingHistoryResolution> resolutions = documentCopy.getData().getResolutions();
+    public Optional<ACSPProfileDocument> removeTransaction(int index, ACSPProfileDocument documentCopy) {
+        List<ACSPProfileResolution> resolutions = documentCopy.getData().getResolutions();
 
         if (resolutions.size() == 1) {
             return Optional.empty();
         } else {
             resolutions.remove(index);
-            documentCopy.updated(new FilingHistoryDeltaTimestamp()
+            documentCopy.updated(new ACSPProfileDeltaTimestamp()
                     .at(instantSupplier.get())
                     .by(DataMapHolder.getRequestId()));
             return Optional.of(documentCopy);
