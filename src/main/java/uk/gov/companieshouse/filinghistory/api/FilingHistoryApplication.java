@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FilingHistoryApplication {
 
-    public static final String NAMESPACE = "filing-history-data-api";
+    public static final String NAMESPACE = "acsp-profile-data-api";
 
     public static void main(String[] args) {
         SpringApplication.run(FilingHistoryApplication.class, args);

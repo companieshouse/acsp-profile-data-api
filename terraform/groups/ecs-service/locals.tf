@@ -3,20 +3,20 @@ locals {
   stack_name                  = "public-data" # this must match the stack name the service deploys into
   name_prefix                 = "${local.stack_name}-${var.environment}"
   global_prefix               = "global-${var.environment}"
-  service_name                = "filing-history-data-api"
+  service_name                = "acsp-profile-data-api"
   container_port              = "8080"
   eric_port                   = "10000"
-  docker_repo                 = "filing-history-data-api"
+  docker_repo                 = "acsp-profile-data-api"
   kms_alias                   = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority   = 41
   lb_listener_paths           = [
-    "/filing-history-data-api/healthcheck", "/company/*/filing-history*", "/filing-history/*/internal"
+    "/acsp-profile-data-api/healthcheck", "/company/*/filing-history*", "/filing-history/*/internal"
   ]
-  healthcheck_path            = "/filing-history-data-api/healthcheck" #healthcheck path for filing-history-data-api
+  healthcheck_path            = "/acsp-profile-data-api/healthcheck" #healthcheck path for acsp-profile-data-api
   healthcheck_matcher         = "200"
   vpc_name                    = local.stack_secrets["vpc_name"]
   s3_config_bucket            = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
-  app_environment_filename    = "filing-history-data-api.env"
+  app_environment_filename    = "acsp-profile-data-api.env"
   use_set_environment_files   = var.use_set_environment_files
   application_subnet_ids      = data.aws_subnets.application.ids
 

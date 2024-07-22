@@ -22,4 +22,4 @@ source "${APP_DIR}/private_env"
 source "${APP_DIR}/global_env"
 source "${APP_DIR}/app_env"
 
-exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "${APP_DIR}/filing-history-data-api.jar"
+exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "${APP_DIR}/acsp-profile-data-api.jar"

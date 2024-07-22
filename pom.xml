@@ -9,9 +9,9 @@
     <version>2.1.5</version>
   </parent>
 
-  <name>filing-history-data-api</name>
+  <name>acsp-profile-data-api</name>
 
-  <artifactId>filing-history-data-api</artifactId>
+  <artifactId>acsp-profile-data-api</artifactId>
   <version>latest</version>
   <packaging>jar</packaging>
 
@@ -215,7 +215,7 @@
             <image>416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-corretto-runtime-21:latest</image>
           </from>
           <to>
-            <image>416670754337.dkr.ecr.eu-west-2.amazonaws.com/filing-history-data-api:latest</image>
+            <image>416670754337.dkr.ecr.eu-west-2.amazonaws.com/acsp-profile-data-api:latest</image>
           </to>
         </configuration>
       </plugin>

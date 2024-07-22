@@ -132,7 +132,7 @@ variable "log_level" {
 }
 variable "filing_history_data_api_version" {
   type        = string
-  description = "The version of the filing-history-data-api container to run."
+  description = "The version of the acsp-profile-data-api container to run."
 }
 
 variable "eric_version" {

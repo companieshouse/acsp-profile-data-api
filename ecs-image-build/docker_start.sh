@@ -2,4 +2,4 @@
 
 PORT=8080
 
-exec java -jar -Dserver.port="${PORT}" "filing-history-data-api.jar"
+exec java -jar -Dserver.port="${PORT}" "acsp-profile-data-api.jar"

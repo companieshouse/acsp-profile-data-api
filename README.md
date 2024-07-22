@@ -1,8 +1,8 @@
-# `filing-history-data-api`
+# `acsp-profile-data-api`
 
 ## Summary
 
-The `filing-history-data-api` is a service that receives filing history deltas from
+The `acsp-profile-data-api` is a service that receives filing history deltas from
 `filing-history-data-consumer`. It transforms these deltas to a standardised structure and then:
 
 * stores or deletes documents within the `company_filing_history collection` in MongoDB, and
@@ -23,7 +23,7 @@ The service is implemented in Java 21 using Spring Boot 3.2
    follow the steps in the
    README.
 2. Enable the following services using the command `./bin/chs-dev services enable <service>`.
-    * `filing-history-data-api`
+    * `acsp-profile-data-api`
 
 3. Boot up the services' containers on docker using tilt `tilt up`.
 
@@ -51,8 +51,8 @@ Development mode is available for this service
 in [Docker CHS Development](https://github.com/companieshouse/docker-chs-development).
 
 ```bash
-./bin/chs-dev development enable filing-history-data-api
+./bin/chs-dev development enable acsp-profile-data-api
 ```
 
-This will clone the `filing-history-data-api` into the `./repositories` folder. Any changes to the
+This will clone the `acsp-profile-data-api` into the `./repositories` folder. Any changes to the
 code, or resources will automatically trigger a rebuild and relaunch.

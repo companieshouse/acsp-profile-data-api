@@ -1,4 +1,4 @@
-artifact_name       := filing-history-data-api
+artifact_name       := acsp-profile-data-api
 version             := unversioned
 
 .PHONY: clean

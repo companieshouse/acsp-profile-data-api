@@ -29,7 +29,7 @@ class FilingHistoryApplicationIT {
 
     @Test
     void shouldReturn200FromGetHealthEndpoint() throws Exception {
-        this.mockMvc.perform(get("/filing-history-data-api/healthcheck"))
+        this.mockMvc.perform(get("/acsp-profile-data-api/healthcheck"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"status\":\"UP\"}"));
