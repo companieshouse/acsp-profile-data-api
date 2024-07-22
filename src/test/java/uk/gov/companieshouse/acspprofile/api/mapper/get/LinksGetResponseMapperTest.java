@@ -9,7 +9,7 @@ import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
 
 class LinksGetResponseMapperTest {
 
-    private static final String SELF_LINK = "/company/12345678/filing-history/Mkv123";
+    private static final String SELF_LINK = "/company/12345678/acsp-profile/Mkv123";
     private static final String GET_RESPONSE_METADATA = "http://localhost:8080/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA";
     private static final String DOCUMENT_METADATA = "/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA";
     private static final String DOCUMENT_API_URL = "http://localhost:8080";

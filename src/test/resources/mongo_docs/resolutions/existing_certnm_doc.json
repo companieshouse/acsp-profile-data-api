@@ -11,7 +11,7 @@
       "description" : "Company name changed ACME LLP\\certificate issued on 22/04/24"
     },
     "links" : {
-      "self" : "/company/<company_number>/filing-history/<transaction_id>"
+      "self" : "/company/<company_number>/acsp-profile/<transaction_id>"
     },
     "subcategory" : "certificate",
     "type" : "CERTNM"

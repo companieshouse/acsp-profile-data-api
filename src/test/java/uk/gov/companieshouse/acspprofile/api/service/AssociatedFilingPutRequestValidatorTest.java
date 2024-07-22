@@ -20,7 +20,7 @@ import uk.gov.companieshouse.api.filinghistory.Links;
 class AssociatedFilingPutRequestValidatorTest {
 
     private static final String TRANSACTION_ID = "transactionId";
-    private static final String VALID_SELF_LINK = "/company/12345678/filing-history/transactionId";
+    private static final String VALID_SELF_LINK = "/company/12345678/acsp-profile/transactionId";
     private static final String VALID_DELTA_AT = "20140916230459600643";
     private static final String TYPE = "363(288)";
     private static final String DATE = "2011-08-06T00:00:00.00Z";

@@ -4,7 +4,7 @@
   "_entity_id" : "<parent_entity_id>",
   "data" : {
     "links" : {
-      "self" : "/company/<company_number>/filing-history/<transaction_id>"
+      "self" : "/company/<company_number>/acsp-profile/<transaction_id>"
     },
     "paper_filed" : true,
     "resolutions" : [

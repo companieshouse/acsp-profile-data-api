@@ -6,7 +6,7 @@
     "type" : "RESOLUTIONS",
     "category" : "resolution",
     "links" : {
-      "self" : "/company/<company_number>/filing-history/<transaction_id>",
+      "self" : "/company/<company_number>/acsp-profile/<transaction_id>",
       "document_metadata" : "/document/oGimUKFCtvKUJRbkuupRh-0arENh56Stcn-SZlUSwqI"
     },
     "paper_filed" : true,

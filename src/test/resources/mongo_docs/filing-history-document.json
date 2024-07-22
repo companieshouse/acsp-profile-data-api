@@ -28,7 +28,7 @@
     ],
     "links" : {
       "document_metadata" : "/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA",
-      "self" : "/company/<company_number>/filing-history/<id>"
+      "self" : "/company/<company_number>/acsp-profile/<id>"
     },
     "pages" : NumberInt(1)
   },

@@ -24,7 +24,7 @@
     ],
     "paper_filed": true,
     "links": {
-      "self": "/company/<company_number>/filing-history/<transaction_id>"
+      "self": "/company/<company_number>/acsp-profile/<transaction_id>"
     }
   },
   "original_description": "Certificate of incorporation general company details & statements of; officers, capital & shareholdings, guarantee, compliance memorandum of association articles of association",

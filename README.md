@@ -3,7 +3,7 @@
 ## Summary
 
 The `acsp-profile-data-api` is a service that receives filing history deltas from
-`filing-history-data-consumer`. It transforms these deltas to a standardised structure and then:
+`acsp-profile-data-consumer`. It transforms these deltas to a standardised structure and then:
 
 * stores or deletes documents within the `company_filing_history collection` in MongoDB, and
 * enqueues a resource changed message that triggers further downstream processing.

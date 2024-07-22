@@ -68,14 +68,14 @@ import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryOriginalVa
 @WireMockTest(httpPort = 8889)
 class FilingHistoryControllerIT {
 
-    private static final String PUT_REQUEST_URI = "/company/{company_number}/filing-history/{transaction_id}/internal";
-    private static final String DELETE_REQUEST_URI = "/filing-history/{entity_id}/internal";
-    private static final String SINGLE_GET_REQUEST_URI = "/company/{company_number}/filing-history/{transaction_id}";
-    private static final String LIST_GET_REQUEST_URI = "/company/{company_number}/filing-history";
+    private static final String PUT_REQUEST_URI = "/company/{company_number}/acsp-profile/{transaction_id}/internal";
+    private static final String DELETE_REQUEST_URI = "/acsp-profile/{entity_id}/internal";
+    private static final String SINGLE_GET_REQUEST_URI = "/company/{company_number}/acsp-profile/{transaction_id}";
+    private static final String LIST_GET_REQUEST_URI = "/company/{company_number}/acsp-profile";
     private static final String FILING_HISTORY_COLLECTION = "company_filing_history";
     private static final String TRANSACTION_ID = "transactionId";
     private static final String COMPANY_NUMBER = "12345678";
-    private static final String SELF_LINK = "/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID);
+    private static final String SELF_LINK = "/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID);
     private static final String ENTITY_ID = "1234567890";
     private static final String CHILD_ENTITY_ID = "2234567890";
     private static final String DOCUMENT_ID = "000X4BI89B65846";
@@ -209,7 +209,7 @@ class FilingHistoryControllerIT {
     @Test
     void shouldUpdateDocumentAndReturn200OKWhenExistingDocumentInDB() throws Exception {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
@@ -363,7 +363,7 @@ class FilingHistoryControllerIT {
                                         "http://localhost:8080/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA"))
                         .pages(1)));
 
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
@@ -474,7 +474,7 @@ class FilingHistoryControllerIT {
                                         "http://localhost:8080/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA"))
                         .pages(1)));
 
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
@@ -529,7 +529,7 @@ class FilingHistoryControllerIT {
                         .documentMetadata("http://localhost:8080/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA"))
                 .pages(1);
 
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
@@ -570,7 +570,7 @@ class FilingHistoryControllerIT {
                 .paperFiled(true);
 
         final String jsonToInsert = IOUtils.resourceToString(
-                        "/mongo_docs/filing-history-document-list-subcategory.json",
+                        "/mongo_docs/acsp-profile-document-list-subcategory.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
@@ -657,7 +657,7 @@ class FilingHistoryControllerIT {
     @Test
     void shouldNotUpdateDocumentAndShouldReturn409ConflictWhenDeltaStale() throws Exception {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
@@ -757,7 +757,7 @@ class FilingHistoryControllerIT {
     void shouldReturn503ServiceUnavailableWhenChsKafkaApiReturnsA503ResponseOnUpsertAndDocumentShouldBeRolledBackToPreviousState()
             throws Exception {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
@@ -795,7 +795,7 @@ class FilingHistoryControllerIT {
     @Test
     void shouldDeleteDocumentAndReturn200OKWhenExistingDocumentInDB() throws Exception {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<entity_id>", ENTITY_ID)
@@ -831,7 +831,7 @@ class FilingHistoryControllerIT {
     void shouldReturn503GivenDeleteAndChsKafkaApiUnavailableAndDocumentShouldBeRolledBackToPreviousState()
             throws Exception {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<entity_id>", ENTITY_ID)
@@ -885,7 +885,7 @@ class FilingHistoryControllerIT {
     @Test
     void shouldUpdateDocumentAndReturn200OKWhenExistingDocumentHasNoDeltaAt() throws Exception {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);

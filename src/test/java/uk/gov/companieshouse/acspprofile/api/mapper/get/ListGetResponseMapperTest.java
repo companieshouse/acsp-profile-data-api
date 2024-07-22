@@ -20,7 +20,7 @@ import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryListAggreg
 @ExtendWith(MockitoExtension.class)
 class ListGetResponseMapperTest {
 
-    private static final String STATUS = "filing-history-available";
+    private static final String STATUS = "acsp-profile-available";
     private static final int ITEMS_PER_PAGE = 25;
     private static final int START_INDEX = 0;
     @InjectMocks

@@ -75,7 +75,7 @@ class RepositoryIT {
     @Test
     void testMappingsFromMongoToDocument() throws IOException {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<entity_id>", ENTITY_ID)
@@ -97,13 +97,13 @@ class RepositoryIT {
     @Test
     void testAggregationQueryToFindTwoDocuments() throws IOException {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<entity_id>", ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        final String jsonToInsertTwo = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsertTwo = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID_TWO)
                 .replaceAll("<entity_id>", ENTITY_ID)
@@ -125,13 +125,13 @@ class RepositoryIT {
     @Test
     void testAggregationQueryToFindOneDocumentWhenCategoryFilter() throws IOException {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<entity_id>", ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        final String jsonToInsertTwo = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsertTwo = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID_TWO)
                 .replaceAll("<entity_id>", ENTITY_ID)
@@ -244,7 +244,7 @@ class RepositoryIT {
     @Test
     void testInvalidCompanyNumber() throws IOException {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
@@ -275,7 +275,7 @@ class RepositoryIT {
     @Test
     void shouldSuccessfullyDeleteDocumentById() throws IOException {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
@@ -293,7 +293,7 @@ class RepositoryIT {
     @Test
     void testDeleteAggregationQueryToCorrectlyMatchOnTopLevelEntityIdAndReturnAggregation() throws IOException {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<entity_id>", TOP_LEVEL_ENTITY_ID)
@@ -315,7 +315,7 @@ class RepositoryIT {
     @Test
     void testDeleteAggregationQueryToCorrectlyMatchOnChildAnnotationEntityIdAndReturnAggregation() throws IOException {
         // given
-        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/filing-history-document.json",
+        final String jsonToInsert = IOUtils.resourceToString("/mongo_docs/acsp-profile-document.json",
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
@@ -443,7 +443,7 @@ class RepositoryIT {
                                 .deltaAt("20140815230459600643")))
                         .links(new FilingHistoryLinks()
                                 .documentMetadata("/document/C1_z-KlM567zSgwJz8uN-UZ3_xnGfCljj3k7L69LxwA")
-                                .self("/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, transactionId)))
+                                .self("/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, transactionId)))
                         .pages(1))
                 .barcode("X4BI89B6")
                 .deltaAt("20140815230459600643")

@@ -13,7 +13,7 @@
     "action_date": "2014-09-29T00:00:00Z",
     "category": "mortgage",
     "links": {
-      "self": "/company/<company_number>/filing-history/<transaction_id>"
+      "self": "/company/<company_number>/acsp-profile/<transaction_id>"
     }
   },
   "internal_data": {

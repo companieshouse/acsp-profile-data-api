@@ -9,7 +9,7 @@ import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryLinks;
 
 class LinksMapperTest {
 
-    private static final String SELF_LINK = "/company/12345678/filing-history/abc123def456ghi789";
+    private static final String SELF_LINK = "/company/12345678/acsp-profile/abc123def456ghi789";
     private final LinksMapper mapper = new LinksMapper();
 
     @Test

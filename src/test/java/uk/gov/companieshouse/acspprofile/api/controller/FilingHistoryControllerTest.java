@@ -175,7 +175,7 @@ class FilingHistoryControllerTest {
 
         final ResponseEntity<Void> expectedResponse = ResponseEntity
                 .status(HttpStatus.OK)
-                .header(LOCATION, "/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
+                .header(LOCATION, "/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
                 .build();
 
         // when

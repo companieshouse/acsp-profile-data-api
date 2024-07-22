@@ -62,10 +62,10 @@ import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryResolution
 @WireMockTest(httpPort = 8889)
 class ResolutionTransactionIT {
 
-    private static final String PUT_REQUEST_URI = "/company/{company_number}/filing-history/{transaction_id}/internal";
-    private static final String GET_SINGLE_TRANSACTION_URI = "/company/{company_number}/filing-history/{transaction_id}";
-    private static final String GET_FILING_HISTORY_URI = "/company/{company_number}/filing-history";
-    private static final String DELETE_REQUEST_URI = "/filing-history/{entity_id}/internal";
+    private static final String PUT_REQUEST_URI = "/company/{company_number}/acsp-profile/{transaction_id}/internal";
+    private static final String GET_SINGLE_TRANSACTION_URI = "/company/{company_number}/acsp-profile/{transaction_id}";
+    private static final String GET_FILING_HISTORY_URI = "/company/{company_number}/acsp-profile";
+    private static final String DELETE_REQUEST_URI = "/acsp-profile/{entity_id}/internal";
     private static final String FILING_HISTORY_COLLECTION = "company_filing_history";
     private static final String TRANSACTION_ID = "transactionId";
     private static final String COMPANY_NUMBER = "12345678";
@@ -74,7 +74,7 @@ class ResolutionTransactionIT {
     private static final String EXISTING_CHILD_ENTITY_ID = "3234567890";
     private static final String CONTEXT_ID = "ABCD1234";
     private static final String EXISTING_CONTEXT_ID = "context_id";
-    private static final String SELF_LINK = "/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID);
+    private static final String SELF_LINK = "/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID);
     private static final String BARCODE = "AOPYXMJN";
     private static final String EXISTING_DELTA_AT = "20140815230459600643";
     private static final String EXISTING_DELTA_AT_TWO = "20140816230459600643";
@@ -135,7 +135,7 @@ class ResolutionTransactionIT {
                 .descriptionValues(new DescriptionValues()
                         .description("Resolutions"))
                 .links(new Links()
-                        .self("/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
+                        .self("/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
                         .documentMetadata("http://localhost:8080/document/oGimUKFCtvKUJRbkuupRh-0arENh56Stcn-SZlUSwqI"))
                 .paperFiled(true)
                 .pages(1)
@@ -200,7 +200,7 @@ class ResolutionTransactionIT {
                         .type("RESOLUTIONS")
                         .category(ExternalData.CategoryEnum.RESOLUTION)
                         .links(new Links()
-                                .self("/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
+                                .self("/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
                                 .documentMetadata(
                                         "http://localhost:8080/document/oGimUKFCtvKUJRbkuupRh-0arENh56Stcn-SZlUSwqI"))
                         .paperFiled(true)
@@ -791,7 +791,7 @@ class ResolutionTransactionIT {
                 .descriptionValues(new DescriptionValues()
                         .description("Resolutions"))
                 .links(new Links()
-                        .self("/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
+                        .self("/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
                         .documentMetadata("http://localhost:8080/document/oGimUKFCtvKUJRbkuupRh-0arENh56Stcn-SZlUSwqI"))
                 .paperFiled(true)
                 .pages(1)
@@ -860,7 +860,7 @@ class ResolutionTransactionIT {
                         .type("RESOLUTIONS")
                         .category(ExternalData.CategoryEnum.RESOLUTION)
                         .links(new Links()
-                                .self("/company/%s/filing-history/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
+                                .self("/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID))
                                 .documentMetadata(
                                         "http://localhost:8080/document/oGimUKFCtvKUJRbkuupRh-0arENh56Stcn-SZlUSwqI"))
                         .paperFiled(true)
@@ -1643,8 +1643,8 @@ class ResolutionTransactionIT {
 
     private String getExpectedChangedResource() throws JsonProcessingException {
         return objectMapper.writeValueAsString(new ChangedResource()
-                .resourceUri("/company/12345678/filing-history/transactionId")
-                .resourceKind("filing-history")
+                .resourceUri("/company/12345678/acsp-profile/transactionId")
+                .resourceKind("acsp-profile")
                 .contextId(CONTEXT_ID)
                 .deletedData(null)
                 .event(new ChangedResourceEvent()

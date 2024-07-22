@@ -21,7 +21,7 @@ public class FilingHistoryGetResponseProcessor implements GetResponseProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
     private static final int MAX_ITEMS_PER_PAGE = 100;
     private static final Pattern STATUS_NOT_AVAILABLE_PATTERN =
-            Pattern.compile("^filing-history-not-available(?!.*before)");
+            Pattern.compile("^acsp-profile-not-available(?!.*before)");
 
     private final Service filingHistoryService;
     private final ItemGetResponseMapper itemGetResponseMapper;

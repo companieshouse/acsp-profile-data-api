@@ -35,13 +35,13 @@ import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryDocument;
 class ResourceChangedRequestMapperTest {
 
     private static final Instant UPDATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-    private static final String FILING_HISTORY = "filing-history";
+    private static final String ACSP_PROFILE = "acsp-profile";
     private static final String EXPECTED_CONTEXT_ID = "35234234";
     private static final ExternalData deletedData = new ExternalData();
     private static final FilingHistoryDocument filingHistoryDocument = new FilingHistoryDocument()
             .companyNumber("12345678")
             .transactionId("ABCDE54321");
-    private static final String RESOURCE_URI = "/company/12345678/filing-history/ABCDE54321";
+    private static final String RESOURCE_URI = "/company/12345678/acsp-profile/ABCDE54321";
     private static final String CHANGED_EVENT_TYPE = "changed";
     private static final String DELETED_EVENT_TYPE = "deleted";
 
@@ -69,7 +69,7 @@ class ResourceChangedRequestMapperTest {
         ChangedResource expectedChangedResource = new ChangedResource()
                 .contextId(EXPECTED_CONTEXT_ID)
                 .resourceUri(RESOURCE_URI)
-                .resourceKind(FILING_HISTORY)
+                .resourceKind(ACSP_PROFILE)
                 .event(new ChangedResourceEvent()
                         .type(CHANGED_EVENT_TYPE)
                         .publishedAt(UPDATED_AT.toString()));
@@ -101,7 +101,7 @@ class ResourceChangedRequestMapperTest {
         ChangedResource expectedChangedResource = new ChangedResource()
                 .contextId(EXPECTED_CONTEXT_ID)
                 .resourceUri(RESOURCE_URI)
-                .resourceKind(FILING_HISTORY)
+                .resourceKind(ACSP_PROFILE)
                 .deletedData(deletedDataAsObject)
                 .event(new ChangedResourceEvent()
                         .type(DELETED_EVENT_TYPE)

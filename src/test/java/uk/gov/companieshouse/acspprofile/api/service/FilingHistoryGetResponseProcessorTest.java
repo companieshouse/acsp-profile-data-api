@@ -32,8 +32,8 @@ class FilingHistoryGetResponseProcessorTest {
 
     private static final String TRANSACTION_ID = "transactionId";
     private static final String COMPANY_NUMBER = "12345678";
-    private static final String STATUS = "filing-history-not-available-limited-partnership-before-1988";
-    private static final String NOT_AVAILABLE_STATUS = "filing-history-not-available";
+    private static final String STATUS = "acsp-profile-not-available-limited-partnership-before-1988";
+    private static final String NOT_AVAILABLE_STATUS = "acsp-profile-not-available";
     private static final int DEFAULT_ITEMS_PER_PAGE = 25;
     private static final int MAX_ITEMS_PER_PAGE = 100;
     private static final int START_INDEX = 0;

@@ -38,9 +38,9 @@ public class ResourceChangedRequestMapper {
         FilingHistoryDocument document = request.filingHistoryDocument();
         ChangedResourceEvent event = new ChangedResourceEvent().publishedAt(instantSupplier.get().toString());
         ChangedResource changedResource = new ChangedResource()
-                .resourceUri("/company/%s/filing-history/%s".formatted(document.getCompanyNumber(),
+                .resourceUri("/company/%s/acsp-profile/%s".formatted(document.getCompanyNumber(),
                         document.getTransactionId()))
-                .resourceKind("filing-history")
+                .resourceKind("acsp-profile")
                 .event(event)
                 .contextId(DataMapHolder.getRequestId());
 

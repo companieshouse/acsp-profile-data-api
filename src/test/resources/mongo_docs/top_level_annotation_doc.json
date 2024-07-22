@@ -3,7 +3,7 @@
   "_entity_id" : "3058819821",
   "data" : {
     "links" : {
-      "self" : "/company/<company_number>/filing-history/<id>"
+      "self" : "/company/<company_number>/acsp-profile/<id>"
     },
     "description" : "legacy",
     "type" : "ANNOTATION",

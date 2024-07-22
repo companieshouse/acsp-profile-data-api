@@ -10,7 +10,7 @@ locals {
   kms_alias                   = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority   = 41
   lb_listener_paths           = [
-    "/acsp-profile-data-api/healthcheck", "/company/*/filing-history*", "/filing-history/*/internal"
+    "/acsp-profile-data-api/healthcheck", "/company/*/acsp-profile*", "/acsp-profile/*/internal"
   ]
   healthcheck_path            = "/acsp-profile-data-api/healthcheck" #healthcheck path for acsp-profile-data-api
   healthcheck_matcher         = "200"

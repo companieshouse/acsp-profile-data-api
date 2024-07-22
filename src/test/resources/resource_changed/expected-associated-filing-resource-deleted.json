@@ -1,6 +1,6 @@
 {
-  "resource_kind": "filing-history",
-  "resource_uri": "/company/<company_number>/filing-history/<transaction_id>",
+  "resource_kind": "acsp-profile",
+  "resource_uri": "/company/<company_number>/acsp-profile/<transaction_id>",
   "context_id": "<context_id>",
   "deleted_data": {
     "transaction_id" : "<transaction_id>",
@@ -16,7 +16,7 @@
       }
     ],
     "links" : {
-      "self" : "/company/<company_number>/filing-history/<transaction_id>"
+      "self" : "/company/<company_number>/acsp-profile/<transaction_id>"
     },
     "paper_filed" : true
   },
