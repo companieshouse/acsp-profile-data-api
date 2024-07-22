@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class FilingHistoryApplicationIT {
+class ACSPProfileApplicationIT {
 
     @Autowired
     private MockMvc mockMvc;
