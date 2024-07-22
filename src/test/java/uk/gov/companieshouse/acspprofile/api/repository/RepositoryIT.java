@@ -38,7 +38,7 @@ import uk.gov.companieshouse.acspprofile.api.model.mongo.FilingHistoryOriginalVa
 @SpringBootTest
 class RepositoryIT {
 
-    private static final String FILING_HISTORY_COLLECTION = "company_filing_history";
+    private static final String ACSP_PROFILE_COLLECTION = "company_filing_history";
     private static final String TRANSACTION_ID = "transactionId";
     private static final String TRANSACTION_ID_TWO = "transactionIdTwo";
     private static final String ENTITY_ID = "1234567890";
@@ -68,8 +68,8 @@ class RepositoryIT {
 
     @BeforeEach
     void setUp() {
-        mongoTemplate.dropCollection(FILING_HISTORY_COLLECTION);
-        mongoTemplate.createCollection(FILING_HISTORY_COLLECTION);
+        mongoTemplate.dropCollection(ACSP_PROFILE_COLLECTION);
+        mongoTemplate.createCollection(ACSP_PROFILE_COLLECTION);
     }
 
     @Test
@@ -81,7 +81,7 @@ class RepositoryIT {
                 .replaceAll("<entity_id>", ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         final FilingHistoryDocument expectedDocument = getFilingHistoryDocument(TRANSACTION_ID);
 
@@ -109,8 +109,8 @@ class RepositoryIT {
                 .replaceAll("<entity_id>", ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
-        mongoTemplate.insert(Document.parse(jsonToInsertTwo), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsertTwo), ACSP_PROFILE_COLLECTION);
 
         final FilingHistoryListAggregate expected = getFilingHistoryListAggregate();
 
@@ -137,8 +137,8 @@ class RepositoryIT {
                 .replaceAll("<entity_id>", ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", "incorporation");
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
-        mongoTemplate.insert(Document.parse(jsonToInsertTwo), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsertTwo), ACSP_PROFILE_COLLECTION);
 
         final FilingHistoryListAggregate expected = getFilingHistoryListAggregateOneDocument();
         expected.getDocumentList().getFirst().getData().category("incorporation");
@@ -230,7 +230,7 @@ class RepositoryIT {
             filingHistoryDocument.data(new FilingHistoryData().date(Instant.now().plusMillis(i)));
             documentList.add(filingHistoryDocument);
         }
-        mongoTemplate.insert(documentList, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(documentList, ACSP_PROFILE_COLLECTION);
 
         // when
         final FilingHistoryListAggregate actual = repository.findCompanyFilingHistory(COMPANY_NUMBER,
@@ -249,7 +249,7 @@ class RepositoryIT {
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         final Optional<FilingHistoryDocument> actualDocument = repository.findByIdAndCompanyNumber(TRANSACTION_ID,
@@ -280,7 +280,7 @@ class RepositoryIT {
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         repository.deleteById(TRANSACTION_ID);
@@ -299,7 +299,7 @@ class RepositoryIT {
                 .replaceAll("<entity_id>", TOP_LEVEL_ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(TOP_LEVEL_ENTITY_ID);
@@ -320,7 +320,7 @@ class RepositoryIT {
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", OFFICERS_CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
@@ -350,7 +350,7 @@ class RepositoryIT {
                 .replaceAll("<barcode>", "AOPYXMJN")
                 .replaceAll("<updated_at>", UPDATED_AT)
                 .replaceAll("<created_at>", UPDATED_AT);
-        mongoTemplate.insert(Document.parse(existingDocumentJson), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(existingDocumentJson), ACSP_PROFILE_COLLECTION);
 
         // when
         final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);
@@ -375,7 +375,7 @@ class RepositoryIT {
                 .replaceAll("<af_entity_id>", CHILD_ENTITY_ID)
                 .replaceAll("<updated_at>", UPDATED_AT)
                 .replaceAll("<created_at>", UPDATED_AT);
-        mongoTemplate.insert(Document.parse(existingDocumentJson), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(existingDocumentJson), ACSP_PROFILE_COLLECTION);
 
         // when
         final Optional<FilingHistoryDeleteAggregate> actual = repository.findByEntityId(CHILD_ENTITY_ID);

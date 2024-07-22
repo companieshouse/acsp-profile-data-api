@@ -50,8 +50,8 @@ class FilingHistoryControllerMongoUnavailableIT {
 
     private static final String PUT_REQUEST_URI = "/company/{company_number}/acsp-profile/{transaction_id}/internal";
     private static final String GET_SINGLE_TRANSACTION_URI = "/company/{company_number}/acsp-profile/{transaction_id}";
-    private static final String GET_FILING_HISTORY_URI = "/company/{company_number}/acsp-profile";
-    private static final String FILING_HISTORY_COLLECTION = "company_filing_history";
+    private static final String GET_ACSP_PROFILE_URI = "/company/{company_number}/acsp-profile";
+    private static final String ACSP_PROFILE_COLLECTION = "company_filing_history";
     private static final String TRANSACTION_ID = "transactionId";
     private static final String COMPANY_NUMBER = "12345678";
     private static final String SELF_LINK = "/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID);
@@ -96,8 +96,8 @@ class FilingHistoryControllerMongoUnavailableIT {
 
     @BeforeEach
     void setUp() {
-        mongoTemplate.dropCollection(FILING_HISTORY_COLLECTION);
-        mongoTemplate.createCollection(FILING_HISTORY_COLLECTION);
+        mongoTemplate.dropCollection(ACSP_PROFILE_COLLECTION);
+        mongoTemplate.createCollection(ACSP_PROFILE_COLLECTION);
     }
 
     @Test
@@ -168,7 +168,7 @@ class FilingHistoryControllerMongoUnavailableIT {
         when(repository.findCompanyFilingHistory(any(), anyInt(), anyInt(), any())).thenThrow(ServiceUnavailableException.class);
 
         // when
-        ResultActions result = mockMvc.perform(get(GET_FILING_HISTORY_URI, COMPANY_NUMBER,
+        ResultActions result = mockMvc.perform(get(GET_ACSP_PROFILE_URI, COMPANY_NUMBER,
                 START_INDEX, ITEMS_PER_PAGE, List.of(CATEGORY))
                 .header("ERIC-Identity", "123")
                 .header("ERIC-Identity-Type", "key")

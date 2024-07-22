@@ -72,7 +72,7 @@ class FilingHistoryControllerIT {
     private static final String DELETE_REQUEST_URI = "/acsp-profile/{entity_id}/internal";
     private static final String SINGLE_GET_REQUEST_URI = "/company/{company_number}/acsp-profile/{transaction_id}";
     private static final String LIST_GET_REQUEST_URI = "/company/{company_number}/acsp-profile";
-    private static final String FILING_HISTORY_COLLECTION = "company_filing_history";
+    private static final String ACSP_PROFILE_COLLECTION = "company_filing_history";
     private static final String TRANSACTION_ID = "transactionId";
     private static final String COMPANY_NUMBER = "12345678";
     private static final String SELF_LINK = "/company/%s/acsp-profile/%s".formatted(COMPANY_NUMBER, TRANSACTION_ID);
@@ -121,8 +121,8 @@ class FilingHistoryControllerIT {
 
     @BeforeEach
     void setUp() {
-        mongoTemplate.dropCollection(FILING_HISTORY_COLLECTION);
-        mongoTemplate.createCollection(FILING_HISTORY_COLLECTION);
+        mongoTemplate.dropCollection(ACSP_PROFILE_COLLECTION);
+        mongoTemplate.createCollection(ACSP_PROFILE_COLLECTION);
     }
 
     @Test
@@ -213,7 +213,7 @@ class FilingHistoryControllerIT {
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         final FilingHistoryDocument expectedDocument =
                 getExpectedFilingHistoryDocument(DOCUMENT_METADATA, 1,
@@ -274,7 +274,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<barcode>", BARCODE)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<entity_id>", ENTITY_ID);
-        mongoTemplate.insert(Document.parse(existingDocumentJson), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(existingDocumentJson), ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/expected-legacy-original-values-document.json", StandardCharsets.UTF_8);
@@ -368,7 +368,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         ResultActions result = mockMvc.perform(get(LIST_GET_REQUEST_URI, COMPANY_NUMBER)
@@ -393,7 +393,7 @@ class FilingHistoryControllerIT {
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         ResultActions result = mockMvc.perform(get(LIST_GET_REQUEST_URI, COMPANY_NUMBER)
@@ -479,7 +479,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         ResultActions result = mockMvc.perform(
@@ -534,7 +534,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         ResultActions result = mockMvc.perform(get(SINGLE_GET_REQUEST_URI, COMPANY_NUMBER, TRANSACTION_ID)
@@ -574,7 +574,7 @@ class FilingHistoryControllerIT {
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         // when
         ResultActions result = mockMvc.perform(get(SINGLE_GET_REQUEST_URI, COMPANY_NUMBER, TRANSACTION_ID)
@@ -661,7 +661,7 @@ class FilingHistoryControllerIT {
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         final InternalFilingHistoryApi request = buildPutRequestBody(STALE_REQUEST_DELTA_AT);
 
@@ -761,7 +761,7 @@ class FilingHistoryControllerIT {
                         StandardCharsets.UTF_8)
                 .replaceAll("<id>", TRANSACTION_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         final FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID,
                 FilingHistoryDocument.class);
@@ -801,7 +801,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<entity_id>", ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -837,7 +837,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<entity_id>", ENTITY_ID)
                 .replaceAll("<company_number>", COMPANY_NUMBER)
                 .replaceAll("<category>", CATEGORY);
-        mongoTemplate.insert(Document.parse(jsonToInsert), FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(Document.parse(jsonToInsert), ACSP_PROFILE_COLLECTION);
 
         final FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID,
                 FilingHistoryDocument.class);
@@ -891,7 +891,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<company_number>", COMPANY_NUMBER);
         Document doc = Document.parse(jsonToInsert);
         doc.remove("delta_at");
-        mongoTemplate.insert(doc, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(doc, ACSP_PROFILE_COLLECTION);
 
         final FilingHistoryDocument expectedDocument =
                 getExpectedFilingHistoryDocument(DOCUMENT_METADATA, 1,
@@ -1005,7 +1005,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<created_at>", DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/newinc/expected_new_inc_with_SH01_doc.json", StandardCharsets.UTF_8);
@@ -1070,7 +1070,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<created_at>", DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/newinc/expected_new_inc_with_SH01_and_MODEL_ARTICLES_doc.json", StandardCharsets.UTF_8);
@@ -1135,7 +1135,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<created_at>", DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1173,7 +1173,7 @@ class FilingHistoryControllerIT {
                 .replaceAll("<created_at>", DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))

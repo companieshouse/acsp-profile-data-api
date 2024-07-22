@@ -64,9 +64,9 @@ class ResolutionTransactionIT {
 
     private static final String PUT_REQUEST_URI = "/company/{company_number}/acsp-profile/{transaction_id}/internal";
     private static final String GET_SINGLE_TRANSACTION_URI = "/company/{company_number}/acsp-profile/{transaction_id}";
-    private static final String GET_FILING_HISTORY_URI = "/company/{company_number}/acsp-profile";
+    private static final String GET_ACSP_PROFILE_URI = "/company/{company_number}/acsp-profile";
     private static final String DELETE_REQUEST_URI = "/acsp-profile/{entity_id}/internal";
-    private static final String FILING_HISTORY_COLLECTION = "company_filing_history";
+    private static final String ACSP_PROFILE_COLLECTION = "company_filing_history";
     private static final String TRANSACTION_ID = "transactionId";
     private static final String COMPANY_NUMBER = "12345678";
     private static final String ENTITY_ID = "1234567890";
@@ -107,8 +107,8 @@ class ResolutionTransactionIT {
 
     @BeforeEach
     void setUp() {
-        mongoTemplate.dropCollection(FILING_HISTORY_COLLECTION);
-        mongoTemplate.createCollection(FILING_HISTORY_COLLECTION);
+        mongoTemplate.dropCollection(ACSP_PROFILE_COLLECTION);
+        mongoTemplate.createCollection(ACSP_PROFILE_COLLECTION);
     }
 
     @Test
@@ -124,7 +124,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         ExternalData expectedResponse = new ExternalData()
                 .transactionId(TRANSACTION_ID)
@@ -187,7 +187,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<updated_at>", UPDATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryList expectedResponse = new FilingHistoryList()
                 .itemsPerPage(25)
@@ -231,7 +231,7 @@ class ResolutionTransactionIT {
                 );
 
         // when
-        ResultActions result = mockMvc.perform(get(GET_FILING_HISTORY_URI, COMPANY_NUMBER)
+        ResultActions result = mockMvc.perform(get(GET_ACSP_PROFILE_URI, COMPANY_NUMBER)
                 .header("ERIC-Identity", "123")
                 .header("ERIC-Identity-Type", "key")
                 .header("X-Request-Id", CONTEXT_ID));
@@ -315,7 +315,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", UPDATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_resolution_doc_with_two_resolutions.json", StandardCharsets.UTF_8);
@@ -384,7 +384,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", CREATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_resolution_doc_with_one_resolution.json", StandardCharsets.UTF_8);
@@ -459,7 +459,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", UPDATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_resolution_doc_with_two_resolutions.json", StandardCharsets.UTF_8);
@@ -530,7 +530,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", UPDATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String requestBody = IOUtils.resourceToString(
                 "/put_requests/resolutions/put_request_body_resolution.json", StandardCharsets.UTF_8);
@@ -632,7 +632,7 @@ class ResolutionTransactionIT {
 
         existingDocument.getData().getResolutions().getFirst().deltaAt(null);
 
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_resolution_doc_with_one_resolution.json", StandardCharsets.UTF_8);
@@ -707,7 +707,7 @@ class ResolutionTransactionIT {
 
         existingDocument.getData().getResolutions().getFirst().entityId(null);
 
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_resolution_doc_with_two_resolutions.json", StandardCharsets.UTF_8);
@@ -780,7 +780,7 @@ class ResolutionTransactionIT {
         firstResolution.deltaAt(null);
         firstResolution.entityId(null);
 
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         ExternalData expectedResponse = new ExternalData()
                 .transactionId(TRANSACTION_ID)
@@ -847,7 +847,7 @@ class ResolutionTransactionIT {
         firstResolution.deltaAt(null);
         firstResolution.entityId(null);
 
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryList expectedResponse = new FilingHistoryList()
                 .itemsPerPage(25)
@@ -891,7 +891,7 @@ class ResolutionTransactionIT {
                 );
 
         // when
-        ResultActions result = mockMvc.perform(get(GET_FILING_HISTORY_URI, COMPANY_NUMBER)
+        ResultActions result = mockMvc.perform(get(GET_ACSP_PROFILE_URI, COMPANY_NUMBER)
                 .header("ERIC-Identity", "123")
                 .header("ERIC-Identity-Type", "key")
                 .header("X-Request-Id", CONTEXT_ID));
@@ -925,7 +925,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<delta_at>", EXISTING_DELTA_AT);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/%s.json".formatted(expectedDoc), StandardCharsets.UTF_8);
@@ -1050,7 +1050,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_certnm_doc_with_res15.json", StandardCharsets.UTF_8);
@@ -1125,7 +1125,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_resolution_doc_with_one_resolution.json", StandardCharsets.UTF_8);
@@ -1184,7 +1184,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1229,7 +1229,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
 
@@ -1273,7 +1273,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
 
@@ -1321,7 +1321,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_certnm_doc_with_res15.json", StandardCharsets.UTF_8);
@@ -1381,7 +1381,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         String expectedDocumentJson = IOUtils.resourceToString(
                 "/mongo_docs/resolutions/expected_certnm_doc_with_zero_child_resolutions.json", StandardCharsets.UTF_8);
@@ -1437,7 +1437,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", UPDATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1480,7 +1480,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<date>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         when(instantSupplier.get()).thenReturn(UPDATED_AT);
         stubFor(post(urlEqualTo(RESOURCE_CHANGED_URI))
@@ -1524,7 +1524,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
 
@@ -1568,7 +1568,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", UPDATED_AT.toString());
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
 
@@ -1612,7 +1612,7 @@ class ResolutionTransactionIT {
                 .replaceAll("<created_at>", EXISTING_DATE);
         final FilingHistoryDocument existingDocument =
                 objectMapper.readValue(existingDocumentJson, FilingHistoryDocument.class);
-        mongoTemplate.insert(existingDocument, FILING_HISTORY_COLLECTION);
+        mongoTemplate.insert(existingDocument, ACSP_PROFILE_COLLECTION);
 
         FilingHistoryDocument expectedDocument = mongoTemplate.findById(TRANSACTION_ID, FilingHistoryDocument.class);
 
