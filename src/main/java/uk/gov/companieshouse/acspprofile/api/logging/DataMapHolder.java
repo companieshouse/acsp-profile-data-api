@@ -1,7 +1,8 @@
 package uk.gov.companieshouse.acspprofile.api.logging;
 
-import java.util.Map;
 import uk.gov.companieshouse.logging.util.DataMap.Builder;
+
+import java.util.Map;
 
 public class DataMapHolder {
 

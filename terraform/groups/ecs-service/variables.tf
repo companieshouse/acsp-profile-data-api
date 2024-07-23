@@ -130,7 +130,7 @@ variable "log_level" {
   type        = string
   description = "The log level for services to use: trace, debug, info or error"
 }
-variable "filing_history_data_api_version" {
+variable "acsp_profile_data_api_version" {
   type        = string
   description = "The version of the acsp-profile-data-api container to run."
 }

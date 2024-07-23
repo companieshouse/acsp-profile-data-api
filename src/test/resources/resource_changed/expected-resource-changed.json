@@ -1,9 +1,0 @@
-{
-  "resource_kind": "acsp-profile",
-  "resource_uri": "/company/12345678/acsp-profile/transactionId",
-  "context_id": "ABCD1234",
-  "event": {
-    "published_at": "<published_at>",
-    "type": "changed"
-  }
-}

@@ -1,24 +1,25 @@
 package uk.gov.companieshouse.acspprofile.api.logging;
 
 
-import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
-import static uk.gov.companieshouse.acspprofile.api.ACSPProfileApplication.NAMESPACE;
-import static uk.gov.companieshouse.logging.util.LogContextProperties.REQUEST_ID;
-
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.UUID;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.logging.util.RequestLogger;
+
+import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
+import static uk.gov.companieshouse.acspprofile.api.ACSPProfileApplication.NAMESPACE;
+import static uk.gov.companieshouse.logging.util.LogContextProperties.REQUEST_ID;
 
 @Component
 @Order(value = HIGHEST_PRECEDENCE)
@@ -28,8 +29,8 @@ public class RequestLoggingFilter extends OncePerRequestFilter implements Reques
 
     @Override
     protected void doFilterInternal(@Nonnull HttpServletRequest request,
-            @Nonnull HttpServletResponse response,
-            @Nonnull FilterChain filterChain) throws ServletException, IOException {
+                                    @Nonnull HttpServletResponse response,
+                                    @Nonnull FilterChain filterChain) throws ServletException, IOException {
         logStartRequestProcessing(request, LOGGER);
         DataMapHolder.initialise(Optional
                 .ofNullable(request.getHeader(REQUEST_ID.value()))
