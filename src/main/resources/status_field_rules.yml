@@ -2,32 +2,32 @@
     'acsp-profile':
         'AC':
             'type': 'assurance-company-england-wales'
-            'status': 'acsp-profile-available-assurance-company-before-2004'
+            'status': 'filing-history-available-assurance-company-before-2004'
             'from':
                 -
                   'number': '001839'
                   'status': 'acsp-profile-not-available-assurance-company-from-2004'
         'BR':
             'type': 'branch-of-an-overseas-company'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'ES':
             'type': 'european-public-limited-liability-company-scotland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'FC':
             'type': 'foreign-company-england-or-wales'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'FE':
             'type': 'further-education-or-sixth-form-college-corporation'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'GE':
             'type': 'european-economic-interest-grouping-england-wales'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'GN':
             'type': 'european-economic-interest-grouping-northern-ireland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'GS':
             'type': 'european-economic-interest-grouping-scotland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'IC':
             'type': 'investment-company-with-variable-capital-england-or-wales'
             'status': 'acsp-profile-not-available-investment-company-with-variable-capital'
@@ -40,36 +40,36 @@
             'from':
                 -
                   'number': '003370'
-                  'status': 'acsp-profile-available-no-images-limited-partnership-from-1988'
+                  'status': 'filing-history-available-no-images-limited-partnership-from-1988'
                 -
                   'number': '015997'
-                  'status': 'acsp-profile-available-limited-partnership-from-2014'
+                  'status': 'filing-history-available-limited-partnership-from-2014'
         'NA':
             'type': 'assurance-company-ireland'
-            'status': 'acsp-profile-available-assurance-company-before-2004'
+            'status': 'filing-history-available-assurance-company-before-2004'
             'from':
                 -
                   'number': '000000'
                   'status': 'acsp-profile-not-available-assurance-company-from-2004'
         'NC':
             'type': 'limited-liability-partnership-northern-ireland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'NF':
             'type': 'foreign-company-northern-ireland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'NI':
             'type': 'company-incorporated-in-northern-ireland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'NL':
             'type': 'limited-partnership-northern-ireland'
             'status': 'acsp-profile-not-available-limited-partnership-before-1988'
             'from':
                 -
                   'number': '000011'
-                  'status': 'acsp-profile-available-no-images-limited-partnership-from-1988'
+                  'status': 'filing-history-available-no-images-limited-partnership-from-1988'
                 -
                   'number': '000076'
-                  'status': 'acsp-profile-available-limited-partnership-from-2014'
+                  'status': 'filing-history-available-limited-partnership-from-2014'
         'NO':
             'type': 'other-industrial-provident-company-northern-ireland'
             'status': 'acsp-profile-not-available-northern-ireland-other-industrial-and-provident-society'
@@ -84,41 +84,41 @@
             'status': 'acsp-profile-not-available-investment-company-with-variable-capital'
         'NZ':
             'type': 'not-a-companies-act-company-northern-ireland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'OC':
             'type': 'limited-liability-partnership-england-or-wales'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'OE':
             'type': 'registered-overseas-entity'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'PC':
             'type': 'protected-cell-company'
             'status': 'acsp-profile-not-available-protected-cell-company'
         'R0':
             'type': 'old-irish-company'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'RC':
             'type': 'company-incorporated-by-royal-charter-england-or-wales'
             'status': 'acsp-profile-not-available-royal-charter'
         'SA':
             'type': 'assurance-company-scotland'
-            'status': 'acsp-profile-available-assurance-company-before-2004'
+            'status': 'filing-history-available-assurance-company-before-2004'
             'from':
                 -
                   'number': '144518'
                   'status': 'acsp-profile-not-available-assurance-company-from-2004'
         'SC':
             'type': 'company-incorporated-in-scotland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'SE':
             'type': 'european-public-limited-liability-company-england-wales'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'SF':
             'type': 'foreign-company-scotland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'SG':
             'type': 'scottish-partnership'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'SI':
             'type': 'investment-company-with-variable-capital-scotland'
             'status': 'acsp-profile-not-available-investment-company-with-variable-capital'
@@ -128,13 +128,13 @@
             'from':
                 -
                   'number': '001083'
-                  'status': 'acsp-profile-available-no-images-limited-partnership-from-1988'
+                  'status': 'filing-history-available-no-images-limited-partnership-from-1988'
                 -
                   'number': '016384'
-                  'status': 'acsp-profile-available-limited-partnership-from-2014'
+                  'status': 'filing-history-available-limited-partnership-from-2014'
         'SO':
             'type': 'limited-liability-partnership-scotland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'SP':
             'type': 'industrial-provident-scotland'
             'status': 'acsp-profile-not-available-scottish-industrial-and-provident-society'
@@ -143,13 +143,13 @@
             'status': 'acsp-profile-not-available-royal-charter'
         'SZ':
             'type': 'not-a-companies-act-company-scotland'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'ZC':
             'type': 'not-a-companies-act-company-england-or-wales'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'NORMAL':
             'type': 'company-incorporated-in-england-or-wales'
-            'status': 'acsp-profile-available'
+            'status': 'filing-history-available'
         'INVALID_FORMAT':
             'type': 'unknown'
             'status': 'acsp-profile-not-available-invalid-format'

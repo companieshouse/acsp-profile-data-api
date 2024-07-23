@@ -2,10 +2,10 @@
 
 ## Summary
 
-The `acsp-profile-data-api` is a service that receives filing history deltas from
+The `acsp-profile-data-api` is a service that receives acsp profile deltas from
 `acsp-profile-data-consumer`. It transforms these deltas to a standardised structure and then:
 
-* stores or deletes documents within the `company_filing_history collection` in MongoDB, and
+* stores or deletes documents within the `company_acsp_profile collection` in MongoDB, and
 * enqueues a resource changed message that triggers further downstream processing.
 
 The service is implemented in Java 21 using Spring Boot 3.2
@@ -31,7 +31,7 @@ The service is implemented in Java 21 using Spring Boot 3.2
 
 | Variable                           | Description                                                                           | Example (from docker-chs-development) |
 |------------------------------------|---------------------------------------------------------------------------------------|---------------------------------------|
-| ACSP_PROFILE_API_SUB_DELTA_KEY   | The client ID of an API key, with internal app privileges, to call chs-kafka-api with | abc123def456ghi789                    |
+| ACSP_PROFILE_API_SUB_DELTA_KEY     | The client ID of an API key, with internal app privileges, to call chs-kafka-api with | abc123def456ghi789                    |
 | CHS_KAFKA_API_URL                  | The URL which the chs-kafka-api is hosted on                                          | http://api.chs.local:4001             |
 | PORT                               | The port at which the service is hosted in ECS                                        | 8080                                  |
 | LOGLEVEL                           | The level of log messages output to the logs                                          | debug                                 |
