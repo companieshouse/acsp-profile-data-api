@@ -36,8 +36,6 @@ The service is implemented in Java 21 using Spring Boot 3.2
 | PORT                               | The port at which the service is hosted in ECS                                        | 8080                                  |
 | LOGLEVEL                           | The level of log messages output to the logs                                          | debug                                 |
 | HUMAN_LOG                          | A boolean value to enable more readable log messages                                  | 1                                     |
-| RESOURCE_CHANGED_CALL_DISABLED     | Toggles whether resource-changed calls are posted.                                    | false                                 | 
-| DELETE_CHILD_TRANSACTIONS_DISABLED | Toggles the deletion of child transactions feature.                                   | false                                 | 
 
 ## Building the docker image
 
