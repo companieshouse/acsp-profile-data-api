@@ -5,7 +5,7 @@
 The `acsp-profile-data-api` is a service that receives acsp profile deltas from
 `acsp-profile-data-consumer`. It transforms these deltas to a standardised structure and then:
 
-* stores or deletes documents within the `company_acsp_profile collection` in MongoDB, and
+* stores or deletes documents within the `acsp_profile collection` in MongoDB, and
 * enqueues a resource changed message that triggers further downstream processing.
 
 The service is implemented in Java 21 using Spring Boot 3.2
