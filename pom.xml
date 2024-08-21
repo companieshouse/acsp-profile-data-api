@@ -19,7 +19,7 @@
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <spring.boot.version>3.3.2</spring.boot.version>
-    <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
+    <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
     <structured-logging.version>3.0.13</structured-logging.version>
     <api-sdk-manager-java-library.version>3.0.5</api-sdk-manager-java-library.version>
     <private-api-sdk-java.version>4.0.187</private-api-sdk-java.version>
