@@ -1,6 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.auth;
 
-import static uk.gov.companieshouse.acspprofile.api.ACSPProfileApplication.NAMESPACE;
+import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMESPACE;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.API_KEY_IDENTITY_TYPE;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.ERIC_IDENTITY;

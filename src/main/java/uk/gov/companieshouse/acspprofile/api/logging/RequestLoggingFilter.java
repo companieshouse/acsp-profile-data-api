@@ -2,7 +2,7 @@ package uk.gov.companieshouse.acspprofile.api.logging;
 
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
-import static uk.gov.companieshouse.acspprofile.api.ACSPProfileApplication.NAMESPACE;
+import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMESPACE;
 import static uk.gov.companieshouse.logging.util.LogContextProperties.REQUEST_ID;
 
 import jakarta.annotation.Nonnull;

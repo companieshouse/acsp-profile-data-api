@@ -16,14 +16,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class ACSPProfileApplicationIT {
+class AcspProfileApplicationIT {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     void shouldStartApplication() {
-        Executable executable = () -> ACSPProfileApplication.main(new String[0]);
+        Executable executable = () -> AcspProfileApplication.main(new String[0]);
         assertDoesNotThrow(executable);
     }
 
