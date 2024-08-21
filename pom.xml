@@ -18,17 +18,16 @@
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <spring.boot.version>3.2.4</spring.boot.version>
-    <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
-    <structured-logging.version>3.0.5</structured-logging.version>
+    <spring.boot.version>3.3.2</spring.boot.version>
+    <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
+    <structured-logging.version>3.0.13</structured-logging.version>
     <api-sdk-manager-java-library.version>3.0.5</api-sdk-manager-java-library.version>
-    <private-api-sdk-java.version>4.0.108</private-api-sdk-java.version>
-    <maven-surefire-plugin.version>3.2.3</maven-surefire-plugin.version>
-    <maven-build-helper-plugin.version>3.5.0</maven-build-helper-plugin.version>
-    <maven-failsafe-plugin.version>3.2.3</maven-failsafe-plugin.version>
+    <private-api-sdk-java.version>4.0.187</private-api-sdk-java.version>
+    <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>3.4.0</maven-failsafe-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
-    <test-containers.version>1.19.7</test-containers.version>
-    <wiremock.version>3.5.2</wiremock.version>
+    <test-containers.version>1.20.1</test-containers.version>
+    <wiremock.version>3.9.1</wiremock.version>
 
     <skip.unit.tests>false</skip.unit.tests>
     <skip.integration.tests>false</skip.integration.tests>
@@ -218,42 +217,6 @@
             <image>416670754337.dkr.ecr.eu-west-2.amazonaws.com/acsp-profile-data-api:latest</image>
           </to>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>${maven-build-helper-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>add-test-source</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>src/itest/java</source>
-              </sources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>add-test-resources</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>add-test-resource</goal>
-            </goals>
-            <configuration>
-              <resources>
-                <resource>
-                  <directory>src/itest/resources</directory>
-                  <includes>
-                    <include>**/*</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
