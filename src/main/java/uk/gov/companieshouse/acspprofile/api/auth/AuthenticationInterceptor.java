@@ -1,8 +1,17 @@
 package uk.gov.companieshouse.acspprofile.api.auth;
 
+import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMESPACE;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.API_KEY_IDENTITY_TYPE;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.ERIC_IDENTITY;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.ERIC_IDENTITY_TYPE;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.INTERNAL_APP_PRIVILEGE;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.OAUTH2_IDENTITY_TYPE;
+
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.http.HttpMethod;
@@ -11,11 +20,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-
-import java.util.Optional;
-
-import static uk.gov.companieshouse.acspprofile.api.ACSPProfileApplication.NAMESPACE;
-import static uk.gov.companieshouse.acspprofile.api.auth.AuthenticationConstants.*;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
