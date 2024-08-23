@@ -29,7 +29,7 @@ class AcspProfileApplicationIT {
 
     @Test
     void shouldReturn200FromGetHealthEndpoint() throws Exception {
-        this.mockMvc.perform(get("/acsp-profile-data-api/healthcheck"))
+        this.mockMvc.perform(get("/healthcheck"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"status\":\"UP\"}"));
