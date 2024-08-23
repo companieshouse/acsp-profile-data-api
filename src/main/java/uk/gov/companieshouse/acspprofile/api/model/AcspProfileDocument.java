@@ -1,11 +1,12 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
 import java.time.Instant;
+import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document
+@Document(collection = "acsp_profile")
 public class AcspProfileDocument {
 
     @Id
@@ -59,5 +60,24 @@ public class AcspProfileDocument {
     public AcspProfileDocument deltaAt(Instant deltaAt) {
         this.deltaAt = deltaAt;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AcspProfileDocument document = (AcspProfileDocument) o;
+        return Objects.equals(id, document.id) && Objects.equals(data, document.data)
+                && Objects.equals(created, document.created) && Objects.equals(updated,
+                document.updated) && Objects.equals(deltaAt, document.deltaAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, data, created, updated, deltaAt);
     }
 }

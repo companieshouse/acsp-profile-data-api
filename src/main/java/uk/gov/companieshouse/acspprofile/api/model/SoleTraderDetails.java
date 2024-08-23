@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 public class SoleTraderDetails {
@@ -69,5 +70,27 @@ public class SoleTraderDetails {
     public SoleTraderDetails soleTraderUsualResidentialCountry(String soleTraderUsualResidentialCountry) {
         this.soleTraderUsualResidentialCountry = soleTraderUsualResidentialCountry;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SoleTraderDetails that = (SoleTraderDetails) o;
+        return Objects.equals(soleTraderForename, that.soleTraderForename) && Objects.equals(
+                soleTraderForename2, that.soleTraderForename2) && Objects.equals(soleTraderSurname,
+                that.soleTraderSurname) && Objects.equals(soleTraderDateOfBirth, that.soleTraderDateOfBirth)
+                && Objects.equals(soleTraderNationality, that.soleTraderNationality) && Objects.equals(
+                soleTraderUsualResidentialCountry, that.soleTraderUsualResidentialCountry);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(soleTraderForename, soleTraderForename2, soleTraderSurname, soleTraderDateOfBirth,
+                soleTraderNationality, soleTraderUsualResidentialCountry);
     }
 }

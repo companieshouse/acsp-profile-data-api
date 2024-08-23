@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.gov.companieshouse.acspprofile.api.model.enums.SupervisoryBody;
 
@@ -26,5 +27,23 @@ public class AmlDetails {
     public AmlDetails membershipDetails(String membershipDetails) {
         this.membershipDetails = membershipDetails;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AmlDetails that = (AmlDetails) o;
+        return supervisoryBody == that.supervisoryBody && Objects.equals(membershipDetails,
+                that.membershipDetails);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(supervisoryBody, membershipDetails);
     }
 }

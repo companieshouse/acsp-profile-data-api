@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
 import java.time.Instant;
+import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
 import uk.gov.companieshouse.acspprofile.api.model.enums.BusinessSector;
@@ -140,5 +141,30 @@ public class AcspData {
     public AcspData endDate(Instant endDate) {
         this.endDate = endDate;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AcspData acspData = (AcspData) o;
+        return Objects.equals(number, acspData.number) && Objects.equals(name, acspData.name)
+                && Objects.equals(createdDate, acspData.createdDate) && tradingStatus == acspData.tradingStatus
+                && Objects.equals(email, acspData.email) && type == acspData.type
+                && businessSector == acspData.businessSector && Objects.equals(registeredOfficeAddress,
+                acspData.registeredOfficeAddress) && Objects.equals(serviceAddress, acspData.serviceAddress)
+                && Objects.equals(soleTraderDetails, acspData.soleTraderDetails) && Objects.equals(
+                amlDetails, acspData.amlDetails) && Objects.equals(endDate, acspData.endDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, name, createdDate, tradingStatus, email, type, businessSector,
+                registeredOfficeAddress,
+                serviceAddress, soleTraderDetails, amlDetails, endDate);
     }
 }

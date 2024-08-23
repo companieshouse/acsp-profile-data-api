@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 public class AcspAddress {
@@ -98,5 +99,26 @@ public class AcspAddress {
     public AcspAddress region(String region) {
         this.region = region;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AcspAddress that = (AcspAddress) o;
+        return Objects.equals(careOf, that.careOf) && Objects.equals(addressLine1, that.addressLine1)
+                && Objects.equals(addressLine2, that.addressLine2) && Objects.equals(country,
+                that.country) && Objects.equals(locality, that.locality) && Objects.equals(poBox,
+                that.poBox) && Objects.equals(postalCode, that.postalCode) && Objects.equals(premises,
+                that.premises) && Objects.equals(region, that.region);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(careOf, addressLine1, addressLine2, country, locality, poBox, postalCode, premises, region);
     }
 }
