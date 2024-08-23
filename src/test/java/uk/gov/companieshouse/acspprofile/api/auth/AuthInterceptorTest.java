@@ -17,13 +17,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
-class AuthenticationInterceptorTest {
+class AuthInterceptorTest {
 
     private static final String USER = "user";
     private static final String STREAM = "stream";
 
     @InjectMocks
-    private AuthenticationInterceptor authenticationInterceptor;
+    private AuthInterceptor authInterceptor;
 
     @Mock
     private HttpServletRequest request;
@@ -37,7 +37,7 @@ class AuthenticationInterceptorTest {
     @Test
     void preHandleReturnsFalseIfEricIdentityIsNull() {
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertFalse(actual);
@@ -47,11 +47,11 @@ class AuthenticationInterceptorTest {
     @Test
     void preHandleReturnsFalseIfEricIdentityIsEmpty() {
         // given
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(null);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn("");
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(null);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn("");
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertFalse(actual);
@@ -61,10 +61,10 @@ class AuthenticationInterceptorTest {
     @Test
     void preHandleReturnsFalseIfEricIdentityTypeIsNull() {
         // given
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(null);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(null);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertFalse(actual);
@@ -74,11 +74,11 @@ class AuthenticationInterceptorTest {
     @Test
     void preHandleReturnsFalseIfEricIdentityTypeIsEmpty() {
         // given
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn("");
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn("");
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertFalse(actual);
@@ -88,11 +88,11 @@ class AuthenticationInterceptorTest {
     @Test
     void preHandleReturnsFalseIfEricIdentityTypeIsInvalid() {
         // given
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(STREAM);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(STREAM);
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertFalse(actual);
@@ -103,12 +103,11 @@ class AuthenticationInterceptorTest {
     void preHandleReturnsTrueIfEricIdentitySetAndIdentityTypeKey() {
         // given
         when(request.getMethod()).thenReturn(HttpMethod.GET.name());
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(
-                AuthenticationConstants.API_KEY_IDENTITY_TYPE);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.API_KEY_IDENTITY_TYPE);
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertTrue(actual);
@@ -119,12 +118,11 @@ class AuthenticationInterceptorTest {
     void preHandleReturnsTrueIfEricIdentitySetAndIdentityTypeOAuth() {
         // given
         when(request.getMethod()).thenReturn(HttpMethod.GET.name());
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(
-                AuthenticationConstants.OAUTH2_IDENTITY_TYPE);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.OAUTH2_IDENTITY_TYPE);
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertTrue(actual);
@@ -135,15 +133,13 @@ class AuthenticationInterceptorTest {
     void preHandleReturnsTrueIfMethodNotGetAndHasInternalPrivileges() {
         // given
         when(request.getMethod()).thenReturn(HttpMethod.PATCH.name());
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(
-                AuthenticationConstants.API_KEY_IDENTITY_TYPE);
-        when(request.getHeader(
-                AuthenticationConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER)).thenReturn(
-                AuthenticationConstants.INTERNAL_APP_PRIVILEGE);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.API_KEY_IDENTITY_TYPE);
+        when(request.getHeader(AuthConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER))
+                .thenReturn(AuthConstants.INTERNAL_APP_PRIVILEGE);
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertTrue(actual);
@@ -154,12 +150,11 @@ class AuthenticationInterceptorTest {
     void preHandleReturnsFalseIfMethodNotGetAndHasInternalPrivilegesButIdentityTypeIsOAUTH2() {
         // given
         when(request.getMethod()).thenReturn(HttpMethod.PATCH.name());
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(
-                AuthenticationConstants.OAUTH2_IDENTITY_TYPE);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.OAUTH2_IDENTITY_TYPE);
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertFalse(actual);
@@ -170,12 +165,11 @@ class AuthenticationInterceptorTest {
     void preHandleReturnsFalseIfMethodNotGetAndNoInternalPrivileges() {
         // given
         when(request.getMethod()).thenReturn(HttpMethod.PATCH.name());
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthenticationConstants.ERIC_IDENTITY_TYPE)).thenReturn(
-                AuthenticationConstants.API_KEY_IDENTITY_TYPE);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.API_KEY_IDENTITY_TYPE);
 
         // when
-        boolean actual = authenticationInterceptor.preHandle(request, response, handler);
+        boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
         assertFalse(actual);
