@@ -1,8 +1,9 @@
 package uk.gov.companieshouse.acspprofile.api.repository;
 
+import java.util.Optional;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
 public interface Repository {
 
-    AcspProfileDocument findAscp(String acspNumber);
+    Optional<AcspProfileDocument> findAscp(String acspNumber);
 }

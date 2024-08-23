@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.gov.companieshouse.acspprofile.api.model.enums.SupervisoryBody;
@@ -7,8 +8,10 @@ import uk.gov.companieshouse.acspprofile.api.model.enums.SupervisoryBody;
 public class AmlDetails {
 
     @Field("aml_supervisory_body")
+	@JsonProperty("aml_supervisory_body")
     private SupervisoryBody supervisoryBody;
     @Field("aml_membership_details")
+	@JsonProperty("aml_membership_details")
     private String membershipDetails;
 
     public SupervisoryBody getSupervisoryBody() {
@@ -45,5 +48,13 @@ public class AmlDetails {
     @Override
     public int hashCode() {
         return Objects.hash(supervisoryBody, membershipDetails);
+    }
+
+    @Override
+    public String toString() {
+        return "AmlDetails{" +
+                "supervisoryBody=" + supervisoryBody +
+                ", membershipDetails='" + membershipDetails + '\'' +
+                '}';
     }
 }

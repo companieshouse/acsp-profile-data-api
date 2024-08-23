@@ -1,21 +1,27 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 public class AcspAddress {
 
     @Field("care_of")
+	@JsonProperty("care_of")
     private String careOf;
     @Field("address_line_1")
+	@JsonProperty("address_line_1")
     private String addressLine1;
     @Field("address_line_2")
+	@JsonProperty("address_line_2")
     private String addressLine2;
     private String country;
     private String locality;
     @Field("po_box")
+	@JsonProperty("po_box")
     private String poBox;
     @Field("postal_code")
+	@JsonProperty("postal_code")
     private String postalCode;
     private String premises;
     private String region;
@@ -120,5 +126,20 @@ public class AcspAddress {
     @Override
     public int hashCode() {
         return Objects.hash(careOf, addressLine1, addressLine2, country, locality, poBox, postalCode, premises, region);
+    }
+
+    @Override
+    public String toString() {
+        return "AcspAddress{" +
+                "careOf='" + careOf + '\'' +
+                ", addressLine1='" + addressLine1 + '\'' +
+                ", addressLine2='" + addressLine2 + '\'' +
+                ", country='" + country + '\'' +
+                ", locality='" + locality + '\'' +
+                ", poBox='" + poBox + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", premises='" + premises + '\'' +
+                ", region='" + region + '\'' +
+                '}';
     }
 }

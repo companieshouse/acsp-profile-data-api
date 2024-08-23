@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.repository;
 
+import java.util.Optional;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
@@ -14,7 +15,7 @@ public class AcspRepository implements Repository {
     }
 
     @Override
-    public AcspProfileDocument findAscp(String acspNumber) {
-        return mongoTemplate.findById(acspNumber, AcspProfileDocument.class);
+    public Optional<AcspProfileDocument> findAscp(String acspNumber) {
+        return Optional.ofNullable(mongoTemplate.findById(acspNumber, AcspProfileDocument.class));
     }
 }

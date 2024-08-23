@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
@@ -10,11 +11,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class AcspProfileDocument {
 
     @Id
+    @JsonProperty("_id")
     private String id;
     private AcspData data;
     private DeltaTimeStamp created;
     private DeltaTimeStamp updated;
     @Field("delta_at")
+    @JsonProperty("delta_at")
     private Instant deltaAt;
 
     public String getId() {
@@ -79,5 +82,16 @@ public class AcspProfileDocument {
     @Override
     public int hashCode() {
         return Objects.hash(id, data, created, updated, deltaAt);
+    }
+
+    @Override
+    public String toString() {
+        return "AcspProfileDocument{" +
+                "id='" + id + '\'' +
+                ", data=" + data +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", deltaAt=" + deltaAt +
+                '}';
     }
 }

@@ -1,9 +1,11 @@
 package uk.gov.companieshouse.acspprofile.api.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,9 +33,10 @@ class AcspRepositoryTest {
         when(mongoTemplate.findById(any(), any())).thenReturn(expected);
 
         // when
-        AcspProfileDocument actual = repository.findAscp(ACSP_NUMBER);
+        Optional<AcspProfileDocument> actual = repository.findAscp(ACSP_NUMBER);
 
         // then
-        assertEquals(expected, actual);
+        assertTrue(actual.isPresent());
+        assertEquals(expected, actual.get());
     }
 }

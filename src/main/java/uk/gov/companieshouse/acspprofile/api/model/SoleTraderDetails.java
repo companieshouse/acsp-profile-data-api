@@ -1,21 +1,29 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 public class SoleTraderDetails {
 
     @Field("acsp_sole_trader_forename")
+	@JsonProperty("acsp_sole_trader_forename")
     private String soleTraderForename;
     @Field("acsp_sole_trader_forename_2")
+	@JsonProperty("acsp_sole_trader_forename_2")
     private String soleTraderForename2;
     @Field("acsp_sole_trader_surname")
+	@JsonProperty("acsp_sole_trader_surname")
     private String soleTraderSurname;
     @Field("acsp_sole_trader_date_of_birth")
-    private String soleTraderDateOfBirth;
+	@JsonProperty("acsp_sole_trader_date_of_birth")
+    private Instant soleTraderDateOfBirth;
     @Field("acsp_sole_trader_nationality")
+	@JsonProperty("acsp_sole_trader_nationality")
     private String soleTraderNationality;
     @Field("acsp_sole_trader_usual_residential_country")
+	@JsonProperty("acsp_sole_trader_usual_residential_country")
     private String soleTraderUsualResidentialCountry;
 
     public String getSoleTraderForename() {
@@ -45,11 +53,11 @@ public class SoleTraderDetails {
         return this;
     }
 
-    public String getSoleTraderDateOfBirth() {
+    public Instant getSoleTraderDateOfBirth() {
         return soleTraderDateOfBirth;
     }
 
-    public SoleTraderDetails soleTraderDateOfBirth(String soleTraderDateOfBirth) {
+    public SoleTraderDetails soleTraderDateOfBirth(Instant soleTraderDateOfBirth) {
         this.soleTraderDateOfBirth = soleTraderDateOfBirth;
         return this;
     }
@@ -92,5 +100,17 @@ public class SoleTraderDetails {
     public int hashCode() {
         return Objects.hash(soleTraderForename, soleTraderForename2, soleTraderSurname, soleTraderDateOfBirth,
                 soleTraderNationality, soleTraderUsualResidentialCountry);
+    }
+
+    @Override
+    public String toString() {
+        return "SoleTraderDetails{" +
+                "soleTraderForename='" + soleTraderForename + '\'' +
+                ", soleTraderForename2='" + soleTraderForename2 + '\'' +
+                ", soleTraderSurname='" + soleTraderSurname + '\'' +
+                ", soleTraderDateOfBirth=" + soleTraderDateOfBirth +
+                ", soleTraderNationality='" + soleTraderNationality + '\'' +
+                ", soleTraderUsualResidentialCountry='" + soleTraderUsualResidentialCountry + '\'' +
+                '}';
     }
 }

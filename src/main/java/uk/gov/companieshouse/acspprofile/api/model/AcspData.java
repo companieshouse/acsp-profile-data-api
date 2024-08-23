@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -10,28 +11,40 @@ import uk.gov.companieshouse.acspprofile.api.model.enums.TradingStatus;
 public class AcspData {
 
     @Field("acsp_number")
+	@JsonProperty("acsp_number")
     private String number;
     @Field("acsp_name")
+	@JsonProperty("acsp_name")
     private String name;
     @Field("acsp_created_date")
+	@JsonProperty("acsp_created_date")
     private Instant createdDate;
     @Field("acsp_trading_status")
+	@JsonProperty("acsp_trading_status")
     private TradingStatus tradingStatus;
     @Field("acsp_email")
+	@JsonProperty("acsp_email")
     private String email;
     @Field("acsp_type")
+	@JsonProperty("acsp_type")
     private AcspType type;
     @Field("acsp_business_sector")
+	@JsonProperty("acsp_business_sector")
     private BusinessSector businessSector;
     @Field("acsp_registered_office_address")
+	@JsonProperty("acsp_registered_office_address")
     private AcspAddress registeredOfficeAddress;
     @Field("acsp_service_address")
+	@JsonProperty("acsp_service_address")
     private AcspAddress serviceAddress;
     @Field("acsp_sole_trader_details")
+	@JsonProperty("acsp_sole_trader_details")
     private SoleTraderDetails soleTraderDetails;
     @Field("acsp_aml_details")
+	@JsonProperty("acsp_aml_details")
     private AmlDetails amlDetails;
     @Field("acsp_end_date")
+	@JsonProperty("acsp_end_date")
     private Instant endDate;
 
     public String getNumber() {
@@ -166,5 +179,23 @@ public class AcspData {
         return Objects.hash(number, name, createdDate, tradingStatus, email, type, businessSector,
                 registeredOfficeAddress,
                 serviceAddress, soleTraderDetails, amlDetails, endDate);
+    }
+
+    @Override
+    public String toString() {
+        return "AcspData{" +
+                "number='" + number + '\'' +
+                ", name='" + name + '\'' +
+                ", createdDate=" + createdDate +
+                ", tradingStatus=" + tradingStatus +
+                ", email='" + email + '\'' +
+                ", type=" + type +
+                ", businessSector=" + businessSector +
+                ", registeredOfficeAddress=" + registeredOfficeAddress +
+                ", serviceAddress=" + serviceAddress +
+                ", soleTraderDetails=" + soleTraderDetails +
+                ", amlDetails=" + amlDetails +
+                ", endDate=" + endDate +
+                '}';
     }
 }
