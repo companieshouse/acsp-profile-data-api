@@ -1,8 +1,9 @@
-package uk.gov.companieshouse.acspprofile.api.repository;
+package uk.gov.companieshouse.acspprofile.api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -11,32 +12,33 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.repository.AcspRepository;
 
 @ExtendWith(MockitoExtension.class)
-class AcspRepositoryTest {
+class AcspServiceTest {
 
     private static final String ACSP_NUMBER = "12345678";
 
     @InjectMocks
-    private AcspRepository repository;
+    private AcspService service;
     @Mock
-    private MongoTemplate mongoTemplate;
+    private AcspRepository repository;
 
     @Mock
     private AcspProfileDocument expected;
 
     @Test
-    void shouldFindAcspDocument() {
+    void shouldFindAcsp() {
         // given
-        when(mongoTemplate.findById(any(), any())).thenReturn(expected);
+        when(repository.findAscp(any())).thenReturn(Optional.of(expected));
 
         // when
-        Optional<AcspProfileDocument> actual = repository.findAscp(ACSP_NUMBER);
+        Optional<AcspProfileDocument> actual = service.findAcsp(ACSP_NUMBER);
 
         // then
         assertTrue(actual.isPresent());
         assertEquals(expected, actual.get());
+        verify(repository).findAscp(ACSP_NUMBER);
     }
 }
