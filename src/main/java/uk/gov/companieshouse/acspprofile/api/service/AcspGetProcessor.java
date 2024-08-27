@@ -5,7 +5,7 @@ import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMES
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.mapper.GetMapper;
+import uk.gov.companieshouse.acspprofile.api.mapper.get.GetMapper;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -13,6 +13,7 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class AcspGetProcessor implements GetProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
+
     private final Service acspService;
     private final GetMapper acspGetmapper;
 

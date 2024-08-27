@@ -3,6 +3,7 @@ package uk.gov.companieshouse.acspprofile.api.mapper;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
+import uk.gov.companieshouse.acspprofile.api.mapper.get.AcspGetMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
 class AcspGetMapperTest {

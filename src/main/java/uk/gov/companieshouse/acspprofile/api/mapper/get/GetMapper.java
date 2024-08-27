@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.acspprofile.api.mapper;
+package uk.gov.companieshouse.acspprofile.api.mapper.get;
 
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 

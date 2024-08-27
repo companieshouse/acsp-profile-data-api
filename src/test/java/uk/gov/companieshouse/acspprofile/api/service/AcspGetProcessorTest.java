@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
-import uk.gov.companieshouse.acspprofile.api.mapper.AcspGetMapper;
+import uk.gov.companieshouse.acspprofile.api.mapper.get.AcspGetMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
 @ExtendWith(MockitoExtension.class)
