@@ -7,9 +7,9 @@ public enum TradingStatus {
     @JsonProperty("active")
     ACTIVE("active"),
     @JsonProperty("suspended")
-	SUSPENDED("suspended"),
+    SUSPENDED("suspended"),
     @JsonProperty("ceased")
-	CEASED("ceased");
+    CEASED("ceased");
 
     private final String value;
 

@@ -7,21 +7,21 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class AcspAddress {
 
     @Field("care_of")
-	@JsonProperty("care_of")
+    @JsonProperty("care_of")
     private String careOf;
     @Field("address_line_1")
-	@JsonProperty("address_line_1")
+    @JsonProperty("address_line_1")
     private String addressLine1;
     @Field("address_line_2")
-	@JsonProperty("address_line_2")
+    @JsonProperty("address_line_2")
     private String addressLine2;
     private String country;
     private String locality;
     @Field("po_box")
-	@JsonProperty("po_box")
+    @JsonProperty("po_box")
     private String poBox;
     @Field("postal_code")
-	@JsonProperty("postal_code")
+    @JsonProperty("postal_code")
     private String postalCode;
     private String premises;
     private String region;
