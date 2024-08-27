@@ -37,12 +37,12 @@
     "acsp_end_date": "2024-08-23T00:00:00Z"
   },
   "created": {
-    "at": "2024-08-23T00:00:00Z",
+    "at": "<created_at>",
     "by": "<created_by>",
     "type": "acsp_delta"
   },
   "updated": {
-    "at": "2024-08-23T00:00:00Z",
+    "at": "<updated_at>",
     "by": "<updated_by>",
     "type": "acsp_delta"
   },
