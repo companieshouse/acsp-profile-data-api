@@ -1,0 +1,41 @@
+{
+  "_id": "<acsp_number>",
+  "data": {
+    "acsp_number": "<acsp_number>",
+    "acsp_name": "John Doe",
+    "acsp_created_date": "2024-08-23T00:00:00Z",
+    "acsp_trading_status": "active",
+    "acsp_email": "johndoe@companieshouse.gov.uk",
+    "acsp_type": "sole-trader",
+    "acsp_service_address": {
+      "care_of": "care of name",
+      "address_line_1": "Crown Way",
+      "address_line_2": "address line 2",
+      "country": "United Kingdom",
+      "locality": "Cardiff",
+      "po_box": "DX 33050 Cardiff",
+      "postal_code": "CF14 3UZ",
+      "premises": "Crown Way",
+      "region": "Cardiff"
+    },
+    "acsp_sole_trader_details": {
+      "acsp_sole_trader_forename": "John",
+      "acsp_sole_trader_forename_2": "Bon",
+      "acsp_sole_trader_surname": "Doe",
+      "acsp_sole_trader_date_of_birth": "2024-08-23T00:00:00Z",
+      "acsp_sole_trader_nationality": "British",
+      "acsp_sole_trader_usual_residential_country": "United Kingdom"
+    }
+  },
+  "created": {
+    "at": "2024-08-23T00:00:00Z",
+    "by": "<created_by>",
+    "type": "acsp_delta"
+  },
+  "updated": {
+    "at": "2024-08-23T00:00:00Z",
+    "by": "<updated_by>",
+    "type": "acsp_delta"
+  },
+  "delta_at": "2024-08-23T00:00:00Z"
+}
