@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
 import uk.gov.companieshouse.acspprofile.api.mapper.get.GetMapper;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
+import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -23,13 +25,13 @@ public class AcspGetProcessor implements GetProcessor {
     }
 
     @Override
-    public Object getProfile(String acspNumber) {
+    public AcspProfile getProfile(String acspNumber) {
         // not implemented
         return null;
     }
 
     @Override
-    public Object getFullProfile(String acspNumber) {
+    public AcspFullProfile getFullProfile(String acspNumber) {
         return acspGetmapper.mapFullProfile(
                 acspService.findAcsp(acspNumber)
                         .orElseGet(() -> {

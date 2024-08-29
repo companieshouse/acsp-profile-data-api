@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
 import uk.gov.companieshouse.acspprofile.api.mapper.get.AcspGetMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 
 @ExtendWith(MockitoExtension.class)
 class AcspGetProcessorTest {
@@ -35,7 +36,7 @@ class AcspGetProcessorTest {
     @Mock
     private AcspProfileDocument document;
     @Mock
-    private Object expected;
+    private AcspFullProfile expectedFullProfile;
 
     @Test
     void shouldNotGetProfileWhenNotImplemented() {
@@ -54,13 +55,13 @@ class AcspGetProcessorTest {
     void shouldGetFullProfile() {
         // given
         when(service.findAcsp(any())).thenReturn(Optional.of(document));
-        when(mapper.mapFullProfile(any())).thenReturn(expected);
+        when(mapper.mapFullProfile(any())).thenReturn(expectedFullProfile);
 
         // when
         Object actual = getProcessor.getFullProfile(ACSP_NUMBER);
 
         // then
-        assertEquals(expected, actual);
+        assertEquals(expectedFullProfile, actual);
         verify(service).findAcsp(ACSP_NUMBER);
         verify(mapper).mapFullProfile(document);
     }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
 import uk.gov.companieshouse.acspprofile.api.service.GetProcessor;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -24,7 +25,7 @@ public class AcspController {
     }
 
     @GetMapping("/authorised-corporate-service-providers/{acsp_number}/full-profile")
-    public ResponseEntity<Object> getFullProfile(@PathVariable("acsp_number") final String acspNumber) {
+    public ResponseEntity<AcspFullProfile> getFullProfile(@PathVariable("acsp_number") final String acspNumber) {
 
         DataMapHolder.get().companyNumber(acspNumber);
         LOGGER.info("Processing GET ACSP full profile", DataMapHolder.getLogMap());

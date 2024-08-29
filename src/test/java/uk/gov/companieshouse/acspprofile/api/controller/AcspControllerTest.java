@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.companieshouse.acspprofile.api.service.AcspGetProcessor;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 
 @ExtendWith(MockitoExtension.class)
 class AcspControllerTest {
@@ -25,7 +26,7 @@ class AcspControllerTest {
     private AcspGetProcessor getProcessor;
 
     @Mock
-    private Object fullProfile;
+    private AcspFullProfile fullProfile;
 
     @Test
     void shouldGetFullProfile() {
@@ -33,7 +34,7 @@ class AcspControllerTest {
         when(getProcessor.getFullProfile(any())).thenReturn(fullProfile);
 
         // when
-        ResponseEntity<Object> actual = controller.getFullProfile(ACSP_NUMBER);
+        ResponseEntity<AcspFullProfile> actual = controller.getFullProfile(ACSP_NUMBER);
 
         // then
         assertEquals(HttpStatus.OK, actual.getStatusCode());
