@@ -7,11 +7,11 @@ import uk.gov.companieshouse.acspprofile.api.model.enums.SupervisoryBody;
 
 public class AmlDetails {
 
-    @Field("aml_supervisory_body")
-    @JsonProperty("aml_supervisory_body")
+    @Field("supervisory_body")
+    @JsonProperty("supervisory_body")
     private SupervisoryBody supervisoryBody;
-    @Field("aml_membership_details")
-    @JsonProperty("aml_membership_details")
+    @Field("membership_details")
+    @JsonProperty("membership_details")
     private String membershipDetails;
 
     public SupervisoryBody getSupervisoryBody() {

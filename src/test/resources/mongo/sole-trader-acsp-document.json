@@ -2,40 +2,54 @@
   "_id": "<acsp_number>",
   "data": {
     "acsp_number": "<acsp_number>",
-    "acsp_name": "John Doe",
-    "acsp_created_date": "2024-08-23T00:00:00Z",
-    "acsp_trading_status": "active",
-    "acsp_email": "johndoe@companieshouse.gov.uk",
-    "acsp_type": "sole-trader",
-    "acsp_service_address": {
-      "care_of": "care of name",
-      "address_line_1": "Crown Way",
-      "address_line_2": "address line 2",
-      "country": "United Kingdom",
-      "locality": "Cardiff",
-      "po_box": "DX 33050 Cardiff",
-      "postal_code": "CF14 3UZ",
-      "premises": "Crown Way",
-      "region": "Cardiff"
+    "name": "John Doe",
+    "created_date": "2023-01-15T00:00:00Z",
+    "trading_status": "active",
+    "type": "sole-trader",
+    "business_sector": "high-value-dealers",
+    "service_address": null,
+    "registered_office_address": {
+      "care_of": "John Doe",
+      "address_line_1": "123 Example Street",
+      "address_line_2": "Suite 456",
+      "country": "united-kingdom",
+      "locality": "London",
+      "po_box": "PO Box 789",
+      "postal_code": "EC1A 1AA",
+      "premises": "Example Building",
+      "region": "Greater London"
     },
-    "acsp_sole_trader_details": {
-      "acsp_sole_trader_forename": "John",
-      "acsp_sole_trader_forename_2": "Bon",
-      "acsp_sole_trader_surname": "Doe",
-      "acsp_sole_trader_date_of_birth": "2024-08-23T00:00:00Z",
-      "acsp_sole_trader_nationality": "British",
-      "acsp_sole_trader_usual_residential_country": "United Kingdom"
+    "sole_trader_details": {
+      "forename": "John",
+      "forename_2": "A.",
+      "surname": "Doe",
+      "nationality": "British",
+      "usual_residential_country": "united-kingdom"
+    },
+    "aml_details": [
+      {
+        "supervisory_body": "financial-conduct-authority-fca",
+        "membership_details": "Membership ID: FCA123456"
+      }
+    ],
+    "end_date": null,
+    "links": {
+      "self": "/authorised-corporate-service-providers/<acsp_number>"
     }
   },
+  "sensitive_data": {
+    "email": "john.doe@example.com",
+    "date_of_birth": "1980-05-15T00:00:00Z"
+  },
+  "delta_at": "20240829085824118418",
   "created": {
-    "at": "2024-08-23T00:00:00Z",
+    "at": "2024-08-23T09:13:32Z",
     "by": "<created_by>",
-    "type": "acsp_delta"
+    "type": "acsp_profile_delta"
   },
   "updated": {
-    "at": "2024-08-23T00:00:00Z",
+    "at": "2024-08-27T12:13:32Z",
     "by": "<updated_by>",
-    "type": "acsp_delta"
-  },
-  "delta_at": "2024-08-23T00:00:00Z"
+    "type": "acsp_profile_delta"
+  }
 }

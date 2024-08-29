@@ -2,6 +2,7 @@ package uk.gov.companieshouse.acspprofile.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
@@ -12,47 +13,48 @@ public class AcspData {
 
     @Field("acsp_number")
     @JsonProperty("acsp_number")
-    private String number;
-    @Field("acsp_name")
-    @JsonProperty("acsp_name")
+    private String acspNumber;
+    @Field("name")
+    @JsonProperty("name")
     private String name;
-    @Field("acsp_created_date")
-    @JsonProperty("acsp_created_date")
+    @Field("created_date")
+    @JsonProperty("created_date")
     private Instant createdDate;
-    @Field("acsp_trading_status")
-    @JsonProperty("acsp_trading_status")
+    @Field("trading_status")
+    @JsonProperty("trading_status")
     private TradingStatus tradingStatus;
-    @Field("acsp_email")
-    @JsonProperty("acsp_email")
+    @Field("email")
+    @JsonProperty("email")
     private String email;
-    @Field("acsp_type")
-    @JsonProperty("acsp_type")
+    @Field("type")
+    @JsonProperty("type")
     private AcspType type;
-    @Field("acsp_business_sector")
-    @JsonProperty("acsp_business_sector")
+    @Field("business_sector")
+    @JsonProperty("business_sector")
     private BusinessSector businessSector;
-    @Field("acsp_registered_office_address")
-    @JsonProperty("acsp_registered_office_address")
+    @Field("registered_office_address")
+    @JsonProperty("registered_office_address")
     private AcspAddress registeredOfficeAddress;
-    @Field("acsp_service_address")
-    @JsonProperty("acsp_service_address")
+    @Field("service_address")
+    @JsonProperty("service_address")
     private AcspAddress serviceAddress;
-    @Field("acsp_sole_trader_details")
-    @JsonProperty("acsp_sole_trader_details")
+    @Field("sole_trader_details")
+    @JsonProperty("sole_trader_details")
     private SoleTraderDetails soleTraderDetails;
-    @Field("acsp_aml_details")
-    @JsonProperty("acsp_aml_details")
-    private AmlDetails amlDetails;
-    @Field("acsp_end_date")
-    @JsonProperty("acsp_end_date")
+    @Field("aml_details")
+    @JsonProperty("aml_details")
+    private List<AmlDetails> amlDetails;
+    @Field("end_date")
+    @JsonProperty("end_date")
     private Instant endDate;
+    private AcspLinks links;
 
-    public String getNumber() {
-        return number;
+    public String getAcspNumber() {
+        return acspNumber;
     }
 
-    public AcspData number(String number) {
-        this.number = number;
+    public AcspData acspNumber(String acspNumber) {
+        this.acspNumber = acspNumber;
         return this;
     }
 
@@ -138,11 +140,11 @@ public class AcspData {
         return this;
     }
 
-    public AmlDetails getAmlDetails() {
+    public List<AmlDetails> getAmlDetails() {
         return amlDetails;
     }
 
-    public AcspData amlDetails(AmlDetails amlDetails) {
+    public AcspData amlDetails(List<AmlDetails> amlDetails) {
         this.amlDetails = amlDetails;
         return this;
     }
@@ -156,6 +158,15 @@ public class AcspData {
         return this;
     }
 
+    public AcspLinks getLinks() {
+        return links;
+    }
+
+    public AcspData links(AcspLinks links) {
+        this.links = links;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -165,26 +176,26 @@ public class AcspData {
             return false;
         }
         AcspData acspData = (AcspData) o;
-        return Objects.equals(number, acspData.number) && Objects.equals(name, acspData.name)
+        return Objects.equals(acspNumber, acspData.acspNumber) && Objects.equals(name, acspData.name)
                 && Objects.equals(createdDate, acspData.createdDate) && tradingStatus == acspData.tradingStatus
                 && Objects.equals(email, acspData.email) && type == acspData.type
                 && businessSector == acspData.businessSector && Objects.equals(registeredOfficeAddress,
                 acspData.registeredOfficeAddress) && Objects.equals(serviceAddress, acspData.serviceAddress)
                 && Objects.equals(soleTraderDetails, acspData.soleTraderDetails) && Objects.equals(
-                amlDetails, acspData.amlDetails) && Objects.equals(endDate, acspData.endDate);
+                amlDetails, acspData.amlDetails) && Objects.equals(endDate, acspData.endDate)
+                && Objects.equals(links, acspData.links);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, name, createdDate, tradingStatus, email, type, businessSector,
-                registeredOfficeAddress,
-                serviceAddress, soleTraderDetails, amlDetails, endDate);
+        return Objects.hash(acspNumber, name, createdDate, tradingStatus, email, type, businessSector,
+                registeredOfficeAddress, serviceAddress, soleTraderDetails, amlDetails, endDate, links);
     }
 
     @Override
     public String toString() {
         return "AcspData{" +
-                "number='" + number + '\'' +
+                "acspNumber='" + acspNumber + '\'' +
                 ", name='" + name + '\'' +
                 ", createdDate=" + createdDate +
                 ", tradingStatus=" + tradingStatus +
@@ -196,6 +207,7 @@ public class AcspData {
                 ", soleTraderDetails=" + soleTraderDetails +
                 ", amlDetails=" + amlDetails +
                 ", endDate=" + endDate +
+                ", links=" + links +
                 '}';
     }
 }

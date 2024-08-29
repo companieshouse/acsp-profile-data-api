@@ -1,0 +1,58 @@
+{
+  "_id": "<acsp_number>",
+  "data": {
+    "acsp_number": "<acsp_number>",
+    "name": "Example ACSP Ltd",
+    "created_date": "2023-01-15T00:00:00Z",
+    "trading_status": "active",
+    "type": "limited-company",
+    "business_sector": "financial-institutions",
+    "registered_office_address": {
+      "care_of": "Jane Smith",
+      "address_line_1": "456 Another Street",
+      "address_line_2": "Floor 2",
+      "country": "united-kingdom",
+      "locality": "Manchester",
+      "po_box": "PO Box 123",
+      "postal_code": "M1 2AB",
+      "premises": "Another Building",
+      "region": "Greater Manchester"
+    },
+    "service_address": {
+      "care_of": "Jane Smith",
+      "address_line_1": "456 Another Street",
+      "address_line_2": "Floor 2",
+      "country": "united-kingdom",
+      "locality": "Manchester",
+      "po_box": "PO Box 123",
+      "postal_code": "M1 2AB",
+      "premises": "Another Building",
+      "region": "Greater Manchester"
+    },
+    "sole_trader_details": null,
+    "aml_details": [
+      {
+        "supervisory_body": "financial-conduct-authority-fca",
+        "membership_details": "Membership ID: FCA654321"
+      }
+    ],
+    "end_date": null,
+    "links": {
+      "self": "/authorised-corporate-service-providers/<acsp_number>"
+    }
+  },
+  "sensitive_data": {
+    "email": "contact@exampleacsp.com"
+  },
+  "delta_at": "20240829085824118418",
+  "created": {
+    "at": "<created_at>",
+    "by": "<created_by>",
+    "type": "acsp_profile_delta"
+  },
+  "updated": {
+    "by": "<updated_by>",
+    "at": "<updated_at>",
+    "type": "acsp_profile_delta"
+  }
+}
