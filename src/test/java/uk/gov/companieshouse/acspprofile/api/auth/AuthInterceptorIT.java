@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthIT {
+class AuthInterceptorIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,21 +37,21 @@ class AuthIT {
     }
 
     @Test
-    void shouldPassAuthAndReturn404WithSensitiveDataPrivileges() throws Exception {
-        this.mockMvc.perform(get("/test/full-profile")
+    void shouldPassAuthAndReturn404WithInternalAppPrivileges() throws Exception {
+        this.mockMvc.perform(get("/test")
                         .header(ERIC_IDENTITY, "123")
                         .header(ERIC_IDENTITY_TYPE, "key")
-                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "sensitive-data"))
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "internal-app"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void shouldFailAuthAndReturn403WithoutSensitiveDataPrivileges() throws Exception {
-        this.mockMvc.perform(get("/test/full-profile")
+    void shouldFailAuthAndReturn403WithSensitiveDataPrivileges() throws Exception {
+        this.mockMvc.perform(get("/test")
                         .header(ERIC_IDENTITY, "123")
                         .header(ERIC_IDENTITY_TYPE, "key")
-                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "internal-app"))
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "sensitive-data"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

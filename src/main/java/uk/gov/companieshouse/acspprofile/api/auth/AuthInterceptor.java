@@ -6,7 +6,6 @@ import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_AUTH
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_IDENTITY;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_IDENTITY_TYPE;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.INTERNAL_APP_PRIVILEGE;
-import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.OAUTH2_IDENTITY_TYPE;
 
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -28,8 +26,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-                             @Nonnull HttpServletResponse response, @Nullable Object handler) {
+    public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response,
+            @Nullable Object handler) {
 
         String ericIdentity = request.getHeader(ERIC_IDENTITY);
         String ericIdentityType = request.getHeader(ERIC_IDENTITY_TYPE);
@@ -40,14 +38,13 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if (!(API_KEY_IDENTITY_TYPE.equalsIgnoreCase(ericIdentityType)
-                || (OAUTH2_IDENTITY_TYPE.equalsIgnoreCase(ericIdentityType)))) {
+        if (!API_KEY_IDENTITY_TYPE.equalsIgnoreCase(ericIdentityType)) {
             LOGGER.error("Incorrect eric identity type", DataMapHolder.getLogMap());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
 
-        if (!isKeyAuthorised(request, ericIdentityType)) {
+        if (!isKeyAuthorised(request)) {
             LOGGER.error("Key is not authorised", DataMapHolder.getLogMap());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return false;
@@ -55,18 +52,14 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean isKeyAuthorised(HttpServletRequest request, String ericIdentityType) {
+    private boolean isKeyAuthorised(HttpServletRequest request) {
         String[] privileges = getApiKeyPrivileges(request);
 
-        return request.getMethod().equals(HttpMethod.GET.name())
-                || (ericIdentityType.equalsIgnoreCase(API_KEY_IDENTITY_TYPE)
-                && ArrayUtils.contains(privileges, INTERNAL_APP_PRIVILEGE));
+        return ArrayUtils.contains(privileges, INTERNAL_APP_PRIVILEGE);
     }
 
     private String[] getApiKeyPrivileges(HttpServletRequest request) {
-        String commaSeparatedPrivilegeString = request.getHeader(
-                ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER);
-
+        String commaSeparatedPrivilegeString = request.getHeader(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER);
         return Optional.ofNullable(commaSeparatedPrivilegeString)
                 .map(s -> s.split(","))
                 .orElse(new String[]{});

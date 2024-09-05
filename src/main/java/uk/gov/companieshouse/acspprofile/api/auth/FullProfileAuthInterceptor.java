@@ -27,8 +27,8 @@ public class FullProfileAuthInterceptor implements HandlerInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-            @Nonnull HttpServletResponse response, @Nullable Object handler) {
+    public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response,
+            @Nullable Object handler) {
 
         String ericIdentity = request.getHeader(ERIC_IDENTITY);
         String ericIdentityType = request.getHeader(ERIC_IDENTITY_TYPE);
@@ -56,8 +56,8 @@ public class FullProfileAuthInterceptor implements HandlerInterceptor {
     private boolean isKeySensitiveDataAuthorised(HttpServletRequest request) {
         String[] privileges = getApiKeyPrivileges(request);
 
-        return request.getMethod().equals(HttpMethod.GET.name()) &&
-                ArrayUtils.contains(privileges, SENSITIVE_DATA_PRIVILEGE);
+        return request.getMethod().equals(HttpMethod.GET.name())
+                && ArrayUtils.contains(privileges, SENSITIVE_DATA_PRIVILEGE);
     }
 
     private String[] getApiKeyPrivileges(HttpServletRequest request) {
