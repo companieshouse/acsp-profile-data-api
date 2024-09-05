@@ -2,9 +2,9 @@ package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -24,8 +24,8 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 import uk.gov.companieshouse.acspprofile.api.model.AcspSensitiveData;
 import uk.gov.companieshouse.acspprofile.api.model.DeltaTimeStamp;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspCountry;
+import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
-import uk.gov.companieshouse.acspprofile.api.model.enums.TradingStatus;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile.StatusEnum;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile.TypeEnum;
@@ -46,6 +46,7 @@ class AcspGetMapperTest {
     private static final LocalDate NOTIFIED_FROM = LocalDate.of(2024, 8, 23);
     private static final LocalDate DEAUTHORISED_FROM = LocalDate.of(2024, 8, 25);
     private static final String KIND = "authorised-corporate-service-provider-info";
+    private static final String FULL_PROFILE_KIND = "authorised-corporate-service-provider-full-profile-info";
     private static final String CARE_OF = "Jane Smith";
     private static final String ADDRESS_LINE_1 = "456 Another Street";
     private static final String ADDRESS_LINE_2 = "Floor 2";
@@ -64,26 +65,65 @@ class AcspGetMapperTest {
     private SupervisoryBody supervisoryBody;
 
     @Test
-    void shouldNotMapProfileWhenNotImplemented() {
-        // given
-
-        // when
-        AcspProfile actual = mapper.mapProfile(new AcspProfileDocument());
-
-        // then
-        assertNull(actual);
-    }
-
-    @Test
-    void shouldMapDocumentToApiFullProfileResponse() {
+    void shouldMapDocumentToAcspProfileResponse() {
         // given
         AcspData data = new AcspData()
                 .acspNumber(ACSP_NUMBER)
                 .name(NAME)
-                .tradingStatus(TradingStatus.ACTIVE)
+                .status(AcspStatus.ACTIVE)
                 .type(AcspType.CORPORATE_BODY)
-                .createdDate(Instant.from(NOTIFIED_FROM.atStartOfDay(UTC)))
-                .endDate(Instant.from(DEAUTHORISED_FROM.atStartOfDay(UTC)))
+                .notifiedFrom(Instant.from(NOTIFIED_FROM.atStartOfDay(UTC)))
+                .deauthorisedFrom(Instant.from(DEAUTHORISED_FROM.atStartOfDay(UTC)))
+                .registeredOfficeAddress(new AcspAddress()
+                        .careOf(CARE_OF)
+                        .addressLine1(ADDRESS_LINE_1)
+                        .addressLine2(ADDRESS_LINE_2)
+                        .country(AcspCountry.UNITED_KINGDOM)
+                        .locality(LOCALITY)
+                        .poBox(PO_BOX)
+                        .postalCode(POSTAL_CODE)
+                        .premises(PREMISES)
+                        .region(REGION))
+                .links(new AcspLinks()
+                        .self(SELF_LINK));
+
+        AcspProfileDocument document = new AcspProfileDocument()
+                .id(ACSP_NUMBER)
+                .data(data)
+                .sensitiveData(new AcspSensitiveData())
+                .created(new DeltaTimeStamp()
+                        .at(Instant.parse(CREATED_AT)))
+                .updated(new DeltaTimeStamp()
+                        .at(Instant.parse(UPDATED_AT)))
+                .deltaAt("delta_at");
+
+        AcspProfile expected = new AcspProfile()
+                .number(ACSP_NUMBER)
+                .name(NAME)
+                .status(AcspProfile.StatusEnum.ACTIVE)
+                .type(AcspProfile.TypeEnum.CORPORATE_BODY)
+                .kind(KIND)
+                .links(new Links()
+                        .self(SELF_LINK));
+
+        // when
+        AcspProfile actual = mapper.mapProfile(document);
+
+        // then
+        assertEquals(expected, actual);
+        verifyNoInteractions(supervisoryBodiesMapper);
+    }
+
+    @Test
+    void shouldMapDocumentToAcspFullProfileResponse() {
+        // given
+        AcspData data = new AcspData()
+                .acspNumber(ACSP_NUMBER)
+                .name(NAME)
+                .status(AcspStatus.ACTIVE)
+                .type(AcspType.CORPORATE_BODY)
+                .notifiedFrom(Instant.from(NOTIFIED_FROM.atStartOfDay(UTC)))
+                .deauthorisedFrom(Instant.from(DEAUTHORISED_FROM.atStartOfDay(UTC)))
                 .registeredOfficeAddress(new AcspAddress()
                         .careOf(CARE_OF)
                         .addressLine1(ADDRESS_LINE_1)
@@ -117,7 +157,7 @@ class AcspGetMapperTest {
                 .createdAt(CREATED_AT)
                 .notifiedFrom(NOTIFIED_FROM)
                 .deauthorisedFrom(DEAUTHORISED_FROM)
-                .kind(KIND)
+                .kind(FULL_PROFILE_KIND)
                 .supervisoryBodies(List.of(supervisoryBody))
                 .registeredOfficeAddress(new RegisteredOfficeAddress()
                         .careOf(CARE_OF)

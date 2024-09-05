@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class SoleTraderDetails {
 
     private String forename;
-    @Field("forename_2")
-    @JsonProperty("forename_2")
-    private String forename2;
+    @Field("other_forenames")
+    @JsonProperty("other_forenames")
+    private String otherForenames;
     private String surname;
     private String nationality;
     @Field("usual_residential_country")
@@ -25,12 +25,12 @@ public class SoleTraderDetails {
         return this;
     }
 
-    public String getForename2() {
-        return forename2;
+    public String getOtherForenames() {
+        return otherForenames;
     }
 
-    public SoleTraderDetails forename2(String forename2) {
-        this.forename2 = forename2;
+    public SoleTraderDetails otherForenames(String otherForenames) {
+        this.otherForenames = otherForenames;
         return this;
     }
 
@@ -70,21 +70,22 @@ public class SoleTraderDetails {
             return false;
         }
         SoleTraderDetails that = (SoleTraderDetails) o;
-        return Objects.equals(forename, that.forename) && Objects.equals(forename2, that.forename2)
-                && Objects.equals(surname, that.surname) && Objects.equals(nationality,
-                that.nationality) && Objects.equals(usualResidentialCountry, that.usualResidentialCountry);
+        return Objects.equals(forename, that.forename) && Objects.equals(otherForenames,
+                that.otherForenames) && Objects.equals(surname, that.surname) && Objects.equals(
+                nationality, that.nationality) && Objects.equals(usualResidentialCountry,
+                that.usualResidentialCountry);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(forename, forename2, surname, nationality, usualResidentialCountry);
+        return Objects.hash(forename, otherForenames, surname, nationality, usualResidentialCountry);
     }
 
     @Override
     public String toString() {
         return "SoleTraderDetails{" +
                 "forename='" + forename + '\'' +
-                ", forename2='" + forename2 + '\'' +
+                ", otherForenames='" + otherForenames + '\'' +
                 ", surname='" + surname + '\'' +
                 ", nationality='" + nationality + '\'' +
                 ", usualResidentialCountry='" + usualResidentialCountry + '\'' +

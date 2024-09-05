@@ -2,15 +2,24 @@
   "_id": "<acsp_number>",
   "data": {
     "acsp_number": "<acsp_number>",
-    "name": "Example ACSP Ltd",
-    "created_date": "2023-01-15T00:00:00Z",
-    "trading_status": "active",
-    "type": "limited-company",
+    "aml_details": [
+      {
+        "membership_details": "Membership ID: FCA654321",
+        "supervisory_body": "financial-conduct-authority-fca"
+      }
+    ],
     "business_sector": "financial-institutions",
+    "notified_from": "2024-04-02T00:00:00.000Z",
+    "deauthorised_from": "2025-01-08T00:00:00.000Z",
+    "etag": "47e85fcf644420129b4388ef9c87496794620893",
+    "links": {
+      "self": "/approved-corporate_service_provider/<acsp_number>"
+    },
+    "name": "Example ACSP Ltd",
     "registered_office_address": {
-      "care_of": "Jane Smith",
       "address_line_1": "456 Another Street",
       "address_line_2": "Floor 2",
+      "care_of": "Jane Smith",
       "country": "united-kingdom",
       "locality": "Manchester",
       "po_box": "PO Box 123",
@@ -19,9 +28,9 @@
       "region": "Greater Manchester"
     },
     "service_address": {
-      "care_of": "Jane Smith",
       "address_line_1": "456 Another Street",
       "address_line_2": "Floor 2",
+      "care_of": "Jane Smith",
       "country": "united-kingdom",
       "locality": "Manchester",
       "po_box": "PO Box 123",
@@ -29,20 +38,11 @@
       "premises": "Another Building",
       "region": "Greater Manchester"
     },
-    "sole_trader_details": null,
-    "aml_details": [
-      {
-        "supervisory_body": "financial-conduct-authority-fca",
-        "membership_details": "Membership ID: FCA654321"
-      }
-    ],
-    "end_date": null,
-    "links": {
-      "self": "/authorised-corporate-service-providers/<acsp_number>"
-    }
+    "status": "ceased",
+    "type": "limited-company"
   },
   "sensitive_data": {
-    "email": "contact@exampleacsp.com"
+    "email": "john.doe@example.com"
   },
   "delta_at": "20240829085824118418",
   "created": {

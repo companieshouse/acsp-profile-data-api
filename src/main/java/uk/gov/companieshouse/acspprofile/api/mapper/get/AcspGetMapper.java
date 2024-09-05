@@ -19,6 +19,7 @@ import uk.gov.companieshouse.api.acspprofile.RegisteredOfficeAddress.CountryEnum
 public class AcspGetMapper implements GetMapper {
 
     private static final String KIND = "authorised-corporate-service-provider-info";
+    private static final String FULL_PROFILE_KIND = "authorised-corporate-service-provider-full-profile-info";
 
     private final SupervisoryBodiesMapper supervisoryBodiesMapper;
 
@@ -28,8 +29,15 @@ public class AcspGetMapper implements GetMapper {
 
     @Override
     public AcspProfile mapProfile(AcspProfileDocument document) {
-        // not implemented
-        return null;
+        AcspData data = document.getData();
+        return new AcspProfile()
+                .number(data.getAcspNumber())
+                .name(data.getName())
+                .type(AcspProfile.TypeEnum.fromValue(data.getType().getValue()))
+                .kind(KIND)
+                .status(AcspProfile.StatusEnum.fromValue(data.getStatus().getValue()))
+                .links(new Links()
+                        .self(data.getLinks().getSelf()));
     }
 
     @Override
@@ -41,13 +49,13 @@ public class AcspGetMapper implements GetMapper {
                 .etag("etag")
                 .number(data.getAcspNumber())
                 .name(data.getName())
-                .status(StatusEnum.fromValue(data.getTradingStatus().getValue()))
+                .status(StatusEnum.fromValue(data.getStatus().getValue()))
                 .type(TypeEnum.fromValue(data.getType().getValue()))
                 .updatedAt(document.getUpdated().getAt().toString())
                 .createdAt(document.getCreated().getAt().toString())
-                .notifiedFrom(instantToLocalDate(data.getCreatedDate()))
-                .deauthorisedFrom(instantToLocalDate(data.getEndDate()))
-                .kind(KIND)
+                .notifiedFrom(instantToLocalDate(data.getNotifiedFrom()))
+                .deauthorisedFrom(instantToLocalDate(data.getDeauthorisedFrom()))
+                .kind(FULL_PROFILE_KIND)
                 .supervisoryBodies(supervisoryBodiesMapper.map(data))
                 .registeredOfficeAddress(new RegisteredOfficeAddress()
                         .careOf(roa.getCareOf())
