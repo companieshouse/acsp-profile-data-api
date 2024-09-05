@@ -13,7 +13,7 @@
     "deauthorised_from": "2025-01-08T00:00:00.000Z",
     "etag": "47e85fcf644420129b4388ef9c87496794620893",
     "links": {
-      "self": "/approved-corporate_service_provider/AP123456"
+      "self": "/authorised-corporate-service-provider/AP123456"
     },
     "name": "John Doe",
     "registered_office_address": {

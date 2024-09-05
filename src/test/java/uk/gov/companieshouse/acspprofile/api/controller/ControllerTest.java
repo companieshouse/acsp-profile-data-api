@@ -17,12 +17,12 @@ import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 
 @ExtendWith(MockitoExtension.class)
-class AcspControllerTest {
+class ControllerTest {
 
     private static final String ACSP_NUMBER = "AP123456";
 
     @InjectMocks
-    private AcspController controller;
+    private Controller controller;
     @Mock
     private AcspGetProcessor getProcessor;
 

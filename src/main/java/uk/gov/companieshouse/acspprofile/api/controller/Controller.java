@@ -15,13 +15,13 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
 @RestController
-public class AcspController {
+public class Controller {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
     private final GetProcessor getProcessor;
 
-    public AcspController(GetProcessor getProcessor) {
+    public Controller(GetProcessor getProcessor) {
         this.getProcessor = getProcessor;
     }
 
