@@ -23,7 +23,7 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
 @Testcontainers
 @SpringBootTest
-class AcspRepositoryIT {
+class RepositoryIT {
 
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.12");
@@ -65,7 +65,7 @@ class AcspRepositoryIT {
         mongoTemplate.insert(expected);
 
         // when
-        Optional<AcspProfileDocument> actual = repository.findAscp(ACSP_NUMBER);
+        Optional<AcspProfileDocument> actual = repository.findById(ACSP_NUMBER);
 
         // then
         assertTrue(actual.isPresent());

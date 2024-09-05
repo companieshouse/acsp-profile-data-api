@@ -5,9 +5,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
+import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
 import uk.gov.companieshouse.acspprofile.api.model.enums.BusinessSector;
-import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
 
 public class AcspData {
 
