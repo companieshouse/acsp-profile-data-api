@@ -15,6 +15,7 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class AcspGetProcessor implements GetProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
+    private static final String NOT_FOUND_MESSAGE = "ACSP document not found";
 
     private final Service acspService;
     private final GetMapper acspGetmapper;
@@ -26,8 +27,12 @@ public class AcspGetProcessor implements GetProcessor {
 
     @Override
     public AcspProfile getProfile(String acspNumber) {
-        // not implemented
-        return null;
+        return acspGetmapper.mapProfile(
+                acspService.findAcsp(acspNumber)
+                        .orElseGet(() -> {
+                            LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
+                            throw new NotFoundException(NOT_FOUND_MESSAGE);
+                        }));
     }
 
     @Override
@@ -35,8 +40,8 @@ public class AcspGetProcessor implements GetProcessor {
         return acspGetmapper.mapFullProfile(
                 acspService.findAcsp(acspNumber)
                         .orElseGet(() -> {
-                            LOGGER.info("ACSP profile not found", DataMapHolder.getLogMap());
-                            throw new NotFoundException("ACSP profile not found");
+                            LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
+                            throw new NotFoundException(NOT_FOUND_MESSAGE);
                         }));
     }
 }

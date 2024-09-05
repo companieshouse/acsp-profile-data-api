@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.companieshouse.acspprofile.api.service.AcspGetProcessor;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
+import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 
 @ExtendWith(MockitoExtension.class)
 class AcspControllerTest {
@@ -26,19 +27,35 @@ class AcspControllerTest {
     private AcspGetProcessor getProcessor;
 
     @Mock
-    private AcspFullProfile fullProfile;
+    private AcspProfile expectedProfile;
+    @Mock
+    private AcspFullProfile expectedFullProfile;
+
+    @Test
+    void shouldGetProfile() {
+        // given
+        when(getProcessor.getProfile(any())).thenReturn(expectedProfile);
+
+        // when
+        ResponseEntity<AcspProfile> actual = controller.getProfile(ACSP_NUMBER);
+
+        // then
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(expectedProfile, actual.getBody());
+        verify(getProcessor).getProfile(ACSP_NUMBER);
+    }
 
     @Test
     void shouldGetFullProfile() {
         // given
-        when(getProcessor.getFullProfile(any())).thenReturn(fullProfile);
+        when(getProcessor.getFullProfile(any())).thenReturn(expectedFullProfile);
 
         // when
         ResponseEntity<AcspFullProfile> actual = controller.getFullProfile(ACSP_NUMBER);
 
         // then
         assertEquals(HttpStatus.OK, actual.getStatusCode());
-        assertEquals(fullProfile, actual.getBody());
+        assertEquals(expectedFullProfile, actual.getBody());
         verify(getProcessor).getFullProfile(ACSP_NUMBER);
     }
 }
