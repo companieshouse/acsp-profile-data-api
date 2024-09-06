@@ -2,12 +2,13 @@ package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.mapper.get.AcspGetMapper;
@@ -20,7 +21,6 @@ import uk.gov.companieshouse.acspprofile.api.model.DeltaTimeStamp;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspCountry;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
-import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.api.acspprofile.Links;
 
@@ -102,9 +102,9 @@ class AcspGetMapperTest {
         // given
 
         // when
-        AcspFullProfile actual = mapper.mapFullProfile(new AcspProfileDocument());
+        Executable actual = () -> mapper.mapFullProfile(new AcspProfileDocument());
 
         // then
-        assertNull(actual);
+        assertThrows(UnsupportedOperationException.class, actual);
     }
 }

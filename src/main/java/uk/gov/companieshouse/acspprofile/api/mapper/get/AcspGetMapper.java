@@ -28,6 +28,6 @@ public class AcspGetMapper implements GetMapper {
     @Override
     public AcspFullProfile mapFullProfile(AcspProfileDocument document) {
         // not implemented
-        return null;
+        throw new UnsupportedOperationException("Mapping of full profile not yet implemented");
     }
 }

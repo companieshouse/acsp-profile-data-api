@@ -40,7 +40,7 @@ public class Controller {
     public ResponseEntity<AcspFullProfile> getFullProfile(@PathVariable("acsp_number") final String acspNumber) {
 
         DataMapHolder.get().companyNumber(acspNumber);
-        LOGGER.info("Processing GET ACSP full profile NOT IMPLEMENTED", DataMapHolder.getLogMap());
+        LOGGER.info("Processing GET ACSP full profile", DataMapHolder.getLogMap());
 
         return ResponseEntity
                 .status(HttpStatus.OK)
