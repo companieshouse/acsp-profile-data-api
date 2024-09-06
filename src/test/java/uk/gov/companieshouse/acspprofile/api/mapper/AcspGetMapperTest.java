@@ -2,21 +2,15 @@ package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.mapper.get.AcspGetMapper;
-import uk.gov.companieshouse.acspprofile.api.mapper.get.SupervisoryBodiesMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspAddress;
 import uk.gov.companieshouse.acspprofile.api.model.AcspData;
 import uk.gov.companieshouse.acspprofile.api.model.AcspLinks;
@@ -27,13 +21,8 @@ import uk.gov.companieshouse.acspprofile.api.model.enums.AcspCountry;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
-import uk.gov.companieshouse.api.acspprofile.AcspFullProfile.StatusEnum;
-import uk.gov.companieshouse.api.acspprofile.AcspFullProfile.TypeEnum;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.api.acspprofile.Links;
-import uk.gov.companieshouse.api.acspprofile.RegisteredOfficeAddress;
-import uk.gov.companieshouse.api.acspprofile.RegisteredOfficeAddress.CountryEnum;
-import uk.gov.companieshouse.api.acspprofile.SupervisoryBody;
 
 @ExtendWith(MockitoExtension.class)
 class AcspGetMapperTest {
@@ -58,11 +47,6 @@ class AcspGetMapperTest {
 
     @InjectMocks
     private AcspGetMapper mapper;
-    @Mock
-    private SupervisoryBodiesMapper supervisoryBodiesMapper;
-
-    @Mock
-    private SupervisoryBody supervisoryBody;
 
     @Test
     void shouldMapDocumentToAcspProfileResponse() {
@@ -111,74 +95,16 @@ class AcspGetMapperTest {
 
         // then
         assertEquals(expected, actual);
-        verifyNoInteractions(supervisoryBodiesMapper);
     }
 
     @Test
-    void shouldMapDocumentToAcspFullProfileResponse() {
+    void shouldNotMapDocumentToAcspFullProfileResponseWhenNotImplemented() {
         // given
-        AcspData data = new AcspData()
-                .acspNumber(ACSP_NUMBER)
-                .name(NAME)
-                .status(AcspStatus.ACTIVE)
-                .type(AcspType.CORPORATE_BODY)
-                .notifiedFrom(Instant.from(NOTIFIED_FROM.atStartOfDay(UTC)))
-                .deauthorisedFrom(Instant.from(DEAUTHORISED_FROM.atStartOfDay(UTC)))
-                .registeredOfficeAddress(new AcspAddress()
-                        .careOf(CARE_OF)
-                        .addressLine1(ADDRESS_LINE_1)
-                        .addressLine2(ADDRESS_LINE_2)
-                        .country(AcspCountry.UNITED_KINGDOM)
-                        .locality(LOCALITY)
-                        .poBox(PO_BOX)
-                        .postalCode(POSTAL_CODE)
-                        .premises(PREMISES)
-                        .region(REGION))
-                .links(new AcspLinks()
-                        .self(SELF_LINK));
-
-        AcspProfileDocument document = new AcspProfileDocument()
-                .id(ACSP_NUMBER)
-                .data(data)
-                .sensitiveData(new AcspSensitiveData())
-                .created(new DeltaTimeStamp()
-                        .at(Instant.parse(CREATED_AT)))
-                .updated(new DeltaTimeStamp()
-                        .at(Instant.parse(UPDATED_AT)))
-                .deltaAt("delta_at");
-
-        AcspFullProfile expected = new AcspFullProfile()
-                .etag("etag")
-                .number(ACSP_NUMBER)
-                .name(NAME)
-                .status(StatusEnum.ACTIVE)
-                .type(TypeEnum.CORPORATE_BODY)
-                .updatedAt(UPDATED_AT)
-                .createdAt(CREATED_AT)
-                .notifiedFrom(NOTIFIED_FROM)
-                .deauthorisedFrom(DEAUTHORISED_FROM)
-                .kind(FULL_PROFILE_KIND)
-                .supervisoryBodies(List.of(supervisoryBody))
-                .registeredOfficeAddress(new RegisteredOfficeAddress()
-                        .careOf(CARE_OF)
-                        .addressLine1(ADDRESS_LINE_1)
-                        .addressLine2(ADDRESS_LINE_2)
-                        .country(CountryEnum.UNITED_KINGDOM)
-                        .locality(LOCALITY)
-                        .poBox(PO_BOX)
-                        .postalCode(POSTAL_CODE)
-                        .premises(PREMISES)
-                        .region(REGION))
-                .links(new Links()
-                        .self(SELF_LINK));
-
-        when(supervisoryBodiesMapper.map(any())).thenReturn(List.of(supervisoryBody));
 
         // when
-        AcspFullProfile actual = mapper.mapFullProfile(document);
+        AcspFullProfile actual = mapper.mapFullProfile(new AcspProfileDocument());
 
         // then
-        assertEquals(expected, actual);
-        verify(supervisoryBodiesMapper).map(data);
+        assertNull(actual);
     }
 }
