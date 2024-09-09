@@ -10,7 +10,7 @@ locals {
   kms_alias                   = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority   = 71
   lb_listener_paths           = [
-    "/acsp-profile-data-api/*"
+    "/authorised-corporate-service-providers/*"
   ]
   healthcheck_path            = "/healthcheck" # healthcheck path for acsp-profile-data-api
   healthcheck_matcher         = "200"
