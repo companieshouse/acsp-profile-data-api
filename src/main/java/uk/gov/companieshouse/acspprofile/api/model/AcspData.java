@@ -2,57 +2,51 @@ package uk.gov.companieshouse.acspprofile.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
+import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
 import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
 import uk.gov.companieshouse.acspprofile.api.model.enums.BusinessSector;
-import uk.gov.companieshouse.acspprofile.api.model.enums.TradingStatus;
 
 public class AcspData {
 
     @Field("acsp_number")
     @JsonProperty("acsp_number")
-    private String number;
-    @Field("acsp_name")
-    @JsonProperty("acsp_name")
+    private String acspNumber;
     private String name;
-    @Field("acsp_created_date")
-    @JsonProperty("acsp_created_date")
-    private Instant createdDate;
-    @Field("acsp_trading_status")
-    @JsonProperty("acsp_trading_status")
-    private TradingStatus tradingStatus;
-    @Field("acsp_email")
-    @JsonProperty("acsp_email")
-    private String email;
-    @Field("acsp_type")
-    @JsonProperty("acsp_type")
+    @Field("notified_from")
+    @JsonProperty("notified_from")
+    private Instant notifiedFrom;
+    private AcspStatus status;
     private AcspType type;
-    @Field("acsp_business_sector")
-    @JsonProperty("acsp_business_sector")
+    @Field("business_sector")
+    @JsonProperty("business_sector")
     private BusinessSector businessSector;
-    @Field("acsp_registered_office_address")
-    @JsonProperty("acsp_registered_office_address")
+    private String etag;
+    @Field("registered_office_address")
+    @JsonProperty("registered_office_address")
     private AcspAddress registeredOfficeAddress;
-    @Field("acsp_service_address")
-    @JsonProperty("acsp_service_address")
+    @Field("service_address")
+    @JsonProperty("service_address")
     private AcspAddress serviceAddress;
-    @Field("acsp_sole_trader_details")
-    @JsonProperty("acsp_sole_trader_details")
+    @Field("sole_trader_details")
+    @JsonProperty("sole_trader_details")
     private SoleTraderDetails soleTraderDetails;
-    @Field("acsp_aml_details")
-    @JsonProperty("acsp_aml_details")
-    private AmlDetails amlDetails;
-    @Field("acsp_end_date")
-    @JsonProperty("acsp_end_date")
-    private Instant endDate;
+    @Field("aml_details")
+    @JsonProperty("aml_details")
+    private List<AmlDetails> amlDetails;
+    @Field("deauthorised_from")
+    @JsonProperty("deauthorised_from")
+    private Instant deauthorisedFrom;
+    private AcspLinks links;
 
-    public String getNumber() {
-        return number;
+    public String getAcspNumber() {
+        return acspNumber;
     }
 
-    public AcspData number(String number) {
-        this.number = number;
+    public AcspData acspNumber(String acspNumber) {
+        this.acspNumber = acspNumber;
         return this;
     }
 
@@ -65,30 +59,21 @@ public class AcspData {
         return this;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public Instant getNotifiedFrom() {
+        return notifiedFrom;
     }
 
-    public AcspData createdDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public AcspData notifiedFrom(Instant notifiedFrom) {
+        this.notifiedFrom = notifiedFrom;
         return this;
     }
 
-    public TradingStatus getTradingStatus() {
-        return tradingStatus;
+    public AcspStatus getStatus() {
+        return status;
     }
 
-    public AcspData tradingStatus(TradingStatus tradingStatus) {
-        this.tradingStatus = tradingStatus;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public AcspData email(String email) {
-        this.email = email;
+    public AcspData status(AcspStatus status) {
+        this.status = status;
         return this;
     }
 
@@ -107,6 +92,15 @@ public class AcspData {
 
     public AcspData businessSector(BusinessSector businessSector) {
         this.businessSector = businessSector;
+        return this;
+    }
+
+    public String getEtag() {
+        return etag;
+    }
+
+    public AcspData etag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -138,21 +132,30 @@ public class AcspData {
         return this;
     }
 
-    public AmlDetails getAmlDetails() {
+    public List<AmlDetails> getAmlDetails() {
         return amlDetails;
     }
 
-    public AcspData amlDetails(AmlDetails amlDetails) {
+    public AcspData amlDetails(List<AmlDetails> amlDetails) {
         this.amlDetails = amlDetails;
         return this;
     }
 
-    public Instant getEndDate() {
-        return endDate;
+    public Instant getDeauthorisedFrom() {
+        return deauthorisedFrom;
     }
 
-    public AcspData endDate(Instant endDate) {
-        this.endDate = endDate;
+    public AcspData deauthorisedFrom(Instant deauthorisedFrom) {
+        this.deauthorisedFrom = deauthorisedFrom;
+        return this;
+    }
+
+    public AcspLinks getLinks() {
+        return links;
+    }
+
+    public AcspData links(AcspLinks links) {
+        this.links = links;
         return this;
     }
 
@@ -164,38 +167,39 @@ public class AcspData {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AcspData acspData = (AcspData) o;
-        return Objects.equals(number, acspData.number) && Objects.equals(name, acspData.name)
-                && Objects.equals(createdDate, acspData.createdDate) && tradingStatus == acspData.tradingStatus
-                && Objects.equals(email, acspData.email) && type == acspData.type
-                && businessSector == acspData.businessSector && Objects.equals(registeredOfficeAddress,
-                acspData.registeredOfficeAddress) && Objects.equals(serviceAddress, acspData.serviceAddress)
-                && Objects.equals(soleTraderDetails, acspData.soleTraderDetails) && Objects.equals(
-                amlDetails, acspData.amlDetails) && Objects.equals(endDate, acspData.endDate);
+        AcspData data = (AcspData) o;
+        return Objects.equals(acspNumber, data.acspNumber) && Objects.equals(name, data.name)
+                && Objects.equals(notifiedFrom, data.notifiedFrom) && status == data.status && type == data.type
+                && businessSector == data.businessSector && Objects.equals(etag, data.etag)
+                && Objects.equals(registeredOfficeAddress, data.registeredOfficeAddress)
+                && Objects.equals(serviceAddress, data.serviceAddress) && Objects.equals(
+                soleTraderDetails, data.soleTraderDetails) && Objects.equals(amlDetails, data.amlDetails)
+                && Objects.equals(deauthorisedFrom, data.deauthorisedFrom) && Objects.equals(links,
+                data.links);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, name, createdDate, tradingStatus, email, type, businessSector,
-                registeredOfficeAddress,
-                serviceAddress, soleTraderDetails, amlDetails, endDate);
+        return Objects.hash(acspNumber, name, notifiedFrom, status, type, businessSector, etag, registeredOfficeAddress,
+                serviceAddress, soleTraderDetails, amlDetails, deauthorisedFrom, links);
     }
 
     @Override
     public String toString() {
         return "AcspData{" +
-                "number='" + number + '\'' +
+                "acspNumber='" + acspNumber + '\'' +
                 ", name='" + name + '\'' +
-                ", createdDate=" + createdDate +
-                ", tradingStatus=" + tradingStatus +
-                ", email='" + email + '\'' +
+                ", notifiedFrom=" + notifiedFrom +
+                ", status=" + status +
                 ", type=" + type +
                 ", businessSector=" + businessSector +
+                ", etag='" + etag + '\'' +
                 ", registeredOfficeAddress=" + registeredOfficeAddress +
                 ", serviceAddress=" + serviceAddress +
                 ", soleTraderDetails=" + soleTraderDetails +
                 ", amlDetails=" + amlDetails +
-                ", endDate=" + endDate +
+                ", deauthorisedFrom=" + deauthorisedFrom +
+                ", links=" + links +
                 '}';
     }
 }

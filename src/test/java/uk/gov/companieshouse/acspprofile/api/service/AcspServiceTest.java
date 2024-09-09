@@ -13,17 +13,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
-import uk.gov.companieshouse.acspprofile.api.repository.AcspRepository;
+import uk.gov.companieshouse.acspprofile.api.repository.Repository;
 
 @ExtendWith(MockitoExtension.class)
 class AcspServiceTest {
 
-    private static final String ACSP_NUMBER = "12345678";
+    private static final String ACSP_NUMBER = "AP123456";
 
     @InjectMocks
     private AcspService service;
     @Mock
-    private AcspRepository repository;
+    private Repository repository;
 
     @Mock
     private AcspProfileDocument expected;
@@ -31,7 +31,7 @@ class AcspServiceTest {
     @Test
     void shouldFindAcsp() {
         // given
-        when(repository.findAscp(any())).thenReturn(Optional.of(expected));
+        when(repository.findById(any())).thenReturn(Optional.of(expected));
 
         // when
         Optional<AcspProfileDocument> actual = service.findAcsp(ACSP_NUMBER);
@@ -39,6 +39,6 @@ class AcspServiceTest {
         // then
         assertTrue(actual.isPresent());
         assertEquals(expected, actual.get());
-        verify(repository).findAscp(ACSP_NUMBER);
+        verify(repository).findById(ACSP_NUMBER);
     }
 }

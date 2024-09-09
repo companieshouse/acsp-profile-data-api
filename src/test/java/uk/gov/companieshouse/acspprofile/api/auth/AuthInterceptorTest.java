@@ -13,8 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class AuthInterceptorTest {
@@ -100,24 +98,8 @@ class AuthInterceptorTest {
     }
 
     @Test
-    void preHandleReturnsTrueIfEricIdentitySetAndIdentityTypeKey() {
+    void preHandleReturnsFalseIfEricIdentityTypeOAuth() {
         // given
-        when(request.getMethod()).thenReturn(HttpMethod.GET.name());
-        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.API_KEY_IDENTITY_TYPE);
-
-        // when
-        boolean actual = authInterceptor.preHandle(request, response, handler);
-
-        // then
-        assertTrue(actual);
-        verifyNoInteractions(response);
-    }
-
-    @Test
-    void preHandleReturnsTrueIfEricIdentitySetAndIdentityTypeOAuth() {
-        // given
-        when(request.getMethod()).thenReturn(HttpMethod.GET.name());
         when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
         when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.OAUTH2_IDENTITY_TYPE);
 
@@ -125,14 +107,13 @@ class AuthInterceptorTest {
         boolean actual = authInterceptor.preHandle(request, response, handler);
 
         // then
-        assertTrue(actual);
-        verifyNoInteractions(response);
+        assertFalse(actual);
+        verify(response).setStatus(401);
     }
 
     @Test
-    void preHandleReturnsTrueIfMethodNotGetAndHasInternalPrivileges() {
+    void preHandleReturnsTrueIfIdentityTypeApiKeyAndHasInternalPrivileges() {
         // given
-        when(request.getMethod()).thenReturn(HttpMethod.PATCH.name());
         when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
         when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.API_KEY_IDENTITY_TYPE);
         when(request.getHeader(AuthConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER))
@@ -147,24 +128,8 @@ class AuthInterceptorTest {
     }
 
     @Test
-    void preHandleReturnsFalseIfMethodNotGetAndHasInternalPrivilegesButIdentityTypeIsOAUTH2() {
+    void preHandleReturnsFalseIfIdentityTypeApiKeyAndNoInternalPrivileges() {
         // given
-        when(request.getMethod()).thenReturn(HttpMethod.PATCH.name());
-        when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.OAUTH2_IDENTITY_TYPE);
-
-        // when
-        boolean actual = authInterceptor.preHandle(request, response, handler);
-
-        // then
-        assertFalse(actual);
-        verify(response).setStatus(HttpStatus.FORBIDDEN.value());
-    }
-
-    @Test
-    void preHandleReturnsFalseIfMethodNotGetAndNoInternalPrivileges() {
-        // given
-        when(request.getMethod()).thenReturn(HttpMethod.PATCH.name());
         when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
         when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.API_KEY_IDENTITY_TYPE);
 
@@ -173,6 +138,6 @@ class AuthInterceptorTest {
 
         // then
         assertFalse(actual);
-        verify(response).setStatus(HttpStatus.FORBIDDEN.value());
+        verify(response).setStatus(403);
     }
 }

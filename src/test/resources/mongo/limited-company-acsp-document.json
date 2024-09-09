@@ -8,14 +8,13 @@
         "supervisory_body": "financial-conduct-authority-fca"
       }
     ],
-    "business_sector": "high-value-dealers",
-    "notified_from": "2024-09-02T06:56:50.000Z",
-    "deauthorised_from": "2025-01-08T00:00:00.000Z",
+    "business_sector": "financial-institutions",
+    "notified_from": "2024-04-02T00:00:00.000Z",
     "etag": "47e85fcf644420129b4388ef9c87496794620893",
     "links": {
-      "self": "/authorised-corporate-service-provider/AP123456"
+      "self": "/authorised-corporate-service-provider/<acsp_number>"
     },
-    "name": "John Doe",
+    "name": "Example ACSP Ltd",
     "registered_office_address": {
       "address_line_1": "456 Another Street",
       "address_line_2": "Floor 2",
@@ -27,30 +26,32 @@
       "premises": "Another Building",
       "region": "Greater Manchester"
     },
-    "service_address": null,
-    "sole_trader_details": {
-      "forename": "John",
-      "other_forenames": "A.",
-      "surname": "Doe",
-      "nationality": "British",
-      "usual_residential_country": "united-kingdom"
+    "service_address": {
+      "address_line_1": "456 Another Street",
+      "address_line_2": "Floor 2",
+      "care_of": "Jane Smith",
+      "country": "united-kingdom",
+      "locality": "Manchester",
+      "po_box": "PO Box 123",
+      "postal_code": "M1 2AB",
+      "premises": "Another Building",
+      "region": "Greater Manchester"
     },
-    "status": "ceased",
-    "type": "sole-trader"
+    "status": "active",
+    "type": "limited-company"
   },
   "sensitive_data": {
-    "date_of_birth": "1941-06-27T00:00:00.000Z",
     "email": "john.doe@example.com"
   },
   "delta_at": "20240829085824118418",
   "created": {
     "at": "<created_at>",
     "by": "<created_by>",
-    "type": "acsp_delta"
+    "type": "acsp_profile_delta"
   },
   "updated": {
     "by": "<updated_by>",
     "at": "<updated_at>",
-    "type": "acsp_delta"
+    "type": "acsp_profile_delta"
   }
 }

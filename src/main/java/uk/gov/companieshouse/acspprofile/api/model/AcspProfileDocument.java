@@ -1,7 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,11 +13,14 @@ public class AcspProfileDocument {
     @JsonProperty("_id")
     private String id;
     private AcspData data;
+    @Field("sensitive_data")
+    @JsonProperty("sensitive_data")
+    private AcspSensitiveData sensitiveData;
     private DeltaTimeStamp created;
     private DeltaTimeStamp updated;
     @Field("delta_at")
     @JsonProperty("delta_at")
-    private Instant deltaAt;
+    private String deltaAt;
 
     public String getId() {
         return id;
@@ -35,6 +37,15 @@ public class AcspProfileDocument {
 
     public AcspProfileDocument data(AcspData data) {
         this.data = data;
+        return this;
+    }
+
+    public AcspSensitiveData getSensitiveData() {
+        return sensitiveData;
+    }
+
+    public AcspProfileDocument sensitiveData(AcspSensitiveData sensitiveData) {
+        this.sensitiveData = sensitiveData;
         return this;
     }
 
@@ -56,11 +67,11 @@ public class AcspProfileDocument {
         return this;
     }
 
-    public Instant getDeltaAt() {
+    public String getDeltaAt() {
         return deltaAt;
     }
 
-    public AcspProfileDocument deltaAt(Instant deltaAt) {
+    public AcspProfileDocument deltaAt(String deltaAt) {
         this.deltaAt = deltaAt;
         return this;
     }
@@ -75,13 +86,14 @@ public class AcspProfileDocument {
         }
         AcspProfileDocument document = (AcspProfileDocument) o;
         return Objects.equals(id, document.id) && Objects.equals(data, document.data)
-                && Objects.equals(created, document.created) && Objects.equals(updated,
-                document.updated) && Objects.equals(deltaAt, document.deltaAt);
+                && Objects.equals(sensitiveData, document.sensitiveData) && Objects.equals(created,
+                document.created) && Objects.equals(updated, document.updated) && Objects.equals(
+                deltaAt, document.deltaAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, data, created, updated, deltaAt);
+        return Objects.hash(id, data, sensitiveData, created, updated, deltaAt);
     }
 
     @Override
@@ -89,6 +101,7 @@ public class AcspProfileDocument {
         return "AcspProfileDocument{" +
                 "id='" + id + '\'' +
                 ", data=" + data +
+                ", sensitiveData=" + sensitiveData +
                 ", created=" + created +
                 ", updated=" + updated +
                 ", deltaAt=" + deltaAt +

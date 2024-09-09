@@ -1,0 +1,10 @@
+{
+  "number": "<acsp_number>",
+  "name": "John Doe",
+  "status": "ceased",
+  "type": "sole-trader",
+  "kind": "authorised-corporate-service-provider-info",
+  "links": {
+    "self": "/authorised-corporate-service-provider/<acsp_number>"
+  }
+}

@@ -2,7 +2,7 @@ package uk.gov.companieshouse.acspprofile.api.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public enum TradingStatus {
+public enum AcspStatus {
 
     @JsonProperty("active")
     ACTIVE("active"),
@@ -13,7 +13,7 @@ public enum TradingStatus {
 
     private final String value;
 
-    TradingStatus(String value) {
+    AcspStatus(String value) {
         this.value = value;
     }
 

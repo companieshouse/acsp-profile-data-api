@@ -23,12 +23,14 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
 @Testcontainers
 @SpringBootTest
-class AcspRepositoryIT {
+class RepositoryIT {
 
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.12");
     private static final String ACSP_PROFILE_COLLECTION = "acsp_profile";
-    private static final String ACSP_NUMBER = "12345678";
+    private static final String ACSP_NUMBER = "AP123456";
+    private static final String CREATED_AT = "2024-08-23T00:00:00Z";
+    private static final String UPDATED_AT = "2024-09-24T12:00:00Z";
 
     @Autowired
     private Repository repository;
@@ -50,18 +52,20 @@ class AcspRepositoryIT {
 
     @ParameterizedTest
     @CsvSource({
-            "independent-legal-professionals-acsp-document",
+            "limited-company-acsp-document",
             "sole-trader-acsp-document",
     })
     void shouldFindAcspDocumentById(String filename) throws IOException {
         // given
         String documentJson = IOUtils.resourceToString("/mongo/%s.json".formatted(filename), StandardCharsets.UTF_8)
-                .replaceAll("<acsp_number>", ACSP_NUMBER);
+                .replaceAll("<acsp_number>", ACSP_NUMBER)
+                .replaceAll("<created_at>", CREATED_AT)
+                .replaceAll("<updated_at>", UPDATED_AT);
         AcspProfileDocument expected = objectMapper.readValue(documentJson, AcspProfileDocument.class);
         mongoTemplate.insert(expected);
 
         // when
-        Optional<AcspProfileDocument> actual = repository.findAscp(ACSP_NUMBER);
+        Optional<AcspProfileDocument> actual = repository.findById(ACSP_NUMBER);
 
         // then
         assertTrue(actual.isPresent());

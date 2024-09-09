@@ -27,26 +27,26 @@ public class FullProfileAuthInterceptor implements HandlerInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-            @Nonnull HttpServletResponse response, @Nullable Object handler) {
+    public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response,
+            @Nullable Object handler) {
 
         String ericIdentity = request.getHeader(ERIC_IDENTITY);
         String ericIdentityType = request.getHeader(ERIC_IDENTITY_TYPE);
 
         if (StringUtils.isBlank(ericIdentity)) {
-            LOGGER.error("Request received without eric identity", DataMapHolder.getLogMap());
+            LOGGER.error("Eric identity is blank", DataMapHolder.getLogMap());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
 
         if (!API_KEY_IDENTITY_TYPE.equalsIgnoreCase(ericIdentityType)) {
-            LOGGER.error("Request received without correct eric identity type", DataMapHolder.getLogMap());
+            LOGGER.error("Incorrect eric identity type", DataMapHolder.getLogMap());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
 
         if (!isKeySensitiveDataAuthorised(request)) {
-            LOGGER.error("Supplied key does not have sufficient privileges", DataMapHolder.getLogMap());
+            LOGGER.error("Key is not authorised", DataMapHolder.getLogMap());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return false;
         }
@@ -56,8 +56,8 @@ public class FullProfileAuthInterceptor implements HandlerInterceptor {
     private boolean isKeySensitiveDataAuthorised(HttpServletRequest request) {
         String[] privileges = getApiKeyPrivileges(request);
 
-        return request.getMethod().equals(HttpMethod.GET.name()) &&
-                ArrayUtils.contains(privileges, SENSITIVE_DATA_PRIVILEGE);
+        return request.getMethod().equals(HttpMethod.GET.name())
+                && ArrayUtils.contains(privileges, SENSITIVE_DATA_PRIVILEGE);
     }
 
     private String[] getApiKeyPrivileges(HttpServletRequest request) {

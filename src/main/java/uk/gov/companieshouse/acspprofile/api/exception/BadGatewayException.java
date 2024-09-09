@@ -3,10 +3,10 @@ package uk.gov.companieshouse.acspprofile.api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-public class ServiceUnavailableException extends RuntimeException {
+@ResponseStatus(HttpStatus.BAD_GATEWAY)
+public class BadGatewayException extends RuntimeException {
 
-    public ServiceUnavailableException(String message) {
+    public BadGatewayException(String message) {
         super(message);
     }
 }

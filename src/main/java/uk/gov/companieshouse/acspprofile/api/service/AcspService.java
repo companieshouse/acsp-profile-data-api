@@ -16,6 +16,6 @@ public class AcspService implements Service {
 
     @Override
     public Optional<AcspProfileDocument> findAcsp(String acspNumber) {
-        return acspRepository.findAscp(acspNumber);
+        return acspRepository.findById(acspNumber);
     }
 }

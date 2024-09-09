@@ -5,7 +5,9 @@ import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMES
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.mapper.GetMapper;
+import uk.gov.companieshouse.acspprofile.api.mapper.get.GetMapper;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
+import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -13,6 +15,8 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class AcspGetProcessor implements GetProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
+    private static final String NOT_FOUND_MESSAGE = "ACSP document not found";
+
     private final Service acspService;
     private final GetMapper acspGetmapper;
 
@@ -22,18 +26,22 @@ public class AcspGetProcessor implements GetProcessor {
     }
 
     @Override
-    public Object getProfile(String acspNumber) {
-        // not implemented
-        return null;
+    public AcspProfile getProfile(String acspNumber) {
+        return acspGetmapper.mapProfile(
+                acspService.findAcsp(acspNumber)
+                        .orElseGet(() -> {
+                            LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
+                            throw new NotFoundException(NOT_FOUND_MESSAGE);
+                        }));
     }
 
     @Override
-    public Object getFullProfile(String acspNumber) {
+    public AcspFullProfile getFullProfile(String acspNumber) {
         return acspGetmapper.mapFullProfile(
                 acspService.findAcsp(acspNumber)
                         .orElseGet(() -> {
-                            LOGGER.info("ACSP profile not found", DataMapHolder.getLogMap());
-                            throw new NotFoundException("ACSP profile not found");
+                            LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
+                            throw new NotFoundException(NOT_FOUND_MESSAGE);
                         }));
     }
 }
