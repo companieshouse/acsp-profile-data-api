@@ -1,12 +1,15 @@
 package uk.gov.companieshouse.acspprofile.api.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ class ControllerIT {
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.12");
     private static final String ACSP_PROFILE_COLLECTION = "acsp_profile";
     private static final String GET_PROFILE_URI = "/authorised-corporate-service-providers/{acsp_number}";
-
+    private static final String GET_FULL_PROFILE_URI = "/authorised-corporate-service-providers/{acsp_number}/full-profile";
     private static final String ACSP_NUMBER = "AP123456";
     private static final String CREATED_AT = "2024-08-23T00:00:00Z";
     private static final String UPDATED_AT = "2024-09-24T12:00:00Z";
@@ -62,7 +65,7 @@ class ControllerIT {
             "limited-company",
             "sole-trader",
     })
-    void shouldGetAcspProfileAndReturn200Ok(String acspType) throws Exception {
+    void shouldReturn200WhenGetProfile(String acspType) throws Exception {
         // given
         insertDocumentByType(acspType);
 
@@ -82,6 +85,26 @@ class ControllerIT {
         AcspProfile actual = objectMapper.readValue(actualJson, AcspProfile.class);
 
         assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "limited-company",
+            "sole-trader",
+    })
+    void shouldReturn500WhenGetFullProfileAndNotImplemented(String acspType) throws Exception {
+        // given
+        insertDocumentByType(acspType);
+
+        // when
+        Executable result = () -> mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
+                .header("ERIC-Identity", "123")
+                .header("ERIC-Identity-Type", "key")
+                .header("ERIC-Authorised-Key-Privileges", "sensitive-data")
+                .header("X-Request-Id", UPDATED_AT));
+
+        // then
+        assertThrows(ServletException.class, result);
     }
 
     private AcspProfile getExpectedResponseByType(String acspType) throws IOException {
