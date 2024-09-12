@@ -3,22 +3,21 @@ package uk.gov.companieshouse.acspprofile.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
-import uk.gov.companieshouse.acspprofile.api.model.enums.SupervisoryBody;
 
 public class AmlDetails {
 
     @Field("supervisory_body")
     @JsonProperty("supervisory_body")
-    private SupervisoryBody supervisoryBody;
+    private String supervisoryBody;
     @Field("membership_details")
     @JsonProperty("membership_details")
     private String membershipDetails;
 
-    public SupervisoryBody getSupervisoryBody() {
+    public String getSupervisoryBody() {
         return supervisoryBody;
     }
 
-    public AmlDetails supervisoryBody(SupervisoryBody supervisoryBody) {
+    public AmlDetails supervisoryBody(String supervisoryBody) {
         this.supervisoryBody = supervisoryBody;
         return this;
     }
@@ -41,8 +40,8 @@ public class AmlDetails {
             return false;
         }
         AmlDetails that = (AmlDetails) o;
-        return supervisoryBody == that.supervisoryBody && Objects.equals(membershipDetails,
-                that.membershipDetails);
+        return Objects.equals(supervisoryBody, that.supervisoryBody) && Objects.equals(
+                membershipDetails, that.membershipDetails);
     }
 
     @Override

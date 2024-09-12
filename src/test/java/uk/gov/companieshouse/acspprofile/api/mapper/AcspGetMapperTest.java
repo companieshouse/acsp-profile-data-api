@@ -18,9 +18,6 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspLinks;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 import uk.gov.companieshouse.acspprofile.api.model.AcspSensitiveData;
 import uk.gov.companieshouse.acspprofile.api.model.DeltaTimeStamp;
-import uk.gov.companieshouse.acspprofile.api.model.enums.AcspCountry;
-import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
-import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.api.acspprofile.Links;
 
@@ -39,11 +36,14 @@ class AcspGetMapperTest {
     private static final String CARE_OF = "Jane Smith";
     private static final String ADDRESS_LINE_1 = "456 Another Street";
     private static final String ADDRESS_LINE_2 = "Floor 2";
+    private static final String COUNTRY = "united-kingdom";
     private static final String LOCALITY = "Manchester";
     private static final String PO_BOX = "PO Box 123";
     private static final String POSTAL_CODE = "M1 2AB";
     private static final String PREMISES = "Another Building";
     private static final String REGION = "Greater Manchester";
+    private static final String STATUS = "active";
+    private static final String TYPE = "corporate-body";
 
     @InjectMocks
     private AcspGetMapper mapper;
@@ -54,15 +54,15 @@ class AcspGetMapperTest {
         AcspData data = new AcspData()
                 .acspNumber(ACSP_NUMBER)
                 .name(NAME)
-                .status(AcspStatus.ACTIVE)
-                .type(AcspType.CORPORATE_BODY)
+                .status(STATUS)
+                .type(TYPE)
                 .notifiedFrom(Instant.from(NOTIFIED_FROM.atStartOfDay(UTC)))
                 .deauthorisedFrom(Instant.from(DEAUTHORISED_FROM.atStartOfDay(UTC)))
                 .registeredOfficeAddress(new AcspAddress()
                         .careOf(CARE_OF)
                         .addressLine1(ADDRESS_LINE_1)
                         .addressLine2(ADDRESS_LINE_2)
-                        .country(AcspCountry.UNITED_KINGDOM)
+                        .country(COUNTRY)
                         .locality(LOCALITY)
                         .poBox(PO_BOX)
                         .postalCode(POSTAL_CODE)

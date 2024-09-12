@@ -3,7 +3,6 @@ package uk.gov.companieshouse.acspprofile.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
-import uk.gov.companieshouse.acspprofile.api.model.enums.AcspCountry;
 
 public class AcspAddress {
 
@@ -16,7 +15,7 @@ public class AcspAddress {
     @Field("address_line_2")
     @JsonProperty("address_line_2")
     private String addressLine2;
-    private AcspCountry country;
+    private String country;
     private String locality;
     @Field("po_box")
     @JsonProperty("po_box")
@@ -54,11 +53,11 @@ public class AcspAddress {
         return this;
     }
 
-    public AcspCountry getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public AcspAddress country(AcspCountry country) {
+    public AcspAddress country(String country) {
         this.country = country;
         return this;
     }
