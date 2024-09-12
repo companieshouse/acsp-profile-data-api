@@ -5,9 +5,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
-import uk.gov.companieshouse.acspprofile.api.model.enums.AcspStatus;
-import uk.gov.companieshouse.acspprofile.api.model.enums.AcspType;
-import uk.gov.companieshouse.acspprofile.api.model.enums.BusinessSector;
 
 public class AcspData {
 
@@ -18,11 +15,11 @@ public class AcspData {
     @Field("notified_from")
     @JsonProperty("notified_from")
     private Instant notifiedFrom;
-    private AcspStatus status;
-    private AcspType type;
+    private String status;
+    private String type;
     @Field("business_sector")
     @JsonProperty("business_sector")
-    private BusinessSector businessSector;
+    private String businessSector;
     private String etag;
     @Field("registered_office_address")
     @JsonProperty("registered_office_address")
@@ -68,29 +65,29 @@ public class AcspData {
         return this;
     }
 
-    public AcspStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public AcspData status(AcspStatus status) {
+    public AcspData status(String status) {
         this.status = status;
         return this;
     }
 
-    public AcspType getType() {
+    public String getType() {
         return type;
     }
 
-    public AcspData type(AcspType type) {
+    public AcspData type(String type) {
         this.type = type;
         return this;
     }
 
-    public BusinessSector getBusinessSector() {
+    public String getBusinessSector() {
         return businessSector;
     }
 
-    public AcspData businessSector(BusinessSector businessSector) {
+    public AcspData businessSector(String businessSector) {
         this.businessSector = businessSector;
         return this;
     }
@@ -169,13 +166,13 @@ public class AcspData {
         }
         AcspData data = (AcspData) o;
         return Objects.equals(acspNumber, data.acspNumber) && Objects.equals(name, data.name)
-                && Objects.equals(notifiedFrom, data.notifiedFrom) && status == data.status && type == data.type
-                && businessSector == data.businessSector && Objects.equals(etag, data.etag)
-                && Objects.equals(registeredOfficeAddress, data.registeredOfficeAddress)
-                && Objects.equals(serviceAddress, data.serviceAddress) && Objects.equals(
-                soleTraderDetails, data.soleTraderDetails) && Objects.equals(amlDetails, data.amlDetails)
-                && Objects.equals(deauthorisedFrom, data.deauthorisedFrom) && Objects.equals(links,
-                data.links);
+                && Objects.equals(notifiedFrom, data.notifiedFrom) && Objects.equals(status,
+                data.status) && Objects.equals(type, data.type) && Objects.equals(businessSector,
+                data.businessSector) && Objects.equals(etag, data.etag) && Objects.equals(
+                registeredOfficeAddress, data.registeredOfficeAddress) && Objects.equals(serviceAddress,
+                data.serviceAddress) && Objects.equals(soleTraderDetails, data.soleTraderDetails)
+                && Objects.equals(amlDetails, data.amlDetails) && Objects.equals(deauthorisedFrom,
+                data.deauthorisedFrom) && Objects.equals(links, data.links);
     }
 
     @Override

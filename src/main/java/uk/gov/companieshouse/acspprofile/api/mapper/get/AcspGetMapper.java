@@ -18,9 +18,9 @@ public class AcspGetMapper implements GetMapper {
         return new AcspProfile()
                 .number(data.getAcspNumber())
                 .name(data.getName())
-                .type(AcspProfile.TypeEnum.fromValue(data.getType().getValue()))
+                .type(AcspProfile.TypeEnum.fromValue(data.getType()))
                 .kind(KIND)
-                .status(AcspProfile.StatusEnum.fromValue(data.getStatus().getValue()))
+                .status(AcspProfile.StatusEnum.fromValue(data.getStatus()))
                 .links(new Links()
                         .self(data.getLinks().getSelf()));
     }
