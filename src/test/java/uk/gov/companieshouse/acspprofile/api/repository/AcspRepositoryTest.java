@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.acspprofile.api.service;
+package uk.gov.companieshouse.acspprofile.api.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,8 +18,6 @@ import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.dao.TransientDataAccessResourceException;
 import uk.gov.companieshouse.acspprofile.api.exception.BadGatewayException;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
-import uk.gov.companieshouse.acspprofile.api.repository.AcspMongoRepository;
-import uk.gov.companieshouse.acspprofile.api.repository.AcspRepository;
 
 @ExtendWith(MockitoExtension.class)
 class AcspRepositoryTest {
