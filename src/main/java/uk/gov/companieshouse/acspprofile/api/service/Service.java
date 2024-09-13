@@ -1,9 +1,10 @@
 package uk.gov.companieshouse.acspprofile.api.service;
 
-import java.util.Optional;
-import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
+import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 
 public interface Service {
 
-    Optional<AcspProfileDocument> findAcsp(String acspNumber);
+    AcspProfile getProfile(String acspNumber);
+    AcspFullProfile getFullProfile(String acspNumber);
 }

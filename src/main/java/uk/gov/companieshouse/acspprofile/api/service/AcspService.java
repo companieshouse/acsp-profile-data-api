@@ -2,14 +2,13 @@ package uk.gov.companieshouse.acspprofile.api.service;
 
 import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMESPACE;
 
-import java.util.Optional;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.TransientDataAccessException;
 import org.springframework.stereotype.Component;
-import uk.gov.companieshouse.acspprofile.api.exception.BadGatewayException;
+import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
+import uk.gov.companieshouse.acspprofile.api.mapper.get.GetMapper;
 import uk.gov.companieshouse.acspprofile.api.repository.Repository;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
+import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -17,22 +16,33 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class AcspService implements Service {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
-    private final Repository acspRepository;
+    private static final String NOT_FOUND_MESSAGE = "ACSP document not found";
 
-    public AcspService(Repository acspRepository) {
-        this.acspRepository = acspRepository;
+    private final Repository repository;
+    private final GetMapper acspGetmapper;
+
+    public AcspService(Repository repository, GetMapper acspGetmapper) {
+        this.repository = repository;
+        this.acspGetmapper = acspGetmapper;
     }
 
     @Override
-    public Optional<AcspProfileDocument> findAcsp(String acspNumber) {
-        try {
-            return acspRepository.findById(acspNumber);
-        } catch (TransientDataAccessException ex) {
-            LOGGER.info("Recoverable MongoDB error during find", DataMapHolder.getLogMap());
-            throw new BadGatewayException("Recoverable MongoDB error during find", ex);
-        } catch (DataAccessException ex) {
-            LOGGER.error("MongoDB error during find", ex, DataMapHolder.getLogMap());
-            throw new BadGatewayException("MongoDB error during find", ex);
-        }
+    public AcspProfile getProfile(String acspNumber) {
+        return acspGetmapper.mapProfile(
+                repository.findAcsp(acspNumber)
+                        .orElseGet(() -> {
+                            LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
+                            throw new NotFoundException(NOT_FOUND_MESSAGE);
+                        }));
+    }
+
+    @Override
+    public AcspFullProfile getFullProfile(String acspNumber) {
+        return acspGetmapper.mapFullProfile(
+                repository.findAcsp(acspNumber)
+                        .orElseGet(() -> {
+                            LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
+                            throw new NotFoundException(NOT_FOUND_MESSAGE);
+                        }));
     }
 }

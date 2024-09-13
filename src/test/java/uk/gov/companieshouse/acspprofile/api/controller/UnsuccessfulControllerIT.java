@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.TypeMismatchDataAccessException;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.gov.companieshouse.acspprofile.api.repository.Repository;
+import uk.gov.companieshouse.acspprofile.api.repository.AcspMongoRepository;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -29,7 +29,7 @@ class UnsuccessfulControllerIT {
     private static final String UPDATED_AT = "2024-09-24T12:00:00Z";
 
     @MockBean
-    private Repository repository;
+    private AcspMongoRepository repository;
     @Autowired
     private MockMvc mockMvc;
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.service.GetProcessor;
+import uk.gov.companieshouse.acspprofile.api.service.Service;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.logging.Logger;
@@ -19,10 +19,10 @@ public class Controller {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
-    private final GetProcessor getProcessor;
+    private final Service service;
 
-    public Controller(GetProcessor getProcessor) {
-        this.getProcessor = getProcessor;
+    public Controller(Service service) {
+        this.service = service;
     }
 
     @GetMapping("/authorised-corporate-service-providers/{acsp_number}")
@@ -33,7 +33,7 @@ public class Controller {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(getProcessor.getProfile(acspNumber));
+                .body(service.getProfile(acspNumber));
     }
 
     @GetMapping("/authorised-corporate-service-providers/{acsp_number}/full-profile")
@@ -44,6 +44,6 @@ public class Controller {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(getProcessor.getFullProfile(acspNumber));
+                .body(service.getFullProfile(acspNumber));
     }
 }
