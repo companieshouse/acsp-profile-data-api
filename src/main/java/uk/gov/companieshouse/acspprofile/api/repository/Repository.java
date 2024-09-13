@@ -1,10 +1,9 @@
 package uk.gov.companieshouse.acspprofile.api.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Component;
+import java.util.Optional;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
-@Component
-public interface Repository extends MongoRepository<AcspProfileDocument, String> {
+public interface Repository {
 
+    Optional<AcspProfileDocument> findAcsp(String acspNumber);
 }

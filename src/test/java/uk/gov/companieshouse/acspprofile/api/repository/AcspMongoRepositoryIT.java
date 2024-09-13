@@ -23,7 +23,7 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
 @Testcontainers
 @SpringBootTest
-class RepositoryIT {
+class AcspMongoRepositoryIT {
 
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.12");
@@ -33,7 +33,7 @@ class RepositoryIT {
     private static final String UPDATED_AT = "2024-09-24T12:00:00Z";
 
     @Autowired
-    private Repository repository;
+    private AcspMongoRepository repository;
     @Autowired
     private MongoTemplate mongoTemplate;
     @Autowired

@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.companieshouse.acspprofile.api.service.AcspGetProcessor;
+import uk.gov.companieshouse.acspprofile.api.service.AcspService;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 
@@ -24,7 +24,7 @@ class ControllerTest {
     @InjectMocks
     private Controller controller;
     @Mock
-    private AcspGetProcessor getProcessor;
+    private AcspService getProcessor;
 
     @Mock
     private AcspProfile expectedProfile;

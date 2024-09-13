@@ -2,9 +2,9 @@ package uk.gov.companieshouse.acspprofile.api.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -14,11 +14,12 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.NonTransientDataAccessResourceException;
-import org.springframework.dao.TransientDataAccessResourceException;
-import uk.gov.companieshouse.acspprofile.api.exception.BadGatewayException;
+import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
+import uk.gov.companieshouse.acspprofile.api.mapper.get.AcspGetMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
-import uk.gov.companieshouse.acspprofile.api.repository.Repository;
+import uk.gov.companieshouse.acspprofile.api.repository.AcspRepository;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
+import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 
 @ExtendWith(MockitoExtension.class)
 class AcspServiceTest {
@@ -26,52 +27,76 @@ class AcspServiceTest {
     private static final String ACSP_NUMBER = "AP123456";
 
     @InjectMocks
-    private AcspService service;
+    private AcspService getProcessor;
     @Mock
-    private Repository repository;
+    private AcspRepository service;
+    @Mock
+    private AcspGetMapper mapper;
 
     @Mock
-    private AcspProfileDocument expected;
+    private AcspProfileDocument document;
+    @Mock
+    private AcspProfile expectedProfile;
+    @Mock
+    private AcspFullProfile expectedFullProfile;
 
     @Test
-    void shouldFindAcsp() {
+    void shouldGetProfile() {
         // given
-        when(repository.findById(any())).thenReturn(Optional.of(expected));
+        when(service.findAcsp(any())).thenReturn(Optional.of(document));
+        when(mapper.mapProfile(any())).thenReturn(expectedProfile);
 
         // when
-        Optional<AcspProfileDocument> actual = service.findAcsp(ACSP_NUMBER);
+        Object actual = getProcessor.getProfile(ACSP_NUMBER);
 
         // then
-        assertTrue(actual.isPresent());
-        assertEquals(expected, actual.get());
-        verify(repository).findById(ACSP_NUMBER);
+        assertEquals(expectedProfile, actual);
+        verify(service).findAcsp(ACSP_NUMBER);
+        verify(mapper).mapProfile(document);
     }
 
     @Test
-    void shouldThrowBadGatewayWhenTransientDataAccessExceptionThrown() {
+    void shouldThrowNotFoundExceptionWhenGetProfileEmptyOptional() {
         // given
-        when(repository.findById(any())).thenThrow(TransientDataAccessResourceException.class);
+        when(service.findAcsp(any())).thenReturn(Optional.empty());
 
         // when
-        Executable actual = () -> service.findAcsp(ACSP_NUMBER);
+        Executable actual = () -> getProcessor.getProfile(ACSP_NUMBER);
 
         // then
-        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
-        assertEquals("Recoverable MongoDB error during find", exception.getMessage());
-        verify(repository).findById(ACSP_NUMBER);
+        Exception exception = assertThrows(NotFoundException.class, actual);
+        assertEquals("ACSP document not found", exception.getMessage());
+        verify(service).findAcsp(ACSP_NUMBER);
+        verifyNoMoreInteractions(mapper);
     }
 
     @Test
-    void shouldThrowBadGatewayWhenNonTransientDataAccessExceptionThrown() {
+    void shouldGetFullProfile() {
         // given
-        when(repository.findById(any())).thenThrow(NonTransientDataAccessResourceException.class);
+        when(service.findAcsp(any())).thenReturn(Optional.of(document));
+        when(mapper.mapFullProfile(any())).thenReturn(expectedFullProfile);
 
         // when
-        Executable actual = () -> service.findAcsp(ACSP_NUMBER);
+        Object actual = getProcessor.getFullProfile(ACSP_NUMBER);
 
         // then
-        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
-        assertEquals("MongoDB error during find", exception.getMessage());
-        verify(repository).findById(ACSP_NUMBER);
+        assertEquals(expectedFullProfile, actual);
+        verify(service).findAcsp(ACSP_NUMBER);
+        verify(mapper).mapFullProfile(document);
+    }
+
+    @Test
+    void shouldThrowNotFoundExceptionWhenGetFullProfileEmptyOptional() {
+        // given
+        when(service.findAcsp(any())).thenReturn(Optional.empty());
+
+        // when
+        Executable actual = () -> getProcessor.getFullProfile(ACSP_NUMBER);
+
+        // then
+        Exception exception = assertThrows(NotFoundException.class, actual);
+        assertEquals("ACSP document not found", exception.getMessage());
+        verify(service).findAcsp(ACSP_NUMBER);
+        verifyNoMoreInteractions(mapper);
     }
 }
