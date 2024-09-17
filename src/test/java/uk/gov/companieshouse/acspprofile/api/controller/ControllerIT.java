@@ -1,15 +1,12 @@
 package uk.gov.companieshouse.acspprofile.api.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
+import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 
 @Testcontainers
@@ -69,7 +67,7 @@ class ControllerIT {
         // given
         insertDocumentByType(acspType);
 
-        AcspProfile expected = getExpectedResponseByType(acspType);
+        AcspProfile expected = getExpectedProfileByType(acspType);
 
         // when
         ResultActions result = mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER)
@@ -92,26 +90,39 @@ class ControllerIT {
             "limited-company",
             "sole-trader",
     })
-    void shouldReturn500WhenGetFullProfileAndNotImplemented(String acspType) throws Exception {
+    void shouldReturn200WhenGetFullProfile(String acspType) throws Exception {
         // given
         insertDocumentByType(acspType);
 
+        AcspFullProfile expected = getExpectedFullProfileByType(acspType);
         // when
-        Executable result = () -> mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
+        ResultActions result = mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
                 .header("ERIC-Identity", "123")
                 .header("ERIC-Identity-Type", "key")
                 .header("ERIC-Authorised-Key-Privileges", "sensitive-data")
                 .header("X-Request-Id", UPDATED_AT));
 
         // then
-        assertThrows(ServletException.class, result);
+        result.andExpect(MockMvcResultMatchers.status().isOk());
+
+        String actualJson = result.andReturn().getResponse().getContentAsString();
+        AcspFullProfile actual = objectMapper.readValue(actualJson, AcspFullProfile.class);
+
+        assertEquals(expected, actual);
     }
 
-    private AcspProfile getExpectedResponseByType(String acspType) throws IOException {
+    private AcspProfile getExpectedProfileByType(String acspType) throws IOException {
         String expectedJson = IOUtils.resourceToString("/responses/%s-acsp-profile-response.json".formatted(acspType),
                         StandardCharsets.UTF_8)
                 .replaceAll("<acsp_number>", ACSP_NUMBER);
         return objectMapper.readValue(expectedJson, AcspProfile.class);
+    }
+
+    private AcspFullProfile getExpectedFullProfileByType(String acspType) throws IOException {
+        String expectedJson = IOUtils.resourceToString(
+                        "/responses/%s-acsp-full-profile-response.json".formatted(acspType), StandardCharsets.UTF_8)
+                .replaceAll("<acsp_number>", ACSP_NUMBER);
+        return objectMapper.readValue(expectedJson, AcspFullProfile.class);
     }
 
     private void insertDocumentByType(String acspType) throws IOException {

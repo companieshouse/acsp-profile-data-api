@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-public class SoleTraderDetails {
+public class AcspSoleTraderDetails {
 
     private String forename;
     @Field("other_forenames")
@@ -20,7 +20,7 @@ public class SoleTraderDetails {
         return forename;
     }
 
-    public SoleTraderDetails forename(String forename) {
+    public AcspSoleTraderDetails forename(String forename) {
         this.forename = forename;
         return this;
     }
@@ -29,7 +29,7 @@ public class SoleTraderDetails {
         return otherForenames;
     }
 
-    public SoleTraderDetails otherForenames(String otherForenames) {
+    public AcspSoleTraderDetails otherForenames(String otherForenames) {
         this.otherForenames = otherForenames;
         return this;
     }
@@ -38,7 +38,7 @@ public class SoleTraderDetails {
         return surname;
     }
 
-    public SoleTraderDetails surname(String surname) {
+    public AcspSoleTraderDetails surname(String surname) {
         this.surname = surname;
         return this;
     }
@@ -47,7 +47,7 @@ public class SoleTraderDetails {
         return nationality;
     }
 
-    public SoleTraderDetails nationality(String nationality) {
+    public AcspSoleTraderDetails nationality(String nationality) {
         this.nationality = nationality;
         return this;
     }
@@ -56,7 +56,7 @@ public class SoleTraderDetails {
         return usualResidentialCountry;
     }
 
-    public SoleTraderDetails usualResidentialCountry(String usualResidentialCountry) {
+    public AcspSoleTraderDetails usualResidentialCountry(String usualResidentialCountry) {
         this.usualResidentialCountry = usualResidentialCountry;
         return this;
     }
@@ -69,7 +69,7 @@ public class SoleTraderDetails {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SoleTraderDetails that = (SoleTraderDetails) o;
+        AcspSoleTraderDetails that = (AcspSoleTraderDetails) o;
         return Objects.equals(forename, that.forename) && Objects.equals(otherForenames,
                 that.otherForenames) && Objects.equals(surname, that.surname) && Objects.equals(
                 nationality, that.nationality) && Objects.equals(usualResidentialCountry,
