@@ -20,6 +20,8 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspSensitiveData;
 import uk.gov.companieshouse.acspprofile.api.model.DeltaTimeStamp;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.api.acspprofile.Links;
+import uk.gov.companieshouse.api.acspprofile.Status;
+import uk.gov.companieshouse.api.acspprofile.Type;
 
 @ExtendWith(MockitoExtension.class)
 class AcspGetMapperTest {
@@ -84,8 +86,8 @@ class AcspGetMapperTest {
         AcspProfile expected = new AcspProfile()
                 .number(ACSP_NUMBER)
                 .name(NAME)
-                .status(AcspProfile.StatusEnum.ACTIVE)
-                .type(AcspProfile.TypeEnum.CORPORATE_BODY)
+                .status(Status.ACTIVE)
+                .type(Type.CORPORATE_BODY)
                 .kind(KIND)
                 .links(new Links()
                         .self(SELF_LINK));

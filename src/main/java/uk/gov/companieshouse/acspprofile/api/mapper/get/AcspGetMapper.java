@@ -6,6 +6,8 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.api.acspprofile.Links;
+import uk.gov.companieshouse.api.acspprofile.Status;
+import uk.gov.companieshouse.api.acspprofile.Type;
 
 @Component
 public class AcspGetMapper implements GetMapper {
@@ -18,9 +20,9 @@ public class AcspGetMapper implements GetMapper {
         return new AcspProfile()
                 .number(data.getAcspNumber())
                 .name(data.getName())
-                .type(AcspProfile.TypeEnum.fromValue(data.getType()))
+                .type(Type.fromValue(data.getType()))
                 .kind(KIND)
-                .status(AcspProfile.StatusEnum.fromValue(data.getStatus()))
+                .status(Status.fromValue(data.getStatus()))
                 .links(new Links()
                         .self(data.getLinks().getSelf()));
     }
