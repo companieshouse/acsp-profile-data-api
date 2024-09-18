@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-public class AmlDetails {
+public class AcspAmlDetails {
 
     @Field("supervisory_body")
     @JsonProperty("supervisory_body")
@@ -17,7 +17,7 @@ public class AmlDetails {
         return supervisoryBody;
     }
 
-    public AmlDetails supervisoryBody(String supervisoryBody) {
+    public AcspAmlDetails supervisoryBody(String supervisoryBody) {
         this.supervisoryBody = supervisoryBody;
         return this;
     }
@@ -26,7 +26,7 @@ public class AmlDetails {
         return membershipDetails;
     }
 
-    public AmlDetails membershipDetails(String membershipDetails) {
+    public AcspAmlDetails membershipDetails(String membershipDetails) {
         this.membershipDetails = membershipDetails;
         return this;
     }
@@ -39,7 +39,7 @@ public class AmlDetails {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AmlDetails that = (AmlDetails) o;
+        AcspAmlDetails that = (AcspAmlDetails) o;
         return Objects.equals(supervisoryBody, that.supervisoryBody) && Objects.equals(
                 membershipDetails, that.membershipDetails);
     }

@@ -29,10 +29,10 @@ public class AcspData {
     private AcspAddress serviceAddress;
     @Field("sole_trader_details")
     @JsonProperty("sole_trader_details")
-    private SoleTraderDetails soleTraderDetails;
+    private AcspSoleTraderDetails acspSoleTraderDetails;
     @Field("aml_details")
     @JsonProperty("aml_details")
-    private List<AmlDetails> amlDetails;
+    private List<AcspAmlDetails> acspAmlDetails;
     @Field("deauthorised_from")
     @JsonProperty("deauthorised_from")
     private Instant deauthorisedFrom;
@@ -120,21 +120,21 @@ public class AcspData {
         return this;
     }
 
-    public SoleTraderDetails getSoleTraderDetails() {
-        return soleTraderDetails;
+    public AcspSoleTraderDetails getSoleTraderDetails() {
+        return acspSoleTraderDetails;
     }
 
-    public AcspData soleTraderDetails(SoleTraderDetails soleTraderDetails) {
-        this.soleTraderDetails = soleTraderDetails;
+    public AcspData soleTraderDetails(AcspSoleTraderDetails acspSoleTraderDetails) {
+        this.acspSoleTraderDetails = acspSoleTraderDetails;
         return this;
     }
 
-    public List<AmlDetails> getAmlDetails() {
-        return amlDetails;
+    public List<AcspAmlDetails> getAmlDetails() {
+        return acspAmlDetails;
     }
 
-    public AcspData amlDetails(List<AmlDetails> amlDetails) {
-        this.amlDetails = amlDetails;
+    public AcspData amlDetails(List<AcspAmlDetails> acspAmlDetails) {
+        this.acspAmlDetails = acspAmlDetails;
         return this;
     }
 
@@ -170,15 +170,15 @@ public class AcspData {
                 data.status) && Objects.equals(type, data.type) && Objects.equals(businessSector,
                 data.businessSector) && Objects.equals(etag, data.etag) && Objects.equals(
                 registeredOfficeAddress, data.registeredOfficeAddress) && Objects.equals(serviceAddress,
-                data.serviceAddress) && Objects.equals(soleTraderDetails, data.soleTraderDetails)
-                && Objects.equals(amlDetails, data.amlDetails) && Objects.equals(deauthorisedFrom,
+                data.serviceAddress) && Objects.equals(acspSoleTraderDetails, data.acspSoleTraderDetails)
+                && Objects.equals(acspAmlDetails, data.acspAmlDetails) && Objects.equals(deauthorisedFrom,
                 data.deauthorisedFrom) && Objects.equals(links, data.links);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(acspNumber, name, notifiedFrom, status, type, businessSector, etag, registeredOfficeAddress,
-                serviceAddress, soleTraderDetails, amlDetails, deauthorisedFrom, links);
+                serviceAddress, acspSoleTraderDetails, acspAmlDetails, deauthorisedFrom, links);
     }
 
     @Override
@@ -193,8 +193,8 @@ public class AcspData {
                 ", etag='" + etag + '\'' +
                 ", registeredOfficeAddress=" + registeredOfficeAddress +
                 ", serviceAddress=" + serviceAddress +
-                ", soleTraderDetails=" + soleTraderDetails +
-                ", amlDetails=" + amlDetails +
+                ", soleTraderDetails=" + acspSoleTraderDetails +
+                ", amlDetails=" + acspAmlDetails +
                 ", deauthorisedFrom=" + deauthorisedFrom +
                 ", links=" + links +
                 '}';
