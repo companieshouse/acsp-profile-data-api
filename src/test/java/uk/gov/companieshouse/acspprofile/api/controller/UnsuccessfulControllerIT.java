@@ -61,7 +61,7 @@ class UnsuccessfulControllerIT {
     }
 
     @Test
-    void shouldReturn502WhenMongoDBError() throws Exception {
+    void shouldReturn502WhenGetProfileAndMongoDBError() throws Exception {
         when(repository.findById(any())).thenThrow(TypeMismatchDataAccessException.class);
 
         mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER)
@@ -73,6 +73,13 @@ class UnsuccessfulControllerIT {
     }
 
     @Test
+    void shouldReturn401WhenGetFullProfileWithoutAuthentication() throws Exception {
+        mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void shouldReturn403WhenGetFullProfileWithWrongAuthorisation() throws Exception {
         mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
                         .header(ERIC_IDENTITY, "123")
@@ -80,5 +87,27 @@ class UnsuccessfulControllerIT {
                         .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "internal-app"))
                 .andDo(print())
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturn404WhenGetFullProfileAndNoDocumentExists() throws Exception {
+        mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
+                        .header("ERIC-Identity", "123")
+                        .header("ERIC-Identity-Type", "key")
+                        .header("ERIC-Authorised-Key-Privileges", "sensitive-data")
+                        .header("X-Request-Id", UPDATED_AT))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturn502WhenGetFullProfileAndMongoDBError() throws Exception {
+        when(repository.findById(any())).thenThrow(TypeMismatchDataAccessException.class);
+
+        mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
+                        .header("ERIC-Identity", "123")
+                        .header("ERIC-Identity-Type", "key")
+                        .header("ERIC-Authorised-Key-Privileges", "sensitive-data")
+                        .header("X-Request-Id", UPDATED_AT))
+                .andExpect(status().isBadGateway());
     }
 }
