@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.acspprofile.api.mapper.get;
+package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static uk.gov.companieshouse.acspprofile.api.mapper.DateUtils.instantToLocalDate;
 
@@ -14,7 +14,7 @@ import uk.gov.companieshouse.api.acspprofile.Status;
 import uk.gov.companieshouse.api.acspprofile.Type;
 
 @Component
-public class AcspGetMapper implements GetMapper {
+public class AcspResponseMapper implements ResponseMapper {
 
     private static final String PROFILE_KIND = "authorised-corporate-service-provider-info";
     private static final String FULL_PROFILE_KIND = "authorised-corporate-service-provider-full-profile-info";
@@ -23,7 +23,7 @@ public class AcspGetMapper implements GetMapper {
     private final SoleTraderDetailsMapper soleTraderDetailsMapper;
     private final AmlDetailsMapper amlDetailsMapper;
 
-    public AcspGetMapper(AddressMapper addressMapper, SoleTraderDetailsMapper soleTraderDetailsMapper,
+    public AcspResponseMapper(AddressMapper addressMapper, SoleTraderDetailsMapper soleTraderDetailsMapper,
             AmlDetailsMapper amlDetailsMapper) {
         this.addressMapper = addressMapper;
         this.soleTraderDetailsMapper = soleTraderDetailsMapper;

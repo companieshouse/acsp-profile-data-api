@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.acspprofile.api.mapper.get;
+package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import java.util.Optional;
 import org.springframework.stereotype.Component;

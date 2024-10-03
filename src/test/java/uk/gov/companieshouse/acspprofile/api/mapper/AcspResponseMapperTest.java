@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.acspprofile.api.mapper.get;
+package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +33,7 @@ import uk.gov.companieshouse.api.acspprofile.Status;
 import uk.gov.companieshouse.api.acspprofile.Type;
 
 @ExtendWith(MockitoExtension.class)
-class AcspGetMapperTest {
+class AcspResponseMapperTest {
 
     private static final String ACSP_NUMBER = "AP123456";
     private static final String SELF_LINK = "/authorised-corporate-service-provider/%s".formatted(ACSP_NUMBER);
@@ -50,7 +50,7 @@ class AcspGetMapperTest {
     private static final String BUSINESS_SECTOR = "financial-institutions";
 
     @InjectMocks
-    private AcspGetMapper mapper;
+    private AcspResponseMapper mapper;
     @Mock
     private AddressMapper addressMapper;
     @Mock

@@ -42,7 +42,7 @@
     "date_of_birth": "1941-06-27T00:00:00.000Z",
     "email": "john.doe@example.com"
   },
-  "delta_at": "20240829085824118418",
+  "delta_at": "<delta_at>",
   "created": {
     "at": "<created_at>",
     "by": "<created_by>",

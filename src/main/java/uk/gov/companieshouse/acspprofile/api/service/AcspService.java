@@ -5,10 +5,11 @@ import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMES
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
 import uk.gov.companieshouse.acspprofile.api.logging.DataMapHolder;
-import uk.gov.companieshouse.acspprofile.api.mapper.get.GetMapper;
+import uk.gov.companieshouse.acspprofile.api.mapper.ResponseMapper;
 import uk.gov.companieshouse.acspprofile.api.repository.Repository;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
+import uk.gov.companieshouse.api.acspprofile.InternalAcspApi;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -19,16 +20,16 @@ public class AcspService implements Service {
     private static final String NOT_FOUND_MESSAGE = "ACSP document not found";
 
     private final Repository repository;
-    private final GetMapper acspGetmapper;
+    private final ResponseMapper responseMapper;
 
-    public AcspService(Repository repository, GetMapper acspGetmapper) {
+    public AcspService(Repository repository, ResponseMapper responseMapper) {
         this.repository = repository;
-        this.acspGetmapper = acspGetmapper;
+        this.responseMapper = responseMapper;
     }
 
     @Override
     public AcspProfile getProfile(String acspNumber) {
-        return acspGetmapper.mapProfile(
+        return responseMapper.mapProfile(
                 repository.findAcsp(acspNumber)
                         .orElseGet(() -> {
                             LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
@@ -38,11 +39,16 @@ public class AcspService implements Service {
 
     @Override
     public AcspFullProfile getFullProfile(String acspNumber) {
-        return acspGetmapper.mapFullProfile(
+        return responseMapper.mapFullProfile(
                 repository.findAcsp(acspNumber)
                         .orElseGet(() -> {
                             LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
                             throw new NotFoundException(NOT_FOUND_MESSAGE);
                         }));
+    }
+
+    @Override
+    public void upsertAcsp(String acspNumber, InternalAcspApi internalAcspApi) {
+
     }
 }

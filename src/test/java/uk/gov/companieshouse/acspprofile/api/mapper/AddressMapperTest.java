@@ -1,9 +1,10 @@
-package uk.gov.companieshouse.acspprofile.api.mapper.get;
+package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
+import uk.gov.companieshouse.acspprofile.api.mapper.AddressMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspAddress;
 import uk.gov.companieshouse.api.acspprofile.Address;
 import uk.gov.companieshouse.api.acspprofile.Country;
