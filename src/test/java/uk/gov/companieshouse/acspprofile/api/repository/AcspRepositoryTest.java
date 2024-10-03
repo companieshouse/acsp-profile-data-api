@@ -30,24 +30,24 @@ class AcspRepositoryTest {
     private AcspMongoRepository repository;
 
     @Mock
-    private AcspProfileDocument expected;
+    private AcspProfileDocument document;
 
     @Test
     void shouldFindAcsp() {
         // given
-        when(repository.findById(any())).thenReturn(Optional.of(expected));
+        when(repository.findById(any())).thenReturn(Optional.of(document));
 
         // when
         Optional<AcspProfileDocument> actual = service.findAcsp(ACSP_NUMBER);
 
         // then
         assertTrue(actual.isPresent());
-        assertEquals(expected, actual.get());
+        assertEquals(document, actual.get());
         verify(repository).findById(ACSP_NUMBER);
     }
 
     @Test
-    void shouldThrowBadGatewayWhenTransientDataAccessExceptionThrown() {
+    void shouldThrowBadGatewayWhenRecoverableErrorDuringFind() {
         // given
         when(repository.findById(any())).thenThrow(TransientDataAccessResourceException.class);
 
@@ -61,7 +61,7 @@ class AcspRepositoryTest {
     }
 
     @Test
-    void shouldThrowBadGatewayWhenNonTransientDataAccessExceptionThrown() {
+    void shouldThrowBadGatewayWhenOtherErrorDuringFind() {
         // given
         when(repository.findById(any())).thenThrow(NonTransientDataAccessResourceException.class);
 
@@ -72,5 +72,83 @@ class AcspRepositoryTest {
         BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
         assertEquals("MongoDB error during find", exception.getMessage());
         verify(repository).findById(ACSP_NUMBER);
+    }
+
+    @Test
+    void shouldInsertAcsp() {
+        // given
+        // when
+        service.insertAcsp(document);
+
+        // then
+        verify(repository).insert(document);
+    }
+
+    @Test
+    void shouldThrowBadGatewayWhenRecoverableErrorDuringInsert() {
+        // given
+        when(repository.insert(any(AcspProfileDocument.class))).thenThrow(TransientDataAccessResourceException.class);
+
+        // when
+        Executable actual = () -> service.insertAcsp(document);
+
+        // then
+        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
+        assertEquals("Recoverable MongoDB error during insert", exception.getMessage());
+        verify(repository).insert(document);
+    }
+
+    @Test
+    void shouldThrowBadGatewayWhenOtherErrorDuringInsert() {
+        // given
+        when(repository.insert(any(AcspProfileDocument.class)))
+                .thenThrow(NonTransientDataAccessResourceException.class);
+
+        // when
+        Executable actual = () -> service.insertAcsp(document);
+
+        // then
+        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
+        assertEquals("MongoDB error during insert", exception.getMessage());
+        verify(repository).insert(document);
+    }
+
+    @Test
+    void shouldUpdateAcsp() {
+        // given
+        // when
+        service.updateAcsp(document);
+
+        // then
+        verify(repository).save(document);
+    }
+
+    @Test
+    void shouldThrowBadGatewayWhenRecoverableErrorDuringUpdate() {
+        // given
+        when(repository.save(any(AcspProfileDocument.class))).thenThrow(TransientDataAccessResourceException.class);
+
+        // when
+        Executable actual = () -> service.updateAcsp(document);
+
+        // then
+        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
+        assertEquals("Recoverable MongoDB error during update", exception.getMessage());
+        verify(repository).save(document);
+    }
+
+    @Test
+    void shouldThrowBadGatewayWhenOtherErrorDuringUpdate() {
+        // given
+        when(repository.save(any(AcspProfileDocument.class)))
+                .thenThrow(NonTransientDataAccessResourceException.class);
+
+        // when
+        Executable actual = () -> service.updateAcsp(document);
+
+        // then
+        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
+        assertEquals("MongoDB error during update", exception.getMessage());
+        verify(repository).save(document);
     }
 }

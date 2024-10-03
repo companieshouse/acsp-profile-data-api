@@ -179,6 +179,17 @@ class ControllerIT {
         assertEquals(expected, actual);
     }
 
+    private void insertDocumentByType(String acspType) throws IOException {
+        String documentJson = IOUtils.resourceToString("/mongo/%s-acsp-document.json".formatted(acspType),
+                        StandardCharsets.UTF_8)
+                .replaceAll("<acsp_number>", ACSP_NUMBER)
+                .replaceAll("<delta_at>", DELTA_AT)
+                .replaceAll("<created_at>", CREATED_AT)
+                .replaceAll("<updated_at>", UPDATED_AT);
+        AcspProfileDocument document = objectMapper.readValue(documentJson, AcspProfileDocument.class);
+        mongoTemplate.insert(document);
+    }
+
     private AcspProfile getExpectedProfileByType(String acspType) throws IOException {
         String expectedJson = IOUtils.resourceToString("/responses/%s-acsp-profile-response.json".formatted(acspType),
                         StandardCharsets.UTF_8)
@@ -191,17 +202,6 @@ class ControllerIT {
                         "/responses/%s-acsp-full-profile-response.json".formatted(acspType), StandardCharsets.UTF_8)
                 .replaceAll("<acsp_number>", ACSP_NUMBER);
         return objectMapper.readValue(expectedJson, AcspFullProfile.class);
-    }
-
-    private void insertDocumentByType(String acspType) throws IOException {
-        String documentJson = IOUtils.resourceToString("/mongo/%s-acsp-document.json".formatted(acspType),
-                        StandardCharsets.UTF_8)
-                .replaceAll("<acsp_number>", ACSP_NUMBER)
-                .replaceAll("<delta_at>", DELTA_AT)
-                .replaceAll("<created_at>", CREATED_AT)
-                .replaceAll("<updated_at>", UPDATED_AT);
-        AcspProfileDocument document = objectMapper.readValue(documentJson, AcspProfileDocument.class);
-        mongoTemplate.insert(document);
     }
 
     private InternalAcspApi getInternalAcspApi(String acspType, String deltaAt, String updatedBy) throws IOException {

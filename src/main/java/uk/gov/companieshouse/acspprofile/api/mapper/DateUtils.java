@@ -31,7 +31,9 @@ public final class DateUtils {
     }
 
     public static boolean isDeltaStale(final String requestDeltaAt, final String existingDeltaAt) {
-        return StringUtils.isNotBlank(existingDeltaAt) && !OffsetDateTime.parse(requestDeltaAt, FORMATTER)
-                .isAfter(OffsetDateTime.parse(existingDeltaAt, FORMATTER));
+        return StringUtils.isNotBlank(requestDeltaAt) &&
+                StringUtils.isNotBlank(existingDeltaAt) &&
+                OffsetDateTime.parse(requestDeltaAt, FORMATTER)
+                        .isBefore(OffsetDateTime.parse(existingDeltaAt, FORMATTER));
     }
 }

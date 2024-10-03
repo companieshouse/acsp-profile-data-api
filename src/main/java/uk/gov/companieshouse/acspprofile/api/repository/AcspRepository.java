@@ -16,6 +16,12 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class AcspRepository implements Repository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
+    private static final String RECOVERABLE_ERROR_MESSAGE = "Recoverable MongoDB error during %s";
+    private static final String ERROR_MESSAGE = "MongoDB error during %s";
+    private static final String FIND = "find";
+    private static final String INSERT = "insert";
+    private static final String UPDATE = "update";
+
     private final AcspMongoRepository mongoRepository;
 
     public AcspRepository(AcspMongoRepository mongoRepository) {
@@ -27,11 +33,43 @@ public class AcspRepository implements Repository {
         try {
             return mongoRepository.findById(acspNumber);
         } catch (TransientDataAccessException ex) {
-            LOGGER.info("Recoverable MongoDB error during find", DataMapHolder.getLogMap());
-            throw new BadGatewayException("Recoverable MongoDB error during find", ex);
+            throw badGatewayAtInfoLevel(FIND, ex);
         } catch (DataAccessException ex) {
-            LOGGER.error("MongoDB error during find", ex, DataMapHolder.getLogMap());
-            throw new BadGatewayException("MongoDB error during find", ex);
+            throw badGatewayAtErrorLevel(FIND, ex);
         }
+    }
+
+    @Override
+    public void insertAcsp(AcspProfileDocument document) {
+        try {
+            mongoRepository.insert(document);
+        } catch (TransientDataAccessException ex) {
+            throw badGatewayAtInfoLevel(INSERT, ex);
+        } catch (DataAccessException ex) {
+            throw badGatewayAtErrorLevel(INSERT, ex);
+        }
+    }
+
+    @Override
+    public void updateAcsp(AcspProfileDocument document) {
+        try {
+            mongoRepository.save(document);
+        } catch (TransientDataAccessException ex) {
+            throw badGatewayAtInfoLevel(UPDATE, ex);
+        } catch (DataAccessException ex) {
+            throw badGatewayAtErrorLevel(UPDATE, ex);
+        }
+    }
+
+    private static BadGatewayException badGatewayAtInfoLevel(String operation, TransientDataAccessException ex) {
+        String errorMsg = RECOVERABLE_ERROR_MESSAGE.formatted(operation);
+        LOGGER.info(errorMsg, DataMapHolder.getLogMap());
+        return new BadGatewayException(errorMsg, ex);
+    }
+
+    private static BadGatewayException badGatewayAtErrorLevel(String operation, DataAccessException ex) {
+        String errorMsg = ERROR_MESSAGE.formatted(operation);
+        LOGGER.error(errorMsg, ex, DataMapHolder.getLogMap());
+        return new BadGatewayException(errorMsg, ex);
     }
 }

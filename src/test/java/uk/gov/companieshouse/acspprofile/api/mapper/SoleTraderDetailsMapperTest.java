@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
-import uk.gov.companieshouse.acspprofile.api.mapper.SoleTraderDetailsMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspSoleTraderDetails;
 import uk.gov.companieshouse.api.acspprofile.SoleTraderDetails;
 

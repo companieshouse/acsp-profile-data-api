@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
@@ -14,17 +15,25 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.companieshouse.acspprofile.api.exception.ConflictException;
 import uk.gov.companieshouse.acspprofile.api.exception.NotFoundException;
+import uk.gov.companieshouse.acspprofile.api.mapper.AcspRequestMapper;
 import uk.gov.companieshouse.acspprofile.api.mapper.AcspResponseMapper;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 import uk.gov.companieshouse.acspprofile.api.repository.AcspRepository;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
+import uk.gov.companieshouse.api.acspprofile.InternalAcspApi;
+import uk.gov.companieshouse.api.acspprofile.InternalData;
 
 @ExtendWith(MockitoExtension.class)
 class AcspServiceTest {
 
     private static final String ACSP_NUMBER = "AP123456";
+    private static final String STALE_DELTA_AT = "20241003085145522153";
+    private static final String DELTA_AT = "20241003093217479012";
+    private static final String STALE_DELTA_MESSAGE = "Stale delta received, request delta_at: [%s], existing delta_at: [%s]"
+            .formatted(STALE_DELTA_AT, DELTA_AT);
 
     @InjectMocks
     private AcspService service;
@@ -32,6 +41,8 @@ class AcspServiceTest {
     private AcspRepository repository;
     @Mock
     private AcspResponseMapper responseMapper;
+    @Mock
+    private AcspRequestMapper requestMapper;
 
     @Mock
     private AcspProfileDocument document;
@@ -39,6 +50,10 @@ class AcspServiceTest {
     private AcspProfile expectedProfile;
     @Mock
     private AcspFullProfile expectedFullProfile;
+    @Mock
+    private InternalAcspApi internalAcspApi;
+    @Mock
+    private InternalData internalData;
 
     @Test
     void shouldGetProfile() {
@@ -47,7 +62,7 @@ class AcspServiceTest {
         when(responseMapper.mapProfile(any())).thenReturn(expectedProfile);
 
         // when
-        Object actual = service.getProfile(ACSP_NUMBER);
+        AcspProfile actual = service.getProfile(ACSP_NUMBER);
 
         // then
         assertEquals(expectedProfile, actual);
@@ -77,7 +92,7 @@ class AcspServiceTest {
         when(responseMapper.mapFullProfile(any())).thenReturn(expectedFullProfile);
 
         // when
-        Object actual = service.getFullProfile(ACSP_NUMBER);
+        AcspFullProfile actual = service.getFullProfile(ACSP_NUMBER);
 
         // then
         assertEquals(expectedFullProfile, actual);
@@ -98,5 +113,75 @@ class AcspServiceTest {
         assertEquals("ACSP document not found", exception.getMessage());
         verify(repository).findAcsp(ACSP_NUMBER);
         verifyNoMoreInteractions(responseMapper);
+    }
+
+    @Test
+    void shouldInsertAcspWhenDocumentDoesNotExist() {
+        // given
+        when(repository.findAcsp(any())).thenReturn(Optional.empty());
+        when(requestMapper.mapNewAcsp(any())).thenReturn(document);
+
+        // when
+        service.upsertAcsp(ACSP_NUMBER, internalAcspApi);
+
+        // then
+        verify(repository).findAcsp(ACSP_NUMBER);
+        verify(requestMapper).mapNewAcsp(internalAcspApi);
+        verify(repository).insertAcsp(document);
+    }
+
+    @Test
+    void shouldUpdateAcspWhenMoreRecentDeltaAt() {
+        // given
+        when(repository.findAcsp(any())).thenReturn(Optional.of(document));
+        when(document.getDeltaAt()).thenReturn(STALE_DELTA_AT);
+        when(internalAcspApi.getInternalData()).thenReturn(internalData);
+        when(internalData.getDeltaAt()).thenReturn(DELTA_AT);
+        when(requestMapper.mapExistingAcsp(any(), any())).thenReturn(document);
+
+        // when
+        service.upsertAcsp(ACSP_NUMBER, internalAcspApi);
+
+        // then
+        verify(repository).findAcsp(ACSP_NUMBER);
+        verify(requestMapper).mapExistingAcsp(internalAcspApi, document);
+        verify(repository).updateAcsp(document);
+    }
+
+    @Test
+    void shouldUpdateAcspWhenSameDeltaAt() {
+        // given
+        when(repository.findAcsp(any())).thenReturn(Optional.of(document));
+        when(document.getDeltaAt()).thenReturn(DELTA_AT);
+        when(internalAcspApi.getInternalData()).thenReturn(internalData);
+        when(internalData.getDeltaAt()).thenReturn(DELTA_AT);
+        when(requestMapper.mapExistingAcsp(any(), any())).thenReturn(document);
+
+        // when
+        service.upsertAcsp(ACSP_NUMBER, internalAcspApi);
+
+        // then
+        verify(repository).findAcsp(ACSP_NUMBER);
+        verify(requestMapper).mapExistingAcsp(internalAcspApi, document);
+        verify(repository).updateAcsp(document);
+    }
+
+    @Test
+    void shouldNotUpdateAcspAndThrowConflictExceptionWhenStaleDeltaAt() {
+        // given
+        when(repository.findAcsp(any())).thenReturn(Optional.of(document));
+        when(document.getDeltaAt()).thenReturn(DELTA_AT);
+        when(internalAcspApi.getInternalData()).thenReturn(internalData);
+        when(internalData.getDeltaAt()).thenReturn(STALE_DELTA_AT);
+
+        // when
+        Executable executable = () -> service.upsertAcsp(ACSP_NUMBER, internalAcspApi);
+
+        // then
+        ConflictException exception = assertThrows(ConflictException.class, executable);
+        assertEquals(STALE_DELTA_MESSAGE, exception.getMessage());
+        verify(repository).findAcsp(ACSP_NUMBER);
+        verifyNoInteractions(requestMapper);
+        verifyNoMoreInteractions(repository);
     }
 }
