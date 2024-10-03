@@ -5,6 +5,6 @@ import uk.gov.companieshouse.api.acspprofile.InternalAcspApi;
 
 public interface RequestMapper {
 
-    AcspProfileDocument mapNewAcsp(InternalAcspApi internalAcsp);
+    AcspProfileDocument mapNewAcsp(InternalAcspApi internalAcspApi);
     AcspProfileDocument mapExistingAcsp(InternalAcspApi internalAcspApi, AcspProfileDocument existingDocument);
 }

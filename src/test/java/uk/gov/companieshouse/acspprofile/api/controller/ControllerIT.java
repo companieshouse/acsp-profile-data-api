@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.acspprofile.api.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -8,12 +9,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -25,6 +28,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
+import uk.gov.companieshouse.acspprofile.api.mapper.InstantSupplier;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.AcspProfile;
@@ -46,7 +50,7 @@ class ControllerIT {
     private static final String UPDATED_AT = "2024-09-24T12:00:00Z";
     private static final String CONTEXT_ID = "context_id";
     private static final String UPDATED_CONTEXT_ID = "updated_context_id";
-    private static final String SELF_LINK = "/authorised-corporate-service-provider/%s".formatted(ACSP_NUMBER);
+    private static final String SELF_LINK = "/authorised-corporate-service-providers/%s".formatted(ACSP_NUMBER);
     private static final String DELTA_AT = "20241003085145522153";
     private static final String UPDATED_DELTA_AT = "20241003093217479012";
 
@@ -56,6 +60,9 @@ class ControllerIT {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private InstantSupplier instantSupplier;
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
@@ -130,7 +137,9 @@ class ControllerIT {
         // given
         InternalAcspApi request = getInternalAcspApi(acspType, DELTA_AT, CONTEXT_ID);
 
-        AcspProfileDocument expected = getExpectedAcspDocument(acspType, CREATED_AT, CONTEXT_ID);
+        AcspProfileDocument expected = getExpectedAcspDocument(acspType, CREATED_AT, CONTEXT_ID, DELTA_AT);
+
+        when(instantSupplier.get()).thenReturn(Instant.parse(CREATED_AT));
 
         // when
         ResultActions result = mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
@@ -160,7 +169,10 @@ class ControllerIT {
 
         InternalAcspApi request = getInternalAcspApi(acspType, UPDATED_DELTA_AT, UPDATED_CONTEXT_ID);
 
-        AcspProfileDocument expected = getExpectedAcspDocument(acspType, UPDATED_AT, UPDATED_CONTEXT_ID);
+        AcspProfileDocument expected = getExpectedAcspDocument(acspType, UPDATED_AT, UPDATED_CONTEXT_ID,
+                UPDATED_DELTA_AT);
+
+        when(instantSupplier.get()).thenReturn(Instant.parse(UPDATED_AT));
 
         // when
         ResultActions result = mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
@@ -185,6 +197,7 @@ class ControllerIT {
                 .replaceAll("<acsp_number>", ACSP_NUMBER)
                 .replaceAll("<delta_at>", DELTA_AT)
                 .replaceAll("<created_at>", CREATED_AT)
+                .replaceAll("<created_by>", CONTEXT_ID)
                 .replaceAll("<updated_at>", UPDATED_AT);
         AcspProfileDocument document = objectMapper.readValue(documentJson, AcspProfileDocument.class);
         mongoTemplate.insert(document);
@@ -213,11 +226,12 @@ class ControllerIT {
         return objectMapper.readValue(expectedJson, InternalAcspApi.class);
     }
 
-    private AcspProfileDocument getExpectedAcspDocument(String acspType, String updatedAt, String updatedBy)
-            throws IOException {
+    private AcspProfileDocument getExpectedAcspDocument(String acspType, String updatedAt, String updatedBy,
+            String deltaAt) throws IOException {
         String expectedJson = IOUtils.resourceToString("/mongo/%s-acsp-document.json".formatted(acspType),
                         StandardCharsets.UTF_8)
                 .replaceAll("<acsp_number>", ACSP_NUMBER)
+                .replaceAll("<delta_at>", deltaAt)
                 .replaceAll("<created_at>", CREATED_AT)
                 .replaceAll("<created_by>", CONTEXT_ID)
                 .replaceAll("<updated_at>", updatedAt)

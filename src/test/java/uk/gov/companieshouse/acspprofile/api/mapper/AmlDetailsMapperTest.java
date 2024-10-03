@@ -28,7 +28,7 @@ class AmlDetailsMapperTest {
                 .supervisoryBody(SupervisoryBody.FACULTY_OF_ADVOCATES));
 
         // when
-        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetails(acspAmlDetails);
+        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetailsResponse(acspAmlDetails);
 
         // then
         assertEquals(expected, actual);
@@ -42,7 +42,7 @@ class AmlDetailsMapperTest {
         List<AmlDetailsItem> expected = List.of(new AmlDetailsItem());
 
         // when
-        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetails(acspAmlDetails);
+        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetailsResponse(acspAmlDetails);
 
         // then
         assertEquals(expected, actual);
@@ -54,7 +54,7 @@ class AmlDetailsMapperTest {
         List<AcspAmlDetails> acspAmlDetails = List.of();
 
         // when
-        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetails(acspAmlDetails);
+        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetailsResponse(acspAmlDetails);
 
         // then
         assertNull(actual);
@@ -65,7 +65,7 @@ class AmlDetailsMapperTest {
         // given
 
         // when
-        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetails(null);
+        List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetailsResponse(null);
 
         // then
         assertNull(actual);

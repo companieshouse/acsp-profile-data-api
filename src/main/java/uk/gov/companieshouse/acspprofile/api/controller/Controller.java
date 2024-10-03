@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.acspprofile.api.controller;
 
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMESPACE;
 
 import org.springframework.http.HttpStatus;
@@ -55,10 +56,13 @@ public class Controller {
             @RequestBody InternalAcspApi internalAcspApi) {
 
         DataMapHolder.get().companyNumber(acspNumber);
-        LOGGER.info("Processing PUT ACSP internal", DataMapHolder.getLogMap());
+        LOGGER.info("Processing PUT ACSP request", DataMapHolder.getLogMap());
 
         service.upsertAcsp(acspNumber, internalAcspApi);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header(LOCATION, "/authorised-corporate-service-providers/%s".formatted(acspNumber))
+                .build();
     }
 }

@@ -35,7 +35,7 @@ class SoleTraderDetailsMapperTest {
                 .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY);
 
         // when
-        SoleTraderDetails actual = soleTraderDetailsMapper.mapAcspSoleTraderDetails(acspSoleTraderDetails);
+        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(acspSoleTraderDetails);
 
         // then
         assertEquals(expected, actual);
@@ -46,7 +46,7 @@ class SoleTraderDetailsMapperTest {
         // given
 
         // when
-        SoleTraderDetails actual = soleTraderDetailsMapper.mapAcspSoleTraderDetails(null);
+        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(null);
 
         // then
         assertNull(actual);

@@ -36,7 +36,7 @@ import uk.gov.companieshouse.api.acspprofile.Type;
 class AcspResponseMapperTest {
 
     private static final String ACSP_NUMBER = "AP123456";
-    private static final String SELF_LINK = "/authorised-corporate-service-provider/%s".formatted(ACSP_NUMBER);
+    private static final String SELF_LINK = "/authorised-corporate-service-providers/%s".formatted(ACSP_NUMBER);
     private static final String NAME = "acsp name";
     private static final LocalDate NOTIFIED_FROM = LocalDate.of(2024, 8, 23);
     private static final LocalDate DEAUTHORISED_FROM = LocalDate.of(2024, 8, 25);
@@ -50,7 +50,7 @@ class AcspResponseMapperTest {
     private static final String BUSINESS_SECTOR = "financial-institutions";
 
     @InjectMocks
-    private AcspResponseMapper mapper;
+    private AcspResponseMapper responseMapper;
     @Mock
     private AddressMapper addressMapper;
     @Mock
@@ -95,7 +95,7 @@ class AcspResponseMapperTest {
                         .self(SELF_LINK));
 
         // when
-        AcspProfile actual = mapper.mapProfile(document);
+        AcspProfile actual = responseMapper.mapProfile(document);
 
         // then
         assertEquals(expected, actual);
@@ -145,18 +145,18 @@ class AcspResponseMapperTest {
                 .links(new Links()
                         .self(SELF_LINK));
 
-        when(addressMapper.mapAcspAddress(any())).thenReturn(expectedAddress);
-        when(soleTraderDetailsMapper.mapAcspSoleTraderDetails(any())).thenReturn(expectedSoleTraderDetails);
-        when(amlDetailsMapper.mapAmlDetails(any())).thenReturn(List.of(expectedAmlDetailsItem));
+        when(addressMapper.mapAddressResponse(any())).thenReturn(expectedAddress);
+        when(soleTraderDetailsMapper.mapSoleTraderDetailsResponse(any())).thenReturn(expectedSoleTraderDetails);
+        when(amlDetailsMapper.mapAmlDetailsResponse(any())).thenReturn(List.of(expectedAmlDetailsItem));
 
         // when
-        AcspFullProfile actual = mapper.mapFullProfile(document);
+        AcspFullProfile actual = responseMapper.mapFullProfile(document);
 
         // then
         assertEquals(expected, actual);
-        verify(addressMapper, times(2)).mapAcspAddress(acspAddress);
-        verify(soleTraderDetailsMapper).mapAcspSoleTraderDetails(acspSoleTraderDetails);
-        verify(amlDetailsMapper).mapAmlDetails(List.of(acspAmlDetails));
+        verify(addressMapper, times(2)).mapAddressResponse(acspAddress);
+        verify(soleTraderDetailsMapper).mapSoleTraderDetailsResponse(acspSoleTraderDetails);
+        verify(amlDetailsMapper).mapAmlDetailsResponse(List.of(acspAmlDetails));
     }
 
     @Test
@@ -191,18 +191,18 @@ class AcspResponseMapperTest {
                 .links(new Links()
                         .self(SELF_LINK));
 
-        when(addressMapper.mapAcspAddress(any())).thenReturn(expectedAddress, (Address) null);
-        when(soleTraderDetailsMapper.mapAcspSoleTraderDetails(any())).thenReturn(null);
-        when(amlDetailsMapper.mapAmlDetails(any())).thenReturn(null);
+        when(addressMapper.mapAddressResponse(any())).thenReturn(expectedAddress, (Address) null);
+        when(soleTraderDetailsMapper.mapSoleTraderDetailsResponse(any())).thenReturn(null);
+        when(amlDetailsMapper.mapAmlDetailsResponse(any())).thenReturn(null);
 
         // when
-        AcspFullProfile actual = mapper.mapFullProfile(document);
+        AcspFullProfile actual = responseMapper.mapFullProfile(document);
 
         // then
         assertEquals(expected, actual);
-        verify(addressMapper).mapAcspAddress(acspAddress);
-        verify(addressMapper).mapAcspAddress(null);
-        verify(soleTraderDetailsMapper).mapAcspSoleTraderDetails(null);
-        verify(amlDetailsMapper).mapAmlDetails(null);
+        verify(addressMapper).mapAddressResponse(acspAddress);
+        verify(addressMapper).mapAddressResponse(null);
+        verify(soleTraderDetailsMapper).mapSoleTraderDetailsResponse(null);
+        verify(amlDetailsMapper).mapAmlDetailsResponse(null);
     }
 }

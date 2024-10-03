@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,7 @@ import uk.gov.companieshouse.api.acspprofile.InternalAcspApi;
 class ControllerTest {
 
     private static final String ACSP_NUMBER = "AP123456";
+    private static final String SELF_LINK = "/authorised-corporate-service-providers/%s".formatted(ACSP_NUMBER);
 
     @InjectMocks
     private Controller controller;
@@ -65,12 +67,16 @@ class ControllerTest {
     @Test
     void shouldPutAcsp() {
         // given
+        ResponseEntity<Void> expected = ResponseEntity
+                .status(HttpStatus.OK)
+                .header(LOCATION, SELF_LINK)
+                .build();
 
         // when
         ResponseEntity<Void> actual = controller.upsertAcsp(ACSP_NUMBER, internalAcspApi);
 
         // then
-        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(expected, actual);
         verify(service).upsertAcsp(ACSP_NUMBER, internalAcspApi);
     }
 }

@@ -18,9 +18,9 @@ public final class DateUtils {
     private DateUtils() {
     }
 
-    public static Instant stringToInstant(final String dateString) {
-        return Optional.ofNullable(dateString)
-                .map(Instant::parse)
+    public static Instant localDateToInstant(final LocalDate localDate) {
+        return Optional.ofNullable(localDate)
+                .map(date -> Instant.from(date.atStartOfDay(UTC)))
                 .orElse(null);
     }
 

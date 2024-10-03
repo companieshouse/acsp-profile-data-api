@@ -48,7 +48,7 @@ class AddressMapperTest {
                 .region(REGION);
 
         // when
-        Address actual = addressMapper.mapAcspAddress(acspAddress);
+        Address actual = addressMapper.mapAddressResponse(acspAddress);
 
         // then
         assertEquals(expected, actual);
@@ -62,7 +62,7 @@ class AddressMapperTest {
         Address expected = new Address();
 
         // when
-        Address actual = addressMapper.mapAcspAddress(acspAddress);
+        Address actual = addressMapper.mapAddressResponse(acspAddress);
 
         // then
         assertEquals(expected, actual);
@@ -73,7 +73,7 @@ class AddressMapperTest {
         // given
 
         // when
-        Address actual = addressMapper.mapAcspAddress(null);
+        Address actual = addressMapper.mapAddressResponse(null);
 
         // then
         assertNull(actual);

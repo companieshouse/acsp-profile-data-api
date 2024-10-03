@@ -12,7 +12,7 @@
     "notified_from": "2024-04-02T00:00:00.000Z",
     "etag": "47e85fcf644420129b4388ef9c87496794620893",
     "links": {
-      "self": "/authorised-corporate-service-provider/<acsp_number>"
+      "self": "/authorised-corporate-service-providers/<acsp_number>"
     },
     "name": "Example ACSP Ltd",
     "registered_office_address": {
@@ -47,11 +47,11 @@
   "created": {
     "at": "<created_at>",
     "by": "<created_by>",
-    "type": "acsp_profile_delta"
+    "type": "acsp_delta"
   },
   "updated": {
     "by": "<updated_by>",
     "at": "<updated_at>",
-    "type": "acsp_profile_delta"
+    "type": "acsp_delta"
   }
 }
