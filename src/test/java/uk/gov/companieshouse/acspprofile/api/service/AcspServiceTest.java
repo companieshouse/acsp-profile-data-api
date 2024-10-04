@@ -12,6 +12,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,8 +34,6 @@ class AcspServiceTest {
     private static final String ACSP_NUMBER = "AP123456";
     private static final String STALE_DELTA_AT = "20241003085145522153";
     private static final String DELTA_AT = "20241003093217479012";
-    private static final String STALE_DELTA_MESSAGE = "Stale delta received, request delta_at: [%s], existing delta_at: [%s]"
-            .formatted(STALE_DELTA_AT, DELTA_AT);
 
     @InjectMocks
     private AcspService service;
@@ -130,11 +130,17 @@ class AcspServiceTest {
         verify(repository).insertAcsp(document);
     }
 
-    @Test
-    void shouldUpdateAcspWhenMoreRecentDeltaAt() {
+    @ParameterizedTest
+    @CsvSource( value = {
+            STALE_DELTA_AT,
+            DELTA_AT,
+            "null",
+            "''"
+    }, nullValues = "null")
+    void shouldUpdateAcspWithExistingDeltaAtValues(String existingDeltaAt) {
         // given
         when(repository.findAcsp(any())).thenReturn(Optional.of(document));
-        when(document.getDeltaAt()).thenReturn(STALE_DELTA_AT);
+        when(document.getDeltaAt()).thenReturn(existingDeltaAt);
         when(internalAcspApi.getInternalData()).thenReturn(internalData);
         when(internalData.getDeltaAt()).thenReturn(DELTA_AT);
         when(requestMapper.mapExistingAcsp(any(), any())).thenReturn(document);
@@ -148,38 +154,26 @@ class AcspServiceTest {
         verify(repository).updateAcsp(document);
     }
 
-    @Test
-    void shouldUpdateAcspWhenSameDeltaAt() {
+    @ParameterizedTest
+    @CsvSource( value = {
+            STALE_DELTA_AT,
+            "null",
+            "''"
+    }, nullValues = "null")
+    void shouldNotUpdateAcspAndThrowConflictExceptionWithRequestDeltaAtValues(String requestDeltaAt) {
         // given
         when(repository.findAcsp(any())).thenReturn(Optional.of(document));
         when(document.getDeltaAt()).thenReturn(DELTA_AT);
         when(internalAcspApi.getInternalData()).thenReturn(internalData);
-        when(internalData.getDeltaAt()).thenReturn(DELTA_AT);
-        when(requestMapper.mapExistingAcsp(any(), any())).thenReturn(document);
-
-        // when
-        service.upsertAcsp(ACSP_NUMBER, internalAcspApi);
-
-        // then
-        verify(repository).findAcsp(ACSP_NUMBER);
-        verify(requestMapper).mapExistingAcsp(internalAcspApi, document);
-        verify(repository).updateAcsp(document);
-    }
-
-    @Test
-    void shouldNotUpdateAcspAndThrowConflictExceptionWhenStaleDeltaAt() {
-        // given
-        when(repository.findAcsp(any())).thenReturn(Optional.of(document));
-        when(document.getDeltaAt()).thenReturn(DELTA_AT);
-        when(internalAcspApi.getInternalData()).thenReturn(internalData);
-        when(internalData.getDeltaAt()).thenReturn(STALE_DELTA_AT);
+        when(internalData.getDeltaAt()).thenReturn(requestDeltaAt);
 
         // when
         Executable executable = () -> service.upsertAcsp(ACSP_NUMBER, internalAcspApi);
 
         // then
         ConflictException exception = assertThrows(ConflictException.class, executable);
-        assertEquals(STALE_DELTA_MESSAGE, exception.getMessage());
+        assertEquals("Stale delta received, request delta_at: [%s], existing delta_at: [%s]"
+                .formatted(requestDeltaAt, DELTA_AT), exception.getMessage());
         verify(repository).findAcsp(ACSP_NUMBER);
         verifyNoInteractions(requestMapper);
         verifyNoMoreInteractions(repository);

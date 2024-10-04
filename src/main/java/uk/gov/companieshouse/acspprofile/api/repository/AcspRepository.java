@@ -33,9 +33,9 @@ public class AcspRepository implements Repository {
         try {
             return mongoRepository.findById(acspNumber);
         } catch (TransientDataAccessException ex) {
-            throw badGatewayAtInfoLevel(FIND, ex);
+            throw badGatewayAndLogInfo(FIND, ex);
         } catch (DataAccessException ex) {
-            throw badGatewayAtErrorLevel(FIND, ex);
+            throw badGatewayAndLogError(FIND, ex);
         }
     }
 
@@ -44,9 +44,9 @@ public class AcspRepository implements Repository {
         try {
             mongoRepository.insert(document);
         } catch (TransientDataAccessException ex) {
-            throw badGatewayAtInfoLevel(INSERT, ex);
+            throw badGatewayAndLogInfo(INSERT, ex);
         } catch (DataAccessException ex) {
-            throw badGatewayAtErrorLevel(INSERT, ex);
+            throw badGatewayAndLogError(INSERT, ex);
         }
     }
 
@@ -55,19 +55,19 @@ public class AcspRepository implements Repository {
         try {
             mongoRepository.save(document);
         } catch (TransientDataAccessException ex) {
-            throw badGatewayAtInfoLevel(UPDATE, ex);
+            throw badGatewayAndLogInfo(UPDATE, ex);
         } catch (DataAccessException ex) {
-            throw badGatewayAtErrorLevel(UPDATE, ex);
+            throw badGatewayAndLogError(UPDATE, ex);
         }
     }
 
-    private static BadGatewayException badGatewayAtInfoLevel(String operation, TransientDataAccessException ex) {
+    private static BadGatewayException badGatewayAndLogInfo(String operation, TransientDataAccessException ex) {
         String errorMsg = RECOVERABLE_ERROR_MESSAGE.formatted(operation);
         LOGGER.info(errorMsg, DataMapHolder.getLogMap());
         return new BadGatewayException(errorMsg, ex);
     }
 
-    private static BadGatewayException badGatewayAtErrorLevel(String operation, DataAccessException ex) {
+    private static BadGatewayException badGatewayAndLogError(String operation, DataAccessException ex) {
         String errorMsg = ERROR_MESSAGE.formatted(operation);
         LOGGER.error(errorMsg, ex, DataMapHolder.getLogMap());
         return new BadGatewayException(errorMsg, ex);

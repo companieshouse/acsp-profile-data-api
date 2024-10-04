@@ -17,7 +17,7 @@ class AmlDetailsMapperTest {
     private final AmlDetailsMapper amlDetailsMapper = new AmlDetailsMapper();
 
     @Test
-    void mapAcspAmlDetails() {
+    void mapAcspAmlDetailsToResponse() {
         // given
         List<AcspAmlDetails> acspAmlDetails = List.of(new AcspAmlDetails()
                 .membershipDetails(MEMBERSHIP_DETAILS)
@@ -35,7 +35,7 @@ class AmlDetailsMapperTest {
     }
 
     @Test
-    void mapBareAcspAmlDetails() {
+    void mapBareAcspAmlDetailsToResponse() {
         // given
         List<AcspAmlDetails> acspAmlDetails = List.of(new AcspAmlDetails());
 
@@ -49,7 +49,7 @@ class AmlDetailsMapperTest {
     }
 
     @Test
-    void mapEmptyAcspAmlDetails() {
+    void mapEmptyAcspAmlDetailsToResponse() {
         // given
         List<AcspAmlDetails> acspAmlDetails = List.of();
 
@@ -61,11 +61,66 @@ class AmlDetailsMapperTest {
     }
 
     @Test
-    void mapNullAcspAmlDetails() {
+    void mapNullAcspAmlDetailsToResponse() {
         // given
 
         // when
         List<AmlDetailsItem> actual = amlDetailsMapper.mapAmlDetailsResponse(null);
+
+        // then
+        assertNull(actual);
+    }
+
+    @Test
+    void mapAmlDetailsRequestToAcsp() {
+        // given
+        List<AmlDetailsItem> amlDetailsItems = List.of(new AmlDetailsItem()
+                .membershipDetails(MEMBERSHIP_DETAILS)
+                .supervisoryBody(SupervisoryBody.FACULTY_OF_ADVOCATES));
+
+        List<AcspAmlDetails> expected = List.of(new AcspAmlDetails()
+                .membershipDetails(MEMBERSHIP_DETAILS)
+                .supervisoryBody(SUPERVISORY_BODY));
+
+        // when
+        List<AcspAmlDetails> actual = amlDetailsMapper.mapAmlDetailsRequest(amlDetailsItems);
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void mapBareAmlDetailsRequestToAcspAmlDetails() {
+        // given
+        List<AmlDetailsItem> amlDetailsItems = List.of(new AmlDetailsItem());
+
+        List<AcspAmlDetails> expected = List.of(new AcspAmlDetails());
+
+        // when
+        List<AcspAmlDetails> actual = amlDetailsMapper.mapAmlDetailsRequest(amlDetailsItems);
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void mapEmptyAmlDetailsRequestToAcspAmlDetails() {
+        // given
+        List<AmlDetailsItem> amlDetailsItems = List.of();
+
+        // when
+        List<AcspAmlDetails> actual = amlDetailsMapper.mapAmlDetailsRequest(amlDetailsItems);
+
+        // then
+        assertNull(actual);
+    }
+
+    @Test
+    void mapNullAmlDetailsRequestToAcspAmlDetails() {
+        // given
+
+        // when
+        List<AcspAmlDetails> actual = amlDetailsMapper.mapAmlDetailsRequest(null);
 
         // then
         assertNull(actual);

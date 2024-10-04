@@ -18,7 +18,7 @@ class SoleTraderDetailsMapperTest {
     private final SoleTraderDetailsMapper soleTraderDetailsMapper = new SoleTraderDetailsMapper();
 
     @Test
-    void mapAcspSoleTraderDetails() {
+    void mapAcspSoleTraderDetailsToResponse() {
         // given
         AcspSoleTraderDetails acspSoleTraderDetails = new AcspSoleTraderDetails()
                 .forename(FORENAME)
@@ -42,11 +42,46 @@ class SoleTraderDetailsMapperTest {
     }
 
     @Test
-    void mapNullAcspSoleTraderDetails() {
+    void mapNullAcspSoleTraderDetailsToResponse() {
         // given
 
         // when
         SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(null);
+
+        // then
+        assertNull(actual);
+    }
+
+    @Test
+    void mapSoleTraderDetailsRequestToAcspSoleTraderDetails() {
+        // given
+        SoleTraderDetails soleTraderDetails = new SoleTraderDetails()
+                .forename(FORENAME)
+                .otherForenames(OTHER_FORENAMES)
+                .surname(SURNAME)
+                .nationality(BRITISH)
+                .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY);
+
+        AcspSoleTraderDetails expected = new AcspSoleTraderDetails()
+                .forename(FORENAME)
+                .otherForenames(OTHER_FORENAMES)
+                .surname(SURNAME)
+                .nationality(BRITISH)
+                .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY);
+
+        // when
+        AcspSoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsRequest(soleTraderDetails);
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void mapNullSoleTraderDetailsRequestToAcspSoleTraderDetails() {
+        // given
+
+        // when
+        AcspSoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsRequest(null);
 
         // then
         assertNull(actual);
