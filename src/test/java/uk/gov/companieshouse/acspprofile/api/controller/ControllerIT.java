@@ -5,23 +5,25 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_IDENTITY;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_IDENTITY_TYPE;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.containers.MongoDBContainer;
@@ -35,31 +37,21 @@ import uk.gov.companieshouse.api.acspprofile.AcspProfile;
 import uk.gov.companieshouse.api.acspprofile.InternalAcspApi;
 
 @Testcontainers
-@AutoConfigureMockMvc
-@SpringBootTest
-class ControllerIT {
+class ControllerIT extends AbstractControllerIT {
+
+    private static final String ACSP_PROFILE_COLLECTION = "acsp_profile";
+    private static final String UPDATED_CONTEXT_ID = "updated_context_id";
+    private static final String CREATED_AT = "2024-08-23T00:00:00Z";
+    private static final String UPDATED_AT = "2024-09-24T12:00:00Z";
+    private static final String UPDATED_DELTA_AT = "20241003093217479012";
+    private static final String STALE_DELTA_AT = "20230222125145522153";
+    private static final String SELF_LINK = "/authorised-corporate-service-providers/%s".formatted(ACSP_NUMBER);
 
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.12");
-    private static final String ACSP_PROFILE_COLLECTION = "acsp_profile";
-    private static final String GET_PROFILE_URI = "/authorised-corporate-service-providers/{acsp_number}";
-    private static final String GET_FULL_PROFILE_URI = "/authorised-corporate-service-providers/{acsp_number}/full-profile";
-    private static final String PUT_ACSP_URI = "/authorised-corporate-service-providers/{acsp_number}/internal";
-    private static final String ACSP_NUMBER = "AP123456";
-    private static final String CREATED_AT = "2024-08-23T00:00:00Z";
-    private static final String UPDATED_AT = "2024-09-24T12:00:00Z";
-    private static final String CONTEXT_ID = "context_id";
-    private static final String UPDATED_CONTEXT_ID = "updated_context_id";
-    private static final String SELF_LINK = "/authorised-corporate-service-providers/%s".formatted(ACSP_NUMBER);
-    private static final String DELTA_AT = "20241003085145522153";
-    private static final String UPDATED_DELTA_AT = "20241003093217479012";
 
     @Autowired
     private MongoTemplate mongoTemplate;
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @MockBean
     private InstantSupplier instantSupplier;
@@ -191,6 +183,115 @@ class ControllerIT {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void shouldReturn401WhenGetProfileWithoutAuthentication() throws Exception {
+        mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void shouldReturn403WhenGetProfileWithWrongAuthorisation() throws Exception {
+        mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER)
+                        .header(ERIC_IDENTITY, "123")
+                        .header(ERIC_IDENTITY_TYPE, "key")
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "sensitive-data"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturn404WhenGetProfileAndNoDocumentExists() throws Exception {
+        mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER)
+                        .header("ERIC-Identity", "123")
+                        .header("ERIC-Identity-Type", "key")
+                        .header("ERIC-Authorised-Key-Privileges", "internal-app")
+                        .header("X-Request-Id", CONTEXT_ID))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturn401WhenGetFullProfileWithoutAuthentication() throws Exception {
+        mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void shouldReturn403WhenGetFullProfileWithWrongAuthorisation() throws Exception {
+        mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
+                        .header(ERIC_IDENTITY, "123")
+                        .header(ERIC_IDENTITY_TYPE, "key")
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "internal-app"))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturn404WhenGetFullProfileAndNoDocumentExists() throws Exception {
+        mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
+                        .header("ERIC-Identity", "123")
+                        .header("ERIC-Identity-Type", "key")
+                        .header("ERIC-Authorised-Key-Privileges", "sensitive-data")
+                        .header("X-Request-Id", CONTEXT_ID))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturn400WhenWhenPutAcspInternalAndMissingRequiredFields() throws Exception {
+        InternalAcspApi request = getInternalAcspApi("missing-required-fields", STALE_DELTA_AT, CONTEXT_ID);
+
+        mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
+                        .header("ERIC-Identity", "123")
+                        .header("ERIC-Identity-Type", "key")
+                        .header("ERIC-Authorised-Key-Privileges", "internal-app")
+                        .header("X-Request-Id", CONTEXT_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturn401WhenPutAcspInternalWithoutAuthentication() throws Exception {
+        InternalAcspApi request = getInternalAcspApi("limited-company", DELTA_AT, CONTEXT_ID);
+
+        mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void shouldReturn403WhenWhenPutAcspInternalWithWrongAuthorisation() throws Exception {
+        InternalAcspApi request = getInternalAcspApi("limited-company", DELTA_AT, CONTEXT_ID);
+
+        mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
+                        .header(ERIC_IDENTITY, "123")
+                        .header(ERIC_IDENTITY_TYPE, "key")
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "invalid auth")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldReturn409WhenWhenPutAcspInternalAndStaleDelta() throws Exception {
+        insertDocumentByType("limited-company");
+
+        InternalAcspApi request = getInternalAcspApi("limited-company", STALE_DELTA_AT, CONTEXT_ID);
+
+        mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
+                        .header("ERIC-Identity", "123")
+                        .header("ERIC-Identity-Type", "key")
+                        .header("ERIC-Authorised-Key-Privileges", "internal-app")
+                        .header("X-Request-Id", CONTEXT_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict());
+    }
+
     private void insertDocumentByType(String acspType) throws IOException {
         String documentJson = IOUtils.resourceToString("/mongo/%s-acsp-document.json".formatted(acspType),
                         StandardCharsets.UTF_8)
@@ -215,15 +316,6 @@ class ControllerIT {
                         "/responses/%s-acsp-full-profile-response.json".formatted(acspType), StandardCharsets.UTF_8)
                 .replaceAll("<acsp_number>", ACSP_NUMBER);
         return objectMapper.readValue(expectedJson, AcspFullProfile.class);
-    }
-
-    private InternalAcspApi getInternalAcspApi(String acspType, String deltaAt, String updatedBy) throws IOException {
-        String expectedJson = IOUtils.resourceToString("/requests/%s-acsp-internal-request.json".formatted(acspType),
-                        StandardCharsets.UTF_8)
-                .replaceAll("<acsp_number>", ACSP_NUMBER)
-                .replaceAll("<delta_at>", deltaAt)
-                .replaceAll("<updated_by>", updatedBy);
-        return objectMapper.readValue(expectedJson, InternalAcspApi.class);
     }
 
     private AcspProfileDocument getExpectedAcspDocument(String acspType, String updatedAt, String updatedBy,
