@@ -132,7 +132,7 @@ class ControllerIT extends AbstractControllerIT {
         // given
         InternalAcspApi request = getInternalAcspApi(acspType, DELTA_AT, CONTEXT_ID);
 
-        AcspProfileDocument expected = getExpectedAcspDocument(acspType, CREATED_AT, CONTEXT_ID, DELTA_AT);
+        AcspProfileDocument expected = getExpectedAcspDocument(acspType, CREATED_AT, CONTEXT_ID, DELTA_AT, 0L);
 
         when(instantSupplier.get()).thenReturn(Instant.parse(CREATED_AT));
 
@@ -165,7 +165,7 @@ class ControllerIT extends AbstractControllerIT {
         InternalAcspApi request = getInternalAcspApi(acspType, UPDATED_DELTA_AT, UPDATED_CONTEXT_ID);
 
         AcspProfileDocument expected = getExpectedAcspDocument(acspType, UPDATED_AT, UPDATED_CONTEXT_ID,
-                UPDATED_DELTA_AT);
+                UPDATED_DELTA_AT, 1L);
 
         when(instantSupplier.get()).thenReturn(Instant.parse(UPDATED_AT));
 
@@ -299,6 +299,7 @@ class ControllerIT extends AbstractControllerIT {
         String documentJson = IOUtils.resourceToString("/mongo/%s-acsp-document.json".formatted(acspType),
                         StandardCharsets.UTF_8)
                 .replaceAll("<acsp_number>", ACSP_NUMBER)
+                .replaceAll("\"<version>\"", "0")
                 .replaceAll("<delta_at>", DELTA_AT)
                 .replaceAll("<created_at>", CREATED_AT)
                 .replaceAll("<created_by>", CONTEXT_ID)
@@ -322,10 +323,11 @@ class ControllerIT extends AbstractControllerIT {
     }
 
     private AcspProfileDocument getExpectedAcspDocument(String acspType, String updatedAt, String updatedBy,
-            String deltaAt) throws IOException {
+            String deltaAt, Long version) throws IOException {
         String expectedJson = IOUtils.resourceToString("/mongo/%s-acsp-document.json".formatted(acspType),
                         StandardCharsets.UTF_8)
                 .replaceAll("<acsp_number>", ACSP_NUMBER)
+                .replaceAll("\"<version>\"", version.toString())
                 .replaceAll("<delta_at>", deltaAt)
                 .replaceAll("<created_at>", CREATED_AT)
                 .replaceAll("<created_by>", CONTEXT_ID)

@@ -14,7 +14,9 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.NonTransientDataAccessResourceException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.TransientDataAccessResourceException;
 import uk.gov.companieshouse.acspprofile.api.exception.BadGatewayException;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
@@ -85,6 +87,20 @@ class AcspRepositoryTest {
     }
 
     @Test
+    void shouldThrowBadGatewayWhenDuplicateKeyErrorDuringInsert() {
+        // given
+        when(repository.insert(any(AcspProfileDocument.class))).thenThrow(DuplicateKeyException.class);
+
+        // when
+        Executable actual = () -> service.insertAcsp(document);
+
+        // then
+        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
+        assertEquals("Recoverable MongoDB error during insert, found duplicate key", exception.getMessage());
+        verify(repository).insert(document);
+    }
+
+    @Test
     void shouldThrowBadGatewayWhenRecoverableErrorDuringInsert() {
         // given
         when(repository.insert(any(AcspProfileDocument.class))).thenThrow(TransientDataAccessResourceException.class);
@@ -120,6 +136,20 @@ class AcspRepositoryTest {
         service.updateAcsp(document);
 
         // then
+        verify(repository).save(document);
+    }
+
+    @Test
+    void shouldThrowBadGatewayWhenOptimisticLockingErrorDuringUpdate() {
+        // given
+        when(repository.save(any(AcspProfileDocument.class))).thenThrow(OptimisticLockingFailureException.class);
+
+        // when
+        Executable actual = () -> service.updateAcsp(document);
+
+        // then
+        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
+        assertEquals("Recoverable MongoDB error during update, record not latest version", exception.getMessage());
         verify(repository).save(document);
     }
 

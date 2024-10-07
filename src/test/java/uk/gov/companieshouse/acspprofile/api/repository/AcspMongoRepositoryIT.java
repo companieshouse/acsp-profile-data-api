@@ -2,6 +2,7 @@ package uk.gov.companieshouse.acspprofile.api.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
+import uk.gov.companieshouse.acspprofile.api.exception.BadGatewayException;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
 @Testcontainers
@@ -59,11 +63,7 @@ class AcspMongoRepositoryIT {
     })
     void shouldFindAcspDocumentById(String filename) throws IOException {
         // given
-        String documentJson = IOUtils.resourceToString("/mongo/%s.json".formatted(filename), StandardCharsets.UTF_8)
-                .replaceAll("<acsp_number>", ACSP_NUMBER)
-                .replaceAll("<created_at>", CREATED_AT)
-                .replaceAll("<updated_at>", UPDATED_AT);
-        AcspProfileDocument expected = objectMapper.readValue(documentJson, AcspProfileDocument.class);
+        AcspProfileDocument expected = getAcspProfileDocument(filename, UPDATED_AT);
         mongoTemplate.insert(expected);
 
         // when
@@ -81,11 +81,7 @@ class AcspMongoRepositoryIT {
     })
     void shouldInsertAcspDocument(String filename) throws IOException {
         // given
-        String documentJson = IOUtils.resourceToString("/mongo/%s.json".formatted(filename), StandardCharsets.UTF_8)
-                .replaceAll("<acsp_number>", ACSP_NUMBER)
-                .replaceAll("<created_at>", CREATED_AT)
-                .replaceAll("<updated_at>", CREATED_AT);
-        AcspProfileDocument document = objectMapper.readValue(documentJson, AcspProfileDocument.class);
+        AcspProfileDocument document = getAcspProfileDocument(filename, CREATED_AT);
 
         // when
         repository.insertAcsp(document);
@@ -96,6 +92,20 @@ class AcspMongoRepositoryIT {
         assertEquals(CREATED_AT, actual.getUpdated().getAt().toString());
     }
 
+    @Test
+    void shouldThrowBadGatewayAndNotInsertWhenDocumentAlreadyInserted() {
+        // given
+        mongoTemplate.insert(new AcspProfileDocument()
+                .id(ACSP_NUMBER));
+
+        // when
+        Executable actual = () -> repository.insertAcsp(new AcspProfileDocument()
+                .id(ACSP_NUMBER));
+
+        // then
+        assertThrows(BadGatewayException.class, actual);
+    }
+
     @ParameterizedTest
     @CsvSource({
             "limited-company-acsp-document",
@@ -103,11 +113,7 @@ class AcspMongoRepositoryIT {
     })
     void shouldUpdateAcspDocument(String filename) throws IOException {
         // given
-        String documentJson = IOUtils.resourceToString("/mongo/%s.json".formatted(filename), StandardCharsets.UTF_8)
-                .replaceAll("<acsp_number>", ACSP_NUMBER)
-                .replaceAll("<created_at>", CREATED_AT)
-                .replaceAll("<updated_at>", CREATED_AT);
-        AcspProfileDocument document = objectMapper.readValue(documentJson, AcspProfileDocument.class);
+        AcspProfileDocument document = getAcspProfileDocument(filename, CREATED_AT);
         mongoTemplate.insert(document);
         document.getUpdated().at(Instant.parse(UPDATED_AT));
 
@@ -117,6 +123,34 @@ class AcspMongoRepositoryIT {
         // then
         AcspProfileDocument actual = mongoTemplate.findById(ACSP_NUMBER, AcspProfileDocument.class);
         assertNotNull(actual);
+        assertEquals(1, actual.getVersion());
         assertEquals(UPDATED_AT, actual.getUpdated().getAt().toString());
+    }
+
+    @Test
+    void shouldThrowBadGatewayAndNotUpdateWhenNotLatestVersion() {
+        // given
+        mongoTemplate.insert(new AcspProfileDocument()
+                .id(ACSP_NUMBER));
+        mongoTemplate.save(new AcspProfileDocument()
+                .id(ACSP_NUMBER)
+                .version(0L));
+
+        // when
+        Executable actual = () -> repository.updateAcsp(new AcspProfileDocument()
+                .id(ACSP_NUMBER)
+                .version(0L));
+
+        // then
+        assertThrows(BadGatewayException.class, actual);
+    }
+
+    private AcspProfileDocument getAcspProfileDocument(String filename, String updatedAt) throws IOException {
+        String documentJson = IOUtils.resourceToString("/mongo/%s.json".formatted(filename), StandardCharsets.UTF_8)
+                .replaceAll("<acsp_number>", ACSP_NUMBER)
+                .replaceAll("\"<version>\"", "0")
+                .replaceAll("<created_at>", CREATED_AT)
+                .replaceAll("<updated_at>", updatedAt);
+        return objectMapper.readValue(documentJson, AcspProfileDocument.class);
     }
 }
