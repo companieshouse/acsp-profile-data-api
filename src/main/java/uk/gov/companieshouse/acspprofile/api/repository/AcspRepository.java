@@ -4,6 +4,8 @@ import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMES
 
 import java.util.Optional;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.TransientDataAccessException;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.exception.BadGatewayException;
@@ -43,6 +45,8 @@ public class AcspRepository implements Repository {
     public void insertAcsp(AcspProfileDocument document) {
         try {
             mongoRepository.insert(document);
+        } catch (DuplicateKeyException ex) {
+            throw badGatewayAndLogInfo("insert, found duplicate key", ex);
         } catch (TransientDataAccessException ex) {
             throw badGatewayAndLogInfo(INSERT, ex);
         } catch (DataAccessException ex) {
@@ -54,6 +58,8 @@ public class AcspRepository implements Repository {
     public void updateAcsp(AcspProfileDocument document) {
         try {
             mongoRepository.save(document);
+        } catch (OptimisticLockingFailureException ex) {
+            throw badGatewayAndLogInfo("update, record not latest version", ex);
         } catch (TransientDataAccessException ex) {
             throw badGatewayAndLogInfo(UPDATE, ex);
         } catch (DataAccessException ex) {
@@ -61,8 +67,8 @@ public class AcspRepository implements Repository {
         }
     }
 
-    private static BadGatewayException badGatewayAndLogInfo(String operation, TransientDataAccessException ex) {
-        String errorMsg = RECOVERABLE_ERROR_MESSAGE.formatted(operation);
+    private static BadGatewayException badGatewayAndLogInfo(String operationMessage, DataAccessException ex) {
+        String errorMsg = RECOVERABLE_ERROR_MESSAGE.formatted(operationMessage);
         LOGGER.info(errorMsg, DataMapHolder.getLogMap());
         return new BadGatewayException(errorMsg, ex);
     }

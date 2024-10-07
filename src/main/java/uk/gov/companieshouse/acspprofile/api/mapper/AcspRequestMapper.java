@@ -32,19 +32,21 @@ public class AcspRequestMapper implements RequestMapper {
 
     @Override
     public AcspProfileDocument mapNewAcsp(InternalAcspApi internalAcspApi) {
-        DeltaTimeStamp created = new DeltaTimeStamp()
-                .at(instantSupplier.get())
-                .by(internalAcspApi.getInternalData().getUpdatedBy())
-                .type(DELTA_TYPE);
-        return mapAcspRequest(internalAcspApi, created);
+        return mapBaseAcsp(internalAcspApi)
+                .created(new DeltaTimeStamp()
+                        .at(instantSupplier.get())
+                        .by(internalAcspApi.getInternalData().getUpdatedBy())
+                        .type(DELTA_TYPE));
     }
 
     @Override
     public AcspProfileDocument mapExistingAcsp(InternalAcspApi internalAcspApi, AcspProfileDocument existingDocument) {
-        return mapAcspRequest(internalAcspApi, existingDocument.getCreated());
+        return mapBaseAcsp(internalAcspApi)
+                .version(existingDocument.getVersion())
+                .created(existingDocument.getCreated());
     }
 
-    private AcspProfileDocument mapAcspRequest(InternalAcspApi internalAcspApi, DeltaTimeStamp created) {
+    private AcspProfileDocument mapBaseAcsp(InternalAcspApi internalAcspApi) {
         AcspFullProfile fullProfile = internalAcspApi.getAcspFullProfile();
         InternalData internalData = internalAcspApi.getInternalData();
         return new AcspProfileDocument()
@@ -71,7 +73,6 @@ public class AcspRequestMapper implements RequestMapper {
                         .email(fullProfile.getEmail())
                         .dateOfBirth(localDateToInstant(fullProfile.getDateOfBirth())))
                 .deltaAt(internalData.getDeltaAt())
-                .created(created)
                 .updated(new DeltaTimeStamp()
                         .at(instantSupplier.get())
                         .by(internalData.getUpdatedBy())

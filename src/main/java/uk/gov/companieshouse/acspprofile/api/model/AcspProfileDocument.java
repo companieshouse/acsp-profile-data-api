@@ -3,6 +3,7 @@ package uk.gov.companieshouse.acspprofile.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -12,6 +13,8 @@ public class AcspProfileDocument {
     @Id
     @JsonProperty("_id")
     private String id;
+    @Version
+    private Long version;
     private AcspData data;
     @Field("sensitive_data")
     @JsonProperty("sensitive_data")
@@ -28,6 +31,15 @@ public class AcspProfileDocument {
 
     public AcspProfileDocument id(String id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public AcspProfileDocument version(Long version) {
+        this.version = version;
         return this;
     }
 
@@ -85,26 +97,27 @@ public class AcspProfileDocument {
             return false;
         }
         AcspProfileDocument document = (AcspProfileDocument) o;
-        return Objects.equals(id, document.id) && Objects.equals(data, document.data)
-                && Objects.equals(sensitiveData, document.sensitiveData) && Objects.equals(created,
-                document.created) && Objects.equals(updated, document.updated) && Objects.equals(
-                deltaAt, document.deltaAt);
+        return Objects.equals(id, document.id) && Objects.equals(version, document.version)
+                && Objects.equals(data, document.data) && Objects.equals(sensitiveData,
+                document.sensitiveData) && Objects.equals(created, document.created) && Objects.equals(
+                updated, document.updated) && Objects.equals(deltaAt, document.deltaAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, data, sensitiveData, created, updated, deltaAt);
+        return Objects.hash(id, version, data, sensitiveData, created, updated, deltaAt);
     }
 
     @Override
     public String toString() {
         return "AcspProfileDocument{" +
                 "id='" + id + '\'' +
+                ", version=" + version +
                 ", data=" + data +
                 ", sensitiveData=" + sensitiveData +
                 ", created=" + created +
                 ", updated=" + updated +
-                ", deltaAt=" + deltaAt +
+                ", deltaAt='" + deltaAt + '\'' +
                 '}';
     }
 }

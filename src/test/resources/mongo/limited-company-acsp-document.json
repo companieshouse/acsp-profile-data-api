@@ -1,5 +1,6 @@
 {
   "_id": "<acsp_number>",
+  "version": "<version>",
   "data": {
     "acsp_number": "<acsp_number>",
     "aml_details": [

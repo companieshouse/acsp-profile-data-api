@@ -155,7 +155,8 @@ class AcspRequestMapperTest {
         InternalAcspApi internalAcspRequest = getInternalAcspRequest(acspFullProfile, UPDATED_BY);
 
         AcspProfileDocument existingDocument = new AcspProfileDocument()
-                .created(CREATED);
+                .created(CREATED)
+                .version(0L);
 
         AcspData data = getExpectedDataWithRequiredFields();
         AcspSensitiveData sensitiveData = new AcspSensitiveData().email(EMAIL);
@@ -163,7 +164,8 @@ class AcspRequestMapperTest {
                 .at(UPDATED_AT)
                 .by(UPDATED_BY)
                 .type(DELTA_TYPE);
-        AcspProfileDocument expected = getExpectedDocument(data, sensitiveData, updated);
+        AcspProfileDocument expected = getExpectedDocument(data, sensitiveData, updated)
+                .version(0L);
 
         when(addressMapper.mapAddressRequest(any())).thenReturn(expectedAddress, (AcspAddress) null);
         when(soleTraderDetailsMapper.mapSoleTraderDetailsRequest(any())).thenReturn(null);
