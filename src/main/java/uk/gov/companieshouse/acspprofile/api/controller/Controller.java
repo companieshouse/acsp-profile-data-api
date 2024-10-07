@@ -3,6 +3,7 @@ package uk.gov.companieshouse.acspprofile.api.controller;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static uk.gov.companieshouse.acspprofile.api.AcspProfileApplication.NAMESPACE;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +54,7 @@ public class Controller {
 
     @PutMapping("/authorised-corporate-service-providers/{acsp_number}/internal")
     public ResponseEntity<Void> upsertAcsp(@PathVariable("acsp_number") final String acspNumber,
-            @RequestBody InternalAcspApi internalAcspApi) {
+            @Valid @RequestBody InternalAcspApi internalAcspApi) {
 
         DataMapHolder.get().companyNumber(acspNumber);
         LOGGER.info("Processing PUT ACSP request", DataMapHolder.getLogMap());
