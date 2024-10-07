@@ -18,9 +18,9 @@ public final class DateUtils {
     private DateUtils() {
     }
 
-    public static Instant stringToInstant(final String dateString) {
-        return Optional.ofNullable(dateString)
-                .map(Instant::parse)
+    public static Instant localDateToInstant(final LocalDate localDate) {
+        return Optional.ofNullable(localDate)
+                .map(date -> Instant.from(date.atStartOfDay(UTC)))
                 .orElse(null);
     }
 
@@ -31,7 +31,9 @@ public final class DateUtils {
     }
 
     public static boolean isDeltaStale(final String requestDeltaAt, final String existingDeltaAt) {
-        return StringUtils.isNotBlank(existingDeltaAt) && !OffsetDateTime.parse(requestDeltaAt, FORMATTER)
-                .isAfter(OffsetDateTime.parse(existingDeltaAt, FORMATTER));
+        return StringUtils.isBlank(requestDeltaAt) ||
+                StringUtils.isNotBlank(existingDeltaAt) &&
+                OffsetDateTime.parse(requestDeltaAt, FORMATTER)
+                        .isBefore(OffsetDateTime.parse(existingDeltaAt, FORMATTER));
     }
 }

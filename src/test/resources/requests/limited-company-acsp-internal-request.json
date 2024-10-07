@@ -1,20 +1,13 @@
 {
-  "_id": "<acsp_number>",
-  "data": {
-    "acsp_number": "<acsp_number>",
-    "aml_details": [
-      {
-        "membership_details": "Membership ID: FCA654321",
-        "supervisory_body": "financial-conduct-authority-fca"
-      }
-    ],
-    "business_sector": "financial-institutions",
-    "notified_from": "2024-04-02T00:00:00.000Z",
-    "etag": "47e85fcf644420129b4388ef9c87496794620893",
-    "links": {
-      "self": "/authorised-corporate-service-providers/<acsp_number>"
-    },
+  "acsp_full_profile": {
+    "number": "<acsp_number>",
     "name": "Example ACSP Ltd",
+    "status": "active",
+    "type": "limited-company",
+    "business_sector": "financial-institutions",
+    "notified_from": "2024-04-02",
+    "etag": "47e85fcf644420129b4388ef9c87496794620893",
+    "email": "john.doe@example.com",
     "registered_office_address": {
       "address_line_1": "456 Another Street",
       "address_line_2": "Floor 2",
@@ -37,21 +30,19 @@
       "premises": "Another Building",
       "region": "Greater Manchester"
     },
-    "status": "active",
-    "type": "limited-company"
+    "aml_details": [
+      {
+        "membership_details": "Membership ID: FCA654321",
+        "supervisory_body": "financial-conduct-authority-fca"
+      }
+    ],
+    "links": {
+      "self": "/authorised-corporate-service-providers/<acsp_number>"
+    }
   },
-  "sensitive_data": {
-    "email": "john.doe@example.com"
-  },
-  "delta_at": "<delta_at>",
-  "created": {
-    "at": "<created_at>",
-    "by": "<created_by>",
-    "type": "acsp_delta"
-  },
-  "updated": {
-    "by": "<updated_by>",
-    "at": "<updated_at>",
-    "type": "acsp_delta"
+  "internal_data": {
+    "delta_at": "<delta_at>",
+    "updated_by": "<updated_by>",
+    "updated_type": "acsp_delta"
   }
 }

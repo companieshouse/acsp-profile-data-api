@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.acspprofile.api.mapper.get;
+package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -23,7 +23,7 @@ class AddressMapperTest {
     private final AddressMapper addressMapper = new AddressMapper();
 
     @Test
-    void mapAcspAddress() {
+    void mapAcspAddressToResponse() {
         // given
         AcspAddress acspAddress = new AcspAddress()
                 .careOf(CARE_OF)
@@ -48,32 +48,89 @@ class AddressMapperTest {
                 .region(REGION);
 
         // when
-        Address actual = addressMapper.mapAcspAddress(acspAddress);
+        Address actual = addressMapper.mapAddressResponse(acspAddress);
 
         // then
         assertEquals(expected, actual);
     }
 
     @Test
-    void mapBareAcspAddress() {
+    void mapBareAcspAddressToResponse() {
         // given
         AcspAddress acspAddress = new AcspAddress();
 
         Address expected = new Address();
 
         // when
-        Address actual = addressMapper.mapAcspAddress(acspAddress);
+        Address actual = addressMapper.mapAddressResponse(acspAddress);
 
         // then
         assertEquals(expected, actual);
     }
 
     @Test
-    void mapNullAcspAddress() {
+    void mapNullAcspAddressToResponse() {
         // given
 
         // when
-        Address actual = addressMapper.mapAcspAddress(null);
+        Address actual = addressMapper.mapAddressResponse(null);
+
+        // then
+        assertNull(actual);
+    }
+
+    @Test
+    void mapAddressRequestToAcspAddress() {
+        // given
+        Address address = new Address()
+                .careOf(CARE_OF)
+                .addressLine1(ADDRESS_LINE_1)
+                .addressLine2(ADDRESS_LINE_2)
+                .country(Country.UNITED_KINGDOM)
+                .locality(LOCALITY)
+                .poBox(PO_BOX)
+                .postalCode(POSTAL_CODE)
+                .premises(PREMISES)
+                .region(REGION);
+
+        AcspAddress expected = new AcspAddress()
+                .careOf(CARE_OF)
+                .addressLine1(ADDRESS_LINE_1)
+                .addressLine2(ADDRESS_LINE_2)
+                .country(COUNTRY)
+                .locality(LOCALITY)
+                .poBox(PO_BOX)
+                .postalCode(POSTAL_CODE)
+                .premises(PREMISES)
+                .region(REGION);
+
+        // when
+        AcspAddress actual = addressMapper.mapAddressRequest(address);
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void mapBareAddressRequestToAcspAddress() {
+        // given
+        Address address = new Address();
+
+        AcspAddress expected = new AcspAddress();
+
+        // when
+        AcspAddress actual = addressMapper.mapAddressRequest(address);
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void mapNullAddressRequest() {
+        // given
+
+        // when
+        AcspAddress actual = addressMapper.mapAddressRequest(null);
 
         // then
         assertNull(actual);

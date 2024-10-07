@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.acspprofile.api.mapper.get;
+package uk.gov.companieshouse.acspprofile.api.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -18,7 +18,7 @@ class SoleTraderDetailsMapperTest {
     private final SoleTraderDetailsMapper soleTraderDetailsMapper = new SoleTraderDetailsMapper();
 
     @Test
-    void mapAcspSoleTraderDetails() {
+    void mapAcspSoleTraderDetailsToResponse() {
         // given
         AcspSoleTraderDetails acspSoleTraderDetails = new AcspSoleTraderDetails()
                 .forename(FORENAME)
@@ -35,18 +35,53 @@ class SoleTraderDetailsMapperTest {
                 .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY);
 
         // when
-        SoleTraderDetails actual = soleTraderDetailsMapper.mapAcspSoleTraderDetails(acspSoleTraderDetails);
+        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(acspSoleTraderDetails);
 
         // then
         assertEquals(expected, actual);
     }
 
     @Test
-    void mapNullAcspSoleTraderDetails() {
+    void mapNullAcspSoleTraderDetailsToResponse() {
         // given
 
         // when
-        SoleTraderDetails actual = soleTraderDetailsMapper.mapAcspSoleTraderDetails(null);
+        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(null);
+
+        // then
+        assertNull(actual);
+    }
+
+    @Test
+    void mapSoleTraderDetailsRequestToAcspSoleTraderDetails() {
+        // given
+        SoleTraderDetails soleTraderDetails = new SoleTraderDetails()
+                .forename(FORENAME)
+                .otherForenames(OTHER_FORENAMES)
+                .surname(SURNAME)
+                .nationality(BRITISH)
+                .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY);
+
+        AcspSoleTraderDetails expected = new AcspSoleTraderDetails()
+                .forename(FORENAME)
+                .otherForenames(OTHER_FORENAMES)
+                .surname(SURNAME)
+                .nationality(BRITISH)
+                .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY);
+
+        // when
+        AcspSoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsRequest(soleTraderDetails);
+
+        // then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void mapNullSoleTraderDetailsRequestToAcspSoleTraderDetails() {
+        // given
+
+        // when
+        AcspSoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsRequest(null);
 
         // then
         assertNull(actual);

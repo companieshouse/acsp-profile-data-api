@@ -5,6 +5,6 @@
   "type": "limited-company",
   "kind": "authorised-corporate-service-provider-info",
   "links": {
-    "self": "/authorised-corporate-service-provider/<acsp_number>"
+    "self": "/authorised-corporate-service-providers/<acsp_number>"
   }
 }
