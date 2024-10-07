@@ -7,9 +7,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.API_KEY_IDENTITY_TYPE;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_IDENTITY;
 import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.ERIC_IDENTITY_TYPE;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.INTERNAL_APP_PRIVILEGE;
+import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.SENSITIVE_DATA_PRIVILEGE;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -80,10 +83,10 @@ class ControllerIT extends AbstractControllerIT {
 
         // when
         ResultActions result = mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER)
-                .header("ERIC-Identity", "123")
-                .header("ERIC-Identity-Type", "key")
-                .header("ERIC-Authorised-Key-Privileges", "internal-app")
-                .header("X-Request-Id", CONTEXT_ID));
+                .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, INTERNAL_APP_PRIVILEGE)
+                .header(REQUEST_ID_HEADER, CONTEXT_ID));
 
         // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
@@ -106,10 +109,10 @@ class ControllerIT extends AbstractControllerIT {
         AcspFullProfile expected = getExpectedFullProfileByType(acspType);
         // when
         ResultActions result = mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
-                .header("ERIC-Identity", "123")
-                .header("ERIC-Identity-Type", "key")
-                .header("ERIC-Authorised-Key-Privileges", "sensitive-data")
-                .header("X-Request-Id", CONTEXT_ID));
+                .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, SENSITIVE_DATA_PRIVILEGE)
+                .header(REQUEST_ID_HEADER, CONTEXT_ID));
 
         // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
@@ -135,10 +138,10 @@ class ControllerIT extends AbstractControllerIT {
 
         // when
         ResultActions result = mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
-                .header("ERIC-Identity", "123")
-                .header("ERIC-Identity-Type", "key")
-                .header("ERIC-Authorised-Key-Privileges", "internal-app")
-                .header("X-Request-Id", CONTEXT_ID)
+                .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, INTERNAL_APP_PRIVILEGE)
+                .header(REQUEST_ID_HEADER, CONTEXT_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -168,10 +171,10 @@ class ControllerIT extends AbstractControllerIT {
 
         // when
         ResultActions result = mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
-                .header("ERIC-Identity", "123")
-                .header("ERIC-Identity-Type", "key")
-                .header("ERIC-Authorised-Key-Privileges", "internal-app")
-                .header("X-Request-Id", UPDATED_CONTEXT_ID)
+                .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, INTERNAL_APP_PRIVILEGE)
+                .header(REQUEST_ID_HEADER, UPDATED_CONTEXT_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -193,9 +196,9 @@ class ControllerIT extends AbstractControllerIT {
     @Test
     void shouldReturn403WhenGetProfileWithWrongAuthorisation() throws Exception {
         mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER)
-                        .header(ERIC_IDENTITY, "123")
-                        .header(ERIC_IDENTITY_TYPE, "key")
-                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "sensitive-data"))
+                        .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                        .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, SENSITIVE_DATA_PRIVILEGE))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -203,10 +206,10 @@ class ControllerIT extends AbstractControllerIT {
     @Test
     void shouldReturn404WhenGetProfileAndNoDocumentExists() throws Exception {
         mockMvc.perform(get(GET_PROFILE_URI, ACSP_NUMBER)
-                        .header("ERIC-Identity", "123")
-                        .header("ERIC-Identity-Type", "key")
-                        .header("ERIC-Authorised-Key-Privileges", "internal-app")
-                        .header("X-Request-Id", CONTEXT_ID))
+                        .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                        .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, INTERNAL_APP_PRIVILEGE)
+                        .header(REQUEST_ID_HEADER, CONTEXT_ID))
                 .andExpect(status().isNotFound());
     }
 
@@ -220,9 +223,9 @@ class ControllerIT extends AbstractControllerIT {
     @Test
     void shouldReturn403WhenGetFullProfileWithWrongAuthorisation() throws Exception {
         mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
-                        .header(ERIC_IDENTITY, "123")
-                        .header(ERIC_IDENTITY_TYPE, "key")
-                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "internal-app"))
+                        .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                        .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, INTERNAL_APP_PRIVILEGE))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -230,10 +233,10 @@ class ControllerIT extends AbstractControllerIT {
     @Test
     void shouldReturn404WhenGetFullProfileAndNoDocumentExists() throws Exception {
         mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
-                        .header("ERIC-Identity", "123")
-                        .header("ERIC-Identity-Type", "key")
-                        .header("ERIC-Authorised-Key-Privileges", "sensitive-data")
-                        .header("X-Request-Id", CONTEXT_ID))
+                        .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                        .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, SENSITIVE_DATA_PRIVILEGE)
+                        .header(REQUEST_ID_HEADER, CONTEXT_ID))
                 .andExpect(status().isNotFound());
     }
 
@@ -242,10 +245,10 @@ class ControllerIT extends AbstractControllerIT {
         InternalAcspApi request = getInternalAcspApi("missing-required-fields", STALE_DELTA_AT, CONTEXT_ID);
 
         mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
-                        .header("ERIC-Identity", "123")
-                        .header("ERIC-Identity-Type", "key")
-                        .header("ERIC-Authorised-Key-Privileges", "internal-app")
-                        .header("X-Request-Id", CONTEXT_ID)
+                        .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                        .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, INTERNAL_APP_PRIVILEGE)
+                        .header(REQUEST_ID_HEADER, CONTEXT_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -267,8 +270,8 @@ class ControllerIT extends AbstractControllerIT {
         InternalAcspApi request = getInternalAcspApi("limited-company", DELTA_AT, CONTEXT_ID);
 
         mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
-                        .header(ERIC_IDENTITY, "123")
-                        .header(ERIC_IDENTITY_TYPE, "key")
+                        .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                        .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
                         .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, "invalid auth")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -283,10 +286,10 @@ class ControllerIT extends AbstractControllerIT {
         InternalAcspApi request = getInternalAcspApi("limited-company", STALE_DELTA_AT, CONTEXT_ID);
 
         mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
-                        .header("ERIC-Identity", "123")
-                        .header("ERIC-Identity-Type", "key")
-                        .header("ERIC-Authorised-Key-Privileges", "internal-app")
-                        .header("X-Request-Id", CONTEXT_ID)
+                        .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
+                        .header(ERIC_IDENTITY_TYPE, API_KEY_IDENTITY_TYPE)
+                        .header(ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER, INTERNAL_APP_PRIVILEGE)
+                        .header(REQUEST_ID_HEADER, CONTEXT_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict());

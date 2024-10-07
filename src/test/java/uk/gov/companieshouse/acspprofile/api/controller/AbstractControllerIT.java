@@ -20,6 +20,8 @@ abstract class AbstractControllerIT {
     static final String ACSP_NUMBER = "AP123456";
     static final String CONTEXT_ID = "context_id";
     static final String DELTA_AT = "20241003085145522153";
+    static final String REQUEST_ID_HEADER = "X-Request-Id";
+    static final String ERIC_IDENTITY_VALUE = "123";
 
     @Autowired
     MockMvc mockMvc;
