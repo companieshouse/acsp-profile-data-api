@@ -1,8 +1,11 @@
 package uk.gov.companieshouse.acspprofile.api.mapper;
 
+import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.acspprofile.api.model.AcspSoleTraderDetails;
 import uk.gov.companieshouse.api.acspprofile.SoleTraderDetails;
@@ -14,6 +17,8 @@ class SoleTraderDetailsMapperTest {
     private static final String SURNAME = "surname";
     private static final String BRITISH = "british";
     private static final String USUAL_RESIDENTIAL_COUNTRY = "united kingdom";
+    private static final LocalDate DATE_OF_BIRTH = LocalDate.of(2000, 8, 27);
+    private static final Instant DATE_OF_BIRTH_INSTANT = Instant.from(DATE_OF_BIRTH.atStartOfDay(UTC));
 
     private final SoleTraderDetailsMapper soleTraderDetailsMapper = new SoleTraderDetailsMapper();
 
@@ -32,10 +37,12 @@ class SoleTraderDetailsMapperTest {
                 .otherForenames(OTHER_FORENAMES)
                 .surname(SURNAME)
                 .nationality(BRITISH)
-                .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY);
+                .usualResidentialCountry(USUAL_RESIDENTIAL_COUNTRY)
+                .dateOfBirth(DATE_OF_BIRTH);
 
         // when
-        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(acspSoleTraderDetails);
+        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(acspSoleTraderDetails,
+                DATE_OF_BIRTH_INSTANT);
 
         // then
         assertEquals(expected, actual);
@@ -46,7 +53,7 @@ class SoleTraderDetailsMapperTest {
         // given
 
         // when
-        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(null);
+        SoleTraderDetails actual = soleTraderDetailsMapper.mapSoleTraderDetailsResponse(null, null);
 
         // then
         assertNull(actual);

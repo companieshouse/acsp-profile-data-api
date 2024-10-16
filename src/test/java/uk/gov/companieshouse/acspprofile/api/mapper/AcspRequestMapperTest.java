@@ -91,8 +91,7 @@ class AcspRequestMapperTest {
                 .deauthorisedFrom(DEAUTHORISED_FROM)
                 .serviceAddress(address)
                 .soleTraderDetails(soleTraderDetails)
-                .amlDetails(List.of(amlDetailsItem))
-                .dateOfBirth(DATE_OF_BIRTH);
+                .amlDetails(List.of(amlDetailsItem));
 
         InternalAcspApi internalAcspRequest = getInternalAcspRequest(acspFullProfile, CREATED_BY);
 
@@ -110,6 +109,7 @@ class AcspRequestMapperTest {
         when(addressMapper.mapAddressRequest(any())).thenReturn(expectedAddress);
         when(soleTraderDetailsMapper.mapSoleTraderDetailsRequest(any())).thenReturn(expectedSoleTraderDetails);
         when(amlDetailsMapper.mapAmlDetailsRequest(any())).thenReturn(List.of(expectedAmlDetails));
+        when(soleTraderDetails.getDateOfBirth()).thenReturn(DATE_OF_BIRTH);
         when(instantSupplier.get()).thenReturn(CREATED_AT);
 
         // when

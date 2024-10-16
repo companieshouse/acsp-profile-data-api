@@ -18,14 +18,14 @@
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <spring.boot.version>3.3.2</spring.boot.version>
+    <spring.boot.version>3.3.4</spring.boot.version>
     <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
     <structured-logging.version>3.0.13</structured-logging.version>
     <api-sdk-manager-java-library.version>3.0.5</api-sdk-manager-java-library.version>
-    <private-api-sdk-java.version>4.0.209</private-api-sdk-java.version>
-    <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
-    <maven-failsafe-plugin.version>3.4.0</maven-failsafe-plugin.version>
-    <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+    <private-api-sdk-java.version>4.0.215</private-api-sdk-java.version>
+    <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>3.5.1</maven-failsafe-plugin.version>
+    <maven-resources-plugin.version>3.5.1</maven-resources-plugin.version>
     <test-containers.version>1.20.1</test-containers.version>
     <wiremock.version>3.9.1</wiremock.version>
 
