@@ -33,7 +33,7 @@ public class Controller {
     @GetMapping("/authorised-corporate-service-providers/{acsp_number}")
     public ResponseEntity<AcspProfile> getProfile(@PathVariable("acsp_number") final String acspNumber) {
 
-        DataMapHolder.get().companyNumber(acspNumber);
+        DataMapHolder.get().acspNumber(acspNumber);
         LOGGER.info("Processing GET ACSP profile", DataMapHolder.getLogMap());
 
         return ResponseEntity
@@ -44,7 +44,7 @@ public class Controller {
     @GetMapping("/authorised-corporate-service-providers/{acsp_number}/full-profile")
     public ResponseEntity<AcspFullProfile> getFullProfile(@PathVariable("acsp_number") final String acspNumber) {
 
-        DataMapHolder.get().companyNumber(acspNumber);
+        DataMapHolder.get().acspNumber(acspNumber);
         LOGGER.info("Processing GET ACSP full profile", DataMapHolder.getLogMap());
 
         return ResponseEntity
@@ -56,7 +56,7 @@ public class Controller {
     public ResponseEntity<Void> upsertAcsp(@PathVariable("acsp_number") final String acspNumber,
             @Valid @RequestBody InternalAcspApi internalAcspApi) {
 
-        DataMapHolder.get().companyNumber(acspNumber);
+        DataMapHolder.get().acspNumber(acspNumber);
         LOGGER.info("Processing PUT ACSP request", DataMapHolder.getLogMap());
 
         service.upsertAcsp(acspNumber, internalAcspApi);

@@ -20,8 +20,8 @@
     <maven.compiler.target>21</maven.compiler.target>
     <spring.boot.version>3.3.4</spring.boot.version>
     <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
-    <structured-logging.version>3.0.13</structured-logging.version>
-    <api-sdk-manager-java-library.version>3.0.5</api-sdk-manager-java-library.version>
+    <structured-logging.version>3.0.18</structured-logging.version>
+    <api-sdk-manager-java-library.version>3.0.6</api-sdk-manager-java-library.version>
     <private-api-sdk-java.version>4.0.215</private-api-sdk-java.version>
     <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>3.5.1</maven-failsafe-plugin.version>
