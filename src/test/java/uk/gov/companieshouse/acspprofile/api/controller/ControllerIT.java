@@ -107,6 +107,7 @@ class ControllerIT extends AbstractControllerIT {
         insertDocumentByType(acspType);
 
         AcspFullProfile expected = getExpectedFullProfileByType(acspType);
+
         // when
         ResultActions result = mockMvc.perform(get(GET_FULL_PROFILE_URI, ACSP_NUMBER)
                 .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)

@@ -11,6 +11,7 @@ import uk.gov.companieshouse.acspprofile.api.model.DeltaTimeStamp;
 import uk.gov.companieshouse.api.acspprofile.AcspFullProfile;
 import uk.gov.companieshouse.api.acspprofile.InternalAcspApi;
 import uk.gov.companieshouse.api.acspprofile.InternalData;
+import uk.gov.companieshouse.api.acspprofile.SoleTraderDetails;
 
 @Component
 public class AcspRequestMapper implements RequestMapper {
@@ -49,6 +50,7 @@ public class AcspRequestMapper implements RequestMapper {
     private AcspProfileDocument mapBaseAcsp(InternalAcspApi internalAcspApi) {
         AcspFullProfile fullProfile = internalAcspApi.getAcspFullProfile();
         InternalData internalData = internalAcspApi.getInternalData();
+        SoleTraderDetails soleTraderDetails = fullProfile.getSoleTraderDetails();
         return new AcspProfileDocument()
                 .id(fullProfile.getNumber())
                 .data(new AcspData()
@@ -64,14 +66,14 @@ public class AcspRequestMapper implements RequestMapper {
                         .registeredOfficeAddress(
                                 addressMapper.mapAddressRequest(fullProfile.getRegisteredOfficeAddress()))
                         .serviceAddress(addressMapper.mapAddressRequest(fullProfile.getServiceAddress()))
-                        .soleTraderDetails(soleTraderDetailsMapper.mapSoleTraderDetailsRequest(
-                                fullProfile.getSoleTraderDetails()))
+                        .soleTraderDetails(soleTraderDetailsMapper.mapSoleTraderDetailsRequest(soleTraderDetails))
                         .amlDetails(amlDetailsMapper.mapAmlDetailsRequest(fullProfile.getAmlDetails()))
                         .links(new AcspLinks()
                                 .self(fullProfile.getLinks().getSelf())))
                 .sensitiveData(new AcspSensitiveData()
                         .email(fullProfile.getEmail())
-                        .dateOfBirth(localDateToInstant(fullProfile.getDateOfBirth())))
+                        .dateOfBirth(soleTraderDetails != null ?
+                                localDateToInstant(soleTraderDetails.getDateOfBirth()) : null))
                 .deltaAt(internalData.getDeltaAt())
                 .updated(new DeltaTimeStamp()
                         .at(instantSupplier.get())

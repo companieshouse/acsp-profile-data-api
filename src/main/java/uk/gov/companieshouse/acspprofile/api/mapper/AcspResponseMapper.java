@@ -60,10 +60,10 @@ public class AcspResponseMapper implements ResponseMapper {
                 .status(Status.fromValue(data.getStatus()))
                 .registeredOfficeAddress(addressMapper.mapAddressResponse(data.getRegisteredOfficeAddress()))
                 .serviceAddress(addressMapper.mapAddressResponse(data.getServiceAddress()))
-                .soleTraderDetails(soleTraderDetailsMapper.mapSoleTraderDetailsResponse(data.getSoleTraderDetails()))
+                .soleTraderDetails(soleTraderDetailsMapper.mapSoleTraderDetailsResponse(
+                        data.getSoleTraderDetails(), sensitiveData.getDateOfBirth()))
                 .amlDetails(amlDetailsMapper.mapAmlDetailsResponse(data.getAmlDetails()))
                 .email(sensitiveData.getEmail())
-                .dateOfBirth(instantToLocalDate(sensitiveData.getDateOfBirth()))
                 .links(new Links()
                         .self(data.getLinks().getSelf()));
     }
