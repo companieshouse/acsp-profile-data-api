@@ -56,22 +56,21 @@ public class AcspService implements Service {
                                 LOGGER.error(errorMsg, DataMapHolder.getLogMap());
                                 throw new ConflictException(errorMsg);
                             }
+                            LOGGER.info("Attempting to update ACSP document", DataMapHolder.getLogMap());
                             repository.updateAcsp(requestMapper.mapExistingAcsp(internalAcspApi, document));
-                            LOGGER.info("Successfully updated ACSP document", DataMapHolder.getLogMap());
                         },
                         () -> {
+                            LOGGER.info("Attempting to insert ACSP document", DataMapHolder.getLogMap());
                             repository.insertAcsp(requestMapper.mapNewAcsp(internalAcspApi));
-                            LOGGER.info("Successfully inserted ACSP document", DataMapHolder.getLogMap());
                         });
     }
 
     private AcspProfileDocument doFindAcsp(String acspNumber) {
-        AcspProfileDocument document = repository.findAcsp(acspNumber)
+        LOGGER.info("Attempting to find ACSP document", DataMapHolder.getLogMap());
+        return repository.findAcsp(acspNumber)
                 .orElseGet(() -> {
                     LOGGER.info(NOT_FOUND_MESSAGE, DataMapHolder.getLogMap());
                     throw new NotFoundException(NOT_FOUND_MESSAGE);
                 });
-        LOGGER.info("Successfully found ACSP document", DataMapHolder.getLogMap());
-        return document;
     }
 }
