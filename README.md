@@ -1,12 +1,9 @@
 # `acsp-profile-data-api`
 
-## Summary
-
 The `acsp-profile-data-api` is a service that receives acsp profile deltas from
-`acsp-profile-data-consumer`. It transforms these deltas to a standardised structure and then:
-
-* stores or deletes documents within the `acsp_profile collection` in MongoDB, and
-* enqueues a resource changed message that triggers further downstream processing.
+`acsp-profile-data-consumer`. It transforms these deltas to a standardised structure and then stores them as documents
+within the `acsp_profile` collection in MongoDB. The documents are then readily available to be retrieved by either of
+the services' GET endpoints described [below](#Endpoints).
 
 The service is implemented in Java 21 using Spring Boot 3.2
 
@@ -17,38 +14,47 @@ The service is implemented in Java 21 using Spring Boot 3.2
 * [Maven](https://maven.apache.org/download.cgi)
 * [MongoDB](https://www.mongodb.com/)
 
-## Building and Running Locally using Docker
+## Getting started
 
-1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and
-   follow the steps in the
+### Building and running locally using docker
+
+1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and follow the steps in the
    README.
-2. Enable the following services using the command `./bin/chs-dev services enable <service>`.
-    * `acsp-profile-data-api`
+2. Enable the required services by running the following command, in the `docker-chs-development` directory:
+   ```
+   chs-dev services enable chs-delta-api \
+   acsp-profile-delta-consumer \
+   acsp-profile-data-api \
+   authentication-service \ 
+   ch-gov-uk
+   ```
+3. Boot up the services' containers on docker using `chs-dev up`.
+4. Messages can be produced to the acsp-profile-delta topic using the instructions given
+   in [CHS Delta API](https://github.com/companieshouse/chs-delta-api).
 
-3. Boot up the services' containers on docker using tilt `tilt up`.
-
-## Environment variables
-
-| Variable                           | Description                                                                           | Example (from docker-chs-development) |
-|------------------------------------|---------------------------------------------------------------------------------------|---------------------------------------|
-| PORT                               | The port at which the service is hosted in ECS                                        | 8080                                  |
-| LOGLEVEL                           | The level of log messages output to the logs                                          | debug                                 |
-| HUMAN_LOG                          | A boolean value to enable more readable log messages                                  | 1                                     |
-
-## Building the docker image
-
-```bash
-mvn compile jib:dockerBuild
-```
-
-## To make local changes
-
-Development mode is available for this service
-in [Docker CHS Development](https://github.com/companieshouse/docker-chs-development).
+### Building the docker image with local changes, requires access to AWS ECR
 
 ```bash
-./bin/chs-dev development enable acsp-profile-data-api
+  mvn compile jib:dockerBuild
 ```
 
-This will clone the `acsp-profile-data-api` into the `./repositories` folder. Any changes to the
-code, or resources will automatically trigger a rebuild and relaunch.
+### Environment variables
+
+| Variable  | Description                                          | Example (from docker-chs-development) |
+|-----------|------------------------------------------------------|---------------------------------------|
+| PORT      | The port at which the service is hosted in ECS       | 8080                                  |
+| LOGLEVEL  | The level of log messages output to the logs         | debug                                 |
+| HUMAN_LOG | A boolean value to enable more readable log messages | 1                                     |
+
+## Other useful information
+
+### Endpoints
+
+The table below describes the endpoints the service has available
+
+| Method | URI                                                                  | Description                                                                                                                  |
+|--------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| GET    | `/authorised-corporate-service-providers/{acsp_number}`              | Returns a partial representation of an ACSP profile (requires internal app privileges).                                      |
+| GET    | `/authorised-corporate-service-providers/{acsp_number}/full-profile` | Returns a full ACSP profile including sensitive data (requires sensitive data privileges).                                   |
+| PUT    | `/authorised-corporate-service-providers/{acsp_number}/internal`     | Inserts or updates an existing ACSP profile within the collection, includes checks for delta staleness and Mongo versioning. |
+
