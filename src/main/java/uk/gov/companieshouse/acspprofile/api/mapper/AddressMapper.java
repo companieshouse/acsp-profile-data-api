@@ -4,7 +4,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.acspprofile.api.model.AcspAddress;
 import uk.gov.companieshouse.api.acspprofile.Address;
-import uk.gov.companieshouse.api.acspprofile.Country;
 
 @Component
 public class AddressMapper {
@@ -15,7 +14,7 @@ public class AddressMapper {
                         .addressLine1(address.getAddressLine1())
                         .addressLine2(address.getAddressLine2())
                         .careOf(address.getCareOf())
-                        .country(address.getCountry() != null ? Country.fromValue(address.getCountry()) : null)
+                        .country(address.getCountry())
                         .poBox(address.getPoBox())
                         .locality(address.getLocality())
                         .postalCode(address.getPostalCode())
@@ -30,7 +29,7 @@ public class AddressMapper {
                         .addressLine1(address.getAddressLine1())
                         .addressLine2(address.getAddressLine2())
                         .careOf(address.getCareOf())
-                        .country(address.getCountry() != null ? address.getCountry().getValue() : null)
+                        .country(address.getCountry())
                         .poBox(address.getPoBox())
                         .locality(address.getLocality())
                         .postalCode(address.getPostalCode())
