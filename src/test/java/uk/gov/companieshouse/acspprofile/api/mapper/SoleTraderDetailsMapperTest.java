@@ -16,7 +16,7 @@ class SoleTraderDetailsMapperTest {
     private static final String OTHER_FORENAMES = "middle name";
     private static final String SURNAME = "surname";
     private static final String BRITISH = "british";
-    private static final String USUAL_RESIDENTIAL_COUNTRY = "united kingdom";
+    private static final String USUAL_RESIDENTIAL_COUNTRY = "United Kingdom";
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(2000, 8, 27);
     private static final Instant DATE_OF_BIRTH_INSTANT = Instant.from(DATE_OF_BIRTH.atStartOfDay(UTC));
 
