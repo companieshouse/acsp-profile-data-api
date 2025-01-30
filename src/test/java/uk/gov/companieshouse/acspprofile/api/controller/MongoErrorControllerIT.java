@@ -15,9 +15,9 @@ import static uk.gov.companieshouse.acspprofile.api.auth.AuthConstants.SENSITIVE
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.TypeMismatchDataAccessException;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 import uk.gov.companieshouse.acspprofile.api.repository.AcspMongoRepository;
@@ -25,7 +25,7 @@ import uk.gov.companieshouse.api.acspprofile.InternalAcspApi;
 
 class MongoErrorControllerIT extends AbstractControllerIT {
 
-    @MockBean
+    @MockitoBean
     private AcspMongoRepository repository;
     @Autowired
     private MockMvc mockMvc;
