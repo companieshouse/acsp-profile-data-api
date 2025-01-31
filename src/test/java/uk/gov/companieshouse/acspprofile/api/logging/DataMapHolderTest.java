@@ -10,6 +10,8 @@ import uk.gov.companieshouse.logging.util.DataMap;
 
 class DataMapHolderTest {
 
+    private static final String REQUEST_ID = "requestId";
+
     @BeforeEach
     void setUp() {
         DataMapHolder.clear();
@@ -17,8 +19,8 @@ class DataMapHolderTest {
 
     @Test
     void getLogMapWithExplicitRequestId() {
-        DataMapHolder.initialise("requestId");
-        assertEquals("requestId", DataMapHolder.getRequestId());
+        DataMapHolder.initialise(REQUEST_ID);
+        assertEquals(REQUEST_ID, DataMapHolder.getRequestId());
     }
 
     @Test
@@ -28,11 +30,11 @@ class DataMapHolderTest {
 
     @Test
     void get() {
-        DataMapHolder.initialise("requestId");
+        DataMapHolder.initialise(REQUEST_ID);
 
         DataMap.Builder builder = DataMapHolder.get();
         DataMap dataMap = builder.build();
-        assertEquals("requestId", dataMap.getLogMap().get("request_id"));
+        assertEquals(REQUEST_ID, dataMap.getLogMap().get("request_id"));
     }
 
     @Test

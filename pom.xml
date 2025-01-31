@@ -6,7 +6,7 @@
   <parent>
     <groupId>uk.gov.companieshouse</groupId>
     <artifactId>companies-house-parent</artifactId>
-    <version>2.1.6</version>
+    <version>2.1.11</version>
   </parent>
 
   <name>acsp-profile-data-api</name>
@@ -18,19 +18,19 @@
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <spring.boot.version>3.3.4</spring.boot.version>
-    <jib-maven-plugin.version>3.4.2</jib-maven-plugin.version>
-    <structured-logging.version>3.0.18</structured-logging.version>
-    <api-sdk-manager-java-library.version>3.0.6</api-sdk-manager-java-library.version>
-    <private-api-sdk-java.version>4.0.231</private-api-sdk-java.version>
-    <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
-    <maven-failsafe-plugin.version>3.5.1</maven-failsafe-plugin.version>
-    <maven-resources-plugin.version>3.5.1</maven-resources-plugin.version>
-    <test-containers.version>1.20.1</test-containers.version>
-    <wiremock.version>3.9.1</wiremock.version>
+    <spring.boot.version>3.4.2</spring.boot.version>
+
+    <jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
+    <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
+    <wiremock.version>3.10.0</wiremock.version>
 
     <skip.unit.tests>false</skip.unit.tests>
     <skip.integration.tests>false</skip.integration.tests>
+
+    <structured-logging.version>3.0.25</structured-logging.version>
+    <api-sdk-manager-java-library.version>3.0.6</api-sdk-manager-java-library.version>
+    <private-api-sdk-java.version>4.0.264</private-api-sdk-java.version>
 
     <!--sonar configuration-->
     <sonar.coverage.jacoco.xmlReportPaths>
@@ -49,23 +49,11 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>testcontainers-bom</artifactId>
-        <version>${test-containers.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <!--the following transitive dependencies are added specifically to avoid vulnerabilities-->
-    <dependency>
-      <groupId>org.xmlunit</groupId>
-      <artifactId>xmlunit-core</artifactId>
-      <version>2.10.0</version>
-    </dependency>
     <!--end transitive dependencies-->
 
     <dependency>
@@ -96,6 +84,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
+
     <dependency>
       <groupId>uk.gov.companieshouse</groupId>
       <artifactId>structured-logging</artifactId>
@@ -125,7 +114,7 @@
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>testcontainers</artifactId>
+      <artifactId>mongodb</artifactId>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -133,11 +122,6 @@
           <artifactId>commons-compress</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>mongodb</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>

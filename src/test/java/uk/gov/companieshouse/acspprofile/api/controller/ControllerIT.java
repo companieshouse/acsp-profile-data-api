@@ -22,11 +22,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.testcontainers.containers.MongoDBContainer;
@@ -49,6 +49,7 @@ class ControllerIT extends AbstractControllerIT {
     private static final String UPDATED_DELTA_AT = "20241003093217479012";
     private static final String STALE_DELTA_AT = "20230222125145522153";
     private static final String SELF_LINK = "/authorised-corporate-service-providers/%s".formatted(ACSP_NUMBER);
+    private static final String LIMITED_COMPANY_TYPE = "limited-company";
 
     @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.12");
@@ -56,7 +57,7 @@ class ControllerIT extends AbstractControllerIT {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @MockBean
+    @MockitoBean
     private InstantSupplier instantSupplier;
 
     @DynamicPropertySource
@@ -72,7 +73,7 @@ class ControllerIT extends AbstractControllerIT {
 
     @ParameterizedTest
     @CsvSource({
-            "limited-company",
+            LIMITED_COMPANY_TYPE,
             "sole-trader",
     })
     void shouldReturn200WhenGetProfile(String acspType) throws Exception {
@@ -99,7 +100,7 @@ class ControllerIT extends AbstractControllerIT {
 
     @ParameterizedTest
     @CsvSource({
-            "limited-company",
+            LIMITED_COMPANY_TYPE,
             "sole-trader",
     })
     void shouldReturn200WhenGetFullProfile(String acspType) throws Exception {
@@ -126,7 +127,7 @@ class ControllerIT extends AbstractControllerIT {
 
     @ParameterizedTest
     @CsvSource({
-            "limited-company",
+            LIMITED_COMPANY_TYPE,
             "sole-trader",
     })
     void shouldReturn200WhenInsertAcspInternal(String acspType) throws Exception {
@@ -156,7 +157,7 @@ class ControllerIT extends AbstractControllerIT {
 
     @ParameterizedTest
     @CsvSource({
-            "limited-company",
+            LIMITED_COMPANY_TYPE,
             "sole-trader",
     })
     void shouldReturn200WhenUpdateAcspInternal(String acspType) throws Exception {
@@ -257,7 +258,7 @@ class ControllerIT extends AbstractControllerIT {
 
     @Test
     void shouldReturn401WhenPutAcspInternalWithoutAuthentication() throws Exception {
-        InternalAcspApi request = getInternalAcspApi("limited-company", DELTA_AT, CONTEXT_ID);
+        InternalAcspApi request = getInternalAcspApi(LIMITED_COMPANY_TYPE, DELTA_AT, CONTEXT_ID);
 
         mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -268,7 +269,7 @@ class ControllerIT extends AbstractControllerIT {
 
     @Test
     void shouldReturn403WhenWhenPutAcspInternalWithWrongAuthorisation() throws Exception {
-        InternalAcspApi request = getInternalAcspApi("limited-company", DELTA_AT, CONTEXT_ID);
+        InternalAcspApi request = getInternalAcspApi(LIMITED_COMPANY_TYPE, DELTA_AT, CONTEXT_ID);
 
         mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
                         .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
@@ -282,9 +283,9 @@ class ControllerIT extends AbstractControllerIT {
 
     @Test
     void shouldReturn409WhenWhenPutAcspInternalAndStaleDelta() throws Exception {
-        insertDocumentByType("limited-company");
+        insertDocumentByType(LIMITED_COMPANY_TYPE);
 
-        InternalAcspApi request = getInternalAcspApi("limited-company", STALE_DELTA_AT, CONTEXT_ID);
+        InternalAcspApi request = getInternalAcspApi(LIMITED_COMPANY_TYPE, STALE_DELTA_AT, CONTEXT_ID);
 
         mockMvc.perform(put(PUT_ACSP_URI, ACSP_NUMBER)
                         .header(ERIC_IDENTITY, ERIC_IDENTITY_VALUE)
