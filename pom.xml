@@ -32,9 +32,9 @@
     <skip.unit.tests>false</skip.unit.tests>
     <skip.integration.tests>false</skip.integration.tests>
 
-    <structured-logging.version>3.0.37</structured-logging.version>
-    <api-sdk-manager-java-library.version>3.0.9</api-sdk-manager-java-library.version>
-    <private-api-sdk-java.version>4.0.331</private-api-sdk-java.version>
+    <structured-logging.version>3.0.48</structured-logging.version>
+    <api-sdk-manager-java-library.version>3.0.15</api-sdk-manager-java-library.version>
+    <private-api-sdk-java.version>4.0.448</private-api-sdk-java.version>
 
     <!--sonar configuration-->
     <sonar.coverage.jacoco.xmlReportPaths>
