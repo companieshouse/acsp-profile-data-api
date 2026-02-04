@@ -21,12 +21,12 @@
     <maven.compiler.target>21</maven.compiler.target>
     <spring.boot.version>3.5.10</spring.boot.version>
 
-    <jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
-    <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
-    <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
-    <wiremock.version>3.13.1</wiremock.version>
-    <opentelemetry-instrumentation-bom.version>2.16.0</opentelemetry-instrumentation-bom.version>
-    <commons-lang3.version>3.18.0</commons-lang3.version>
+    <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
+    <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
+    <wiremock.version>3.13.2</wiremock.version>
+    <opentelemetry-instrumentation-bom.version>2.24.0</opentelemetry-instrumentation-bom.version>
+    <commons-lang3.version>3.20.0</commons-lang3.version>
     <commons-beanutils.version>1.11.0</commons-beanutils.version>
 
     <skip.unit.tests>false</skip.unit.tests>
