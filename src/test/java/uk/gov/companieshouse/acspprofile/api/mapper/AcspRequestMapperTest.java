@@ -145,7 +145,7 @@ class AcspRequestMapperTest {
         verify(addressMapper).mapAddressRequest(address);
         verify(addressMapper).mapAddressRequest(null);
         verify(soleTraderDetailsMapper).mapSoleTraderDetailsRequest(null);
-        verify(amlDetailsMapper).mapAmlDetailsRequest(null);
+        verify(amlDetailsMapper).mapAmlDetailsRequest(List.of());
     }
 
     @Test
@@ -180,7 +180,7 @@ class AcspRequestMapperTest {
         verify(addressMapper).mapAddressRequest(address);
         verify(addressMapper).mapAddressRequest(null);
         verify(soleTraderDetailsMapper).mapSoleTraderDetailsRequest(null);
-        verify(amlDetailsMapper).mapAmlDetailsRequest(null);
+        verify(amlDetailsMapper).mapAmlDetailsRequest(List.of());
     }
 
     private InternalAcspApi getInternalAcspRequest(AcspFullProfile acspFullProfile, String updatedBy) {
