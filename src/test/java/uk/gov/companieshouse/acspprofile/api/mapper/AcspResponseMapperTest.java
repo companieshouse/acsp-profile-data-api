@@ -187,6 +187,7 @@ class AcspResponseMapperTest {
                 .kind(FULL_PROFILE_KIND)
                 .notifiedFrom(NOTIFIED_FROM)
                 .registeredOfficeAddress(expectedAddress)
+                .amlDetails(null)
                 .email(EMAIL)
                 .links(new Links()
                         .self(SELF_LINK));

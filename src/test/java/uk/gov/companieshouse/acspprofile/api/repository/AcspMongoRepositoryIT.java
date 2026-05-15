@@ -17,13 +17,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
+import org.apache.commons.io.IOUtils;
 import uk.gov.companieshouse.acspprofile.api.exception.BadGatewayException;
 import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 
@@ -32,6 +31,7 @@ import uk.gov.companieshouse.acspprofile.api.model.AcspProfileDocument;
 class AcspMongoRepositoryIT {
 
     @Container
+    @ServiceConnection
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.12");
     private static final String ACSP_PROFILE_COLLECTION = "acsp_profile";
     private static final String ACSP_NUMBER = "AP123456";
@@ -44,11 +44,6 @@ class AcspMongoRepositoryIT {
     private MongoTemplate mongoTemplate;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @DynamicPropertySource
-    static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-    }
 
     @BeforeEach
     void setUp() {
