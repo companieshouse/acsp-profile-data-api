@@ -20,6 +20,10 @@
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <spring.boot.version>4.0.6</spring.boot.version>
+    <!-- Override the tomcat-embed-core version managed by the spring-boot-dependencies BOM
+         to fix CVE-2026-41293, CVE-2026-41284, CVE-2026-43513, CVE-2026-43512, CVE-2026-42498,
+         CVE-2026-43515. Drop once a Spring Boot 4.0.x patch bumps Tomcat for us. -->
+    <tomcat.version>11.0.22</tomcat.version>
 
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
     <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
@@ -58,6 +62,29 @@
         <version>${spring.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <!-- Override every tomcat-embed-* artifact managed by spring-boot-dependencies
+           to fix CVE-2026-41293, CVE-2026-41284, CVE-2026-43513, CVE-2026-43512,
+           CVE-2026-42498, CVE-2026-43515. The CVEs apply to Tomcat itself, so every
+           tomcat-embed-* sibling is flagged at the same version. A <tomcat.version>
+           property override has no effect on imported BOMs (only on parent
+           inheritance), so each artifact must be pinned via an explicit
+           dependencyManagement entry. Drop once a Spring Boot 4.0.x patch bumps
+           Tomcat for us. -->
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>${tomcat.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-el</artifactId>
+        <version>${tomcat.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-websocket</artifactId>
+        <version>${tomcat.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
