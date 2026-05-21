@@ -3,7 +3,7 @@ package uk.gov.companieshouse.acspprofile.api.serdes;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.acspprofile.api.config.AppConfig;
 
@@ -14,14 +14,14 @@ class EmptyFieldDeserializerTest {
                   "stuff": "stuff",
                   "optional_stuff": "",
                   "unknown_stuff": ""
-            },
+            }
             """;
 
     private record Stuff(String stuff, String optional_stuff) {
 
     }
 
-    private final ObjectMapper objectMapper = new AppConfig().objectMapper();
+    private final ObjectMapper objectMapper = new AppConfig().jacksonJsonMapper();
 
     @Test
     void successfullyDeserialize() throws Exception {
