@@ -23,7 +23,7 @@
     <!-- Override the tomcat-embed-core version managed by the spring-boot-dependencies BOM
          to fix CVE-2026-41293, CVE-2026-41284, CVE-2026-43513, CVE-2026-43512, CVE-2026-42498,
          CVE-2026-43515. Drop once a Spring Boot 4.0.x patch bumps Tomcat for us. -->
-    <tomcat.version>11.0.22</tomcat.version>
+    <tomcat.version>11.0.25</tomcat.version>
 
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
     <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
