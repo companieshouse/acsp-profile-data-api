@@ -19,17 +19,12 @@
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <spring.boot.version>4.0.6</spring.boot.version>
-    <!-- Override the tomcat-embed-core version managed by the spring-boot-dependencies BOM
-         to fix CVE-2026-41293, CVE-2026-41284, CVE-2026-43513, CVE-2026-43512, CVE-2026-42498,
-         CVE-2026-43515. Drop once a Spring Boot 4.0.x patch bumps Tomcat for us. -->
-    <tomcat.version>11.0.22</tomcat.version>
+    <spring.boot.version>4.1.1</spring.boot.version>
 
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
     <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
     <wiremock.version>3.13.2</wiremock.version>
-    <opentelemetry-instrumentation-bom.version>2.27.0</opentelemetry-instrumentation-bom.version>
     <commons-beanutils.version>1.11.0</commons-beanutils.version>
 
     <skip.unit.tests>false</skip.unit.tests>
@@ -52,10 +47,11 @@
       <dependency>
         <groupId>io.opentelemetry.instrumentation</groupId>
         <artifactId>opentelemetry-instrumentation-bom</artifactId>
-        <version>${opentelemetry-instrumentation-bom.version}</version>
+        <version>2.31.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -63,44 +59,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- Override every tomcat-embed-* artifact managed by spring-boot-dependencies
-           to fix CVE-2026-41293, CVE-2026-41284, CVE-2026-43513, CVE-2026-43512,
-           CVE-2026-42498, CVE-2026-43515. The CVEs apply to Tomcat itself, so every
-           tomcat-embed-* sibling is flagged at the same version. A <tomcat.version>
-           property override has no effect on imported BOMs (only on parent
-           inheritance), so each artifact must be pinned via an explicit
-           dependencyManagement entry. Drop once a Spring Boot 4.0.x patch bumps
-           Tomcat for us. -->
-      <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-core</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-el</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-websocket</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
-    <!--the following transitive dependencies are added specifically to avoid vulnerabilities-->
+    <!-- OVERRIDE -->
 
-    <!-- override assertj-core to fix CVE-2026-24400 - transitive dependency from spring-boot-starter-test which depends on spring-boot-dependencies -->
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.27.7</version>
-      <scope>test</scope>
-    </dependency>
 
-    <!--end transitive dependencies-->
+    <!-- OVERRIDE END -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -134,6 +100,7 @@
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
     </dependency>
+
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
@@ -143,6 +110,7 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
+
     <dependency>
       <groupId>uk.gov.companieshouse</groupId>
       <artifactId>structured-logging</artifactId>
@@ -152,12 +120,6 @@
       <groupId>uk.gov.companieshouse</groupId>
       <artifactId>api-sdk-manager-java-library</artifactId>
       <version>${api-sdk-manager-java-library.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>io.grpc</groupId>
-          <artifactId>grpc-context</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>uk.gov.companieshouse</groupId>
@@ -186,22 +148,18 @@
       <version>${wiremock.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.20.0</version>
-      <scope>test</scope>
-    </dependency>
+
+<!--    <dependency>-->
+<!--      <groupId>commons-io</groupId>-->
+<!--      <artifactId>commons-io</artifactId>-->
+<!--      <version>2.20.0</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers-mongodb</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.commons</groupId>
-          <artifactId>commons-compress</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
